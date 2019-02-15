@@ -229,6 +229,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/iOS中使用OpenGl-ES2-0-共享资源引起的绿屏现象处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/iOS中使用OpenGl-ES2-0-共享资源引起的绿屏现象处理/" itemprop="url">iOS中使用OpenGl ES2.0 共享资源引起的绿屏现象处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:27:41+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="OpenGL-ES渲染在iOS上共享资源"><a href="#OpenGL-ES渲染在iOS上共享资源" class="headerlink" title="OpenGL ES渲染在iOS上共享资源"></a>OpenGL ES渲染在iOS上共享资源</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>短视频拍摄中，需要播放录制的视频，因为播放时有多种编辑方式，不能使用系统以及第三方工具实现。从文件中读取视频的每一帧进行自定义渲染，此操作基于opengl开发。<br>拍摄后的视频进入鱼吧后再次进入拍摄页面，画面会出现绿屏的现象，类似着色器的buffer存储信息被重置。</p>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><h4 id="管线（Pipeline）"><a href="#管线（Pipeline）" class="headerlink" title="管线（Pipeline）"></a>管线（Pipeline）</h4><blockquote>
+<p>可以理解为将三维空间中表达的数据（比如三维物体、灯光配备等）经由这个管道转换为二维屏幕上的画面。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 创建program</span><br><span class="line">self.program = glCreateProgram();</span><br></pre></td></tr></table></figure>
+<p>图像渲染管线的概念：<br>图形渲染管线的主要功能就是决定在给定虚拟相机、三维物体、光源、照明模式，以及纹理<br>等诸多条件的情况下，生成或绘制一幅二维图像的过程。在概念上可以将图形渲染管线分为<br>三个阶段:应用程序阶段、几何阶段、光栅化阶段。</p>
+<blockquote>
+<p>应用程序阶段（The Application Stage）<br>集合阶段（The Geometry Stage）<br>光栅化阶段（The Rasterizer Stage）</p>
+</blockquote>
+<h4 id="glContext"><a href="#glContext" class="headerlink" title="glContext"></a>glContext</h4><blockquote>
+<p>OpenGL ES的每种实现，都会有个方法，来创建渲染图形的上下文，从而可以管理Opengl ES指定的状态。通过放置这些状态到上下文中，这样在多任务的情况下，就很容易的共享图像的硬件设备，从而互不影响各自的状态。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// iOS中设置当前上下文的方式</span><br><span class="line">[EAGLContext setCurrentContext:_context]</span><br><span class="line"></span><br><span class="line">// 设置opengl es的渲染特效（1.0或者2.0）</span><br><span class="line"> EAGLContext* CreateBestEAGLContext()&#123;</span><br><span class="line">    EAGLContext *context;</span><br><span class="line">    context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];</span><br><span class="line">    if (context == nil)&#123;</span><br><span class="line">        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];</span><br><span class="line">    &#125;</span><br><span class="line">    return context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Opengl ES 2.0移除了ES 1.0中所有的处理图像的固定功能流水线（也就是对顶点和纹理进行处理的变换引擎）的函数。并且增加了许多新的函数，以便于提供一个更清晰的着色接口。</code></p>
+<h4 id="EAGLSharegroup"><a href="#EAGLSharegroup" class="headerlink" title="EAGLSharegroup"></a>EAGLSharegroup</h4><blockquote>
+<p>尽管上下文保存了Openggl ES的状态，但是它不能直接管理Opengl ES的对象。相反，Openggl ES对象是通过EAGLSharegroup对象创建和管理的。每一个上下文都包含了一个EAGLSharegroup对象。</p>
+<p>当两个或多个上下文引用同一个共享组时，共享组的优势变得明显，如下图所示。当多个上下文连接到公共共享组时，任何上下文创建的OpenGL ES对象都可在所有上下文中使用;如果在另一个上下文中绑定到相同的对象标识符而不是创建它的那个上下文，则引用相同的OpenGL ES对象。移动设备上的资源往往很少;在多个上下文中创建相同内容的多个副本是浪费的。共享公共资源可以更好地利用设备上可用的图形资源。</p>
+</blockquote>
+<p>A sharegroup is an opaque object; it has no methods or properties that your app can call. Contexts that use the sharegroup object keep a strong reference to it.</p>
+<p>两个Context共同使用OpenGL ES 对象</p>
+<p><img src="https://ws3.sinaimg.cn/large/0069RVTdgy1fua6woudrbj30lt0bb0tk.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Set the context into which the frames will be drawn.</span><br><span class="line">// All contexts associated with the same sharegroup must use the same version of the OpenGL ES API as the initial context.</span><br><span class="line">_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:[[EAGLContext currentContext] sharegroup]];</span><br><span class="line"></span><br><span class="line">// Creating two contexts with a common sharegroup</span><br><span class="line">EAGLContext* firstContext = CreateBestEAGLContext();</span><br><span class="line">EAGLContext* secondContext = [[EAGLContext alloc] initWithAPI:[firstContext API] sharegroup: [firstContext sharegroup]];</span><br></pre></td></tr></table></figure>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>当使用EAGLContext的时候我们并不能直接管理opengl es的对象，需要创建EAGLSharegroup进行管理，避免出现opengl es对象出错的情况下无法直接去管理它。<br>当共享组是被多个上下文共享时，你的应用程序就有义务要管理Opengl ES对象状态的改变。规则如下：</p>
+<blockquote>
+<ol>
+<li><p>当你的应用程序可能要通过多个上下文进入某个对象的同时，要确保对象没有被同时改变。</p>
+</li>
+<li><p>当对象要被发给上下文的命令改变时，对象此时不能被另外的上下文读取或者改变。</p>
+</li>
+<li><p>在一个对象被改变时，必须是被绑定对象的所有的上下文才能看到这些改变。如果一个上下文在绑定之前就引用它，那么这个对象的内容是没有被定义的。</p>
+</li>
+</ol>
+</blockquote>
+<p>更新Opengl ES对象需要遵循的：</p>
+<blockquote>
+<ol>
+<li>在每一个可能使用该对象的上下文中调用glFlush方法</li>
+<li>在某个上下文想要改变对象的同时，调用一个或者更多的Opengl ES的函数来改变对象</li>
+<li>在接收到上下文状态改变的通知时，调用glFlush函数</li>
+<li>在每个其他的上下文中，绑定对象的标志。</li>
+</ol>
+</blockquote>
+<p>==注意：共享对象的另一个方法是去使用单一的渲染上下文，但是多个目的缓冲帧。在渲染时，你的应用程序绑定需要的缓冲帧，然后渲染成需要的帧。因为所有的Opengl ES对象都是从单一的上下文中渲染的，所以他们看到的是同样的Opengl ES的数据。这个方式使用的资源很少，但是仅仅对单线程的应用程序有用，在单线程中你可以很好的控制上下文的状态。==</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/ImageMagick-7-0-7-16使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -344,6 +506,166 @@ x100         按指定高度缩放，保持宽高比
 <p><strong>-crop参数是从一个图片截取一个指定区域的子图片</strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式如下:convert -crop widthxheight&#123;+-&#125;x&#123;+-&#125;y&#123;%&#125;</span><br></pre></td></tr></table></figure></p>
 <p> <em>width 子图片宽度</em> <em>height 子图片高度</em><br> x 为正数时为从区域左上角的x坐标,为负数时,左上角坐标为0,然后从截出的子图片右边减去x象素宽度. y 为正数时为从区域左上角的y坐标,为负数时,左上角坐标为0,然后从截出的子图片上边减去y象素高度.  如convert -crop 300x400+10+10 src.jpg dest.jpg 从src.jpg坐标为x:10 y:10截取300x400的图片存为dest.jpg convert -crop 300x400-10+10 src.jpg dest.jpg 从src.jpg坐标为x:0 y:10截取290x400的图片存为dest.jpg</p>
 <p>##总结</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/如何高效的使用硬编码进行数据压缩/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/如何高效的使用硬编码进行数据压缩/" itemprop="url">如何高效的使用硬编码进行推流</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="如何高效的使用硬编码进行推流"><a href="#如何高效的使用硬编码进行推流" class="headerlink" title="如何高效的使用硬编码进行推流"></a>如何高效的使用硬编码进行推流</h1><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>从摄像头和麦克风获取的音视频数据（YUV、PCM）因原始数据体积较大，不适合直接在网络进行传输。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxurz839d2j30oi0hptbd.jpg" alt></p>
+<p>在直播中实时传输音视频，需要将音视频流分解成小块数据包，而原始数据需要添加音视频同步信息保证接收端能还原出完整的音视频流。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">所以，获取的音视频数据需要分辨进行编码，目前编码比较高效的音视频方式分辨是h264和aac。</span><br><span class="line"></span><br><span class="line">编码后的数据，相比原始数据进行很大程度的压缩，将压缩的数据以一定格式进行封装，进行muxer后通过rtmp协议推送到服务端。</span><br></pre></td></tr></table></figure>
+<h3 id="推流参数介绍"><a href="#推流参数介绍" class="headerlink" title="推流参数介绍"></a>推流参数介绍</h3><ul>
+<li><p><strong>FPS</strong>：视频每秒包含多少帧，一帧就是一个静态的图像；</p>
+</li>
+<li><p><strong>I帧，B帧和P帧</strong>：I帧是靠尽可能去除图像空间冗余信息来压缩传输数据量的帧内编码图像； P帧是通过充分降低与图像序列中前面已编码帧的时间冗余信息来压缩传输数据量的编码图像，也叫预测帧； B帧是既考虑与源图像序列前面已编码帧，也顾及源图像序列后面已编码帧之间的时间冗余信息来压缩传输数据量的编码图像，也叫双向预测帧；一般地，I帧压缩效率最低，P帧较高，B帧最高。I帧是通过帧内预测编码的，在获取到I帧后能解码出相应的图像，而P帧和B帧需要依赖相邻的帧才能解码出图像；</p>
+</li>
+<li><p><strong>GOP</strong>：( <strong>Group of Pictures </strong>) 是一组连续的画面，由一张 I 帧和数张 B / P 帧组成，是视频图像编码器和解码器存取的基本单位，它的排列顺序将会一直重复到影像结束。</p>
+</li>
+<li><p><strong>GOP</strong>间隔：是指一个画面序列中相邻两个I帧的间隔时间。</p>
+</li>
+<li><p><strong>封装格式</strong>：音视频文件封装格式有<strong>avi</strong>、<strong>rmvb</strong>、<strong>flv</strong>、<strong>mkv</strong>、<strong>MP4</strong>等等，封装格式就是把音视频数据打包成一个文件的规范。一般会包含音视频编码类型，时间戳，采样率等信息，方便接收方解析出原始数据。</p>
+</li>
+<li><p><strong>视频码率</strong>：码率的单位为<strong>kbps</strong>，指每秒视频数据量，其值跟每秒视频帧数FPS，图像分辨率以及编码器压缩率有关。</p>
+</li>
+</ul>
+<h2 id="硬编码"><a href="#硬编码" class="headerlink" title="硬编码"></a>硬编码</h2><p>为了保证高清画质的视频数据在网络中达到实时直播的效果，且满足蜂窝网络、wifi下的正常使用。</p>
+<p>需要对图像进行编码，也就是压缩。</p>
+<p>常用的压缩算法有<strong>h264</strong>、<strong>HEVC</strong>、<strong>VP8</strong>、<strong>VP9</strong>等等。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxus21trxtj30oa0gsacv.jpg" alt></p>
+<p><strong>以iOS为例，目前仅支持H264硬编码，ffmpeg实现软编码（H264、H265)</strong></p>
+<p><strong>在移动端使用，软编码占用CPU性能非常高，硬编码完全依赖GPU进行像素数据处理，速度会更快。</strong></p>
+<h2 id="编码等级"><a href="#编码等级" class="headerlink" title="编码等级"></a>编码等级</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">H.264有四种画质级别，分别是BP、EP、MP、HP：</span><br></pre></td></tr></table></figure>
+<p>在下面三种级别进行编码时，对应的耗电数据如下：</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuslp4kuxj30ob0ay404.jpg" alt></p>
+<p><strong>高级别的画质，对数据保留完整度更高</strong></p>
+<h3 id="CABAC和CAVLC比较"><a href="#CABAC和CAVLC比较" class="headerlink" title="CABAC和CAVLC比较"></a>CABAC和CAVLC比较</h3><p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuswsvt2bj30od0gpdjm.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">越高的编码等级编解码越复杂，压缩率越高，同样的网络速率能传输更多的视频信息；</span><br><span class="line"></span><br><span class="line">CABAC充分发挥算术编码压缩效率高的特点，而且其基于上下文的特点使其可以充分利用不同视频流的统计特性和符号间的相关性，自适应不同符号（消息）出现的概率。</span><br><span class="line"></span><br><span class="line">因此，CABAC的编码性能更好。</span><br></pre></td></tr></table></figure>
+<p><strong>选择节能而码率相对较大的情况下，CAVLC明显更适合；<br>选择带宽节省的情况，CABAC无疑更好。</strong></p>
+<p><strong>CABAC虽然性能很好，但也存在不足：</strong></p>
+<ul>
+<li>复杂度过高，不易并行处理。存在块及依赖（左/上角的块没有码率估计/熵编码, 后继块就无法得到更新后的状态，从而无法开始码率估计/上编码）、Bin级依赖（统一个子队列的bin存在前后依赖性，后继的Bin要等前面Bin编完后才能得到更新后的上下文状态）以及编码的几个环节依赖，这些依赖性会影响编码器的并行实现。</li>
+<li>计算精度问题。为简化计算，CABAC采用128个状态来近似，根据原来状态和当前符号性质查表得到下个状态，这个过程会有一定程度的精度损失。</li>
+<li>Context的利用频率过高或过低。</li>
+</ul>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 根据当前网络环境，设置对应的实时码率能有效的解决直播卡顿、带宽成本的问题。</span><br><span class="line">2. 不同的分辨率、帧率、GOP需要谨慎决策，能对直播带来良好的体验。</span><br><span class="line">3. CABAC和CAVLC的选择需要取舍（带宽还是功耗）</span><br><span class="line">4. HEVC相比VP9差别不大，但VP9谷歌开源，HEVC却有非常多的专利机构，使用成本较高。但两者相比H264，有显著程度的提高。</span><br><span class="line">5. HEVC迟早会替代H264。</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://books.google.com/books?id=ysFeDwAAQBAJ&amp;pg=PT54&amp;lpg=PT54&amp;dq=cavlc+cabac比较&amp;source=bl&amp;ots=YIU0up78TW&amp;sig=AaFvh7527Oel2K-HaE5U1RUXeDs&amp;hl=zh-CN&amp;sa=X&amp;ved=2ahUKEwj2-6KloYXfAhVqx1QKHRQFACEQ6AEwCHoECAEQAQ#v=onepage&amp;q=cavlc%20cabac比较&amp;f=false" target="_blank" rel="noopener">网络电视技术</a></p>
+<p><a href="https://www.jianshu.com/p/7450fd22ffc6" target="_blank" rel="noopener">算术编码 CABAC CAVLC</a></p>
+<p><a href="http://www.lighterra.com/papers/videoencodingh264/" target="_blank" rel="noopener">H264视频编码设置</a></p>
 
           
         
@@ -665,492 +987,6 @@ x100         按指定高度缩放，保持宽高比
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AVAudioSession *session = [AVAudioSession sharedInstance];</span><br><span class="line">[session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers | AVAudioSessionCategoryOptionAllowBluetooth error:nil];</span><br><span class="line">[session setActive:YES error:nil];</span><br></pre></td></tr></table></figure>
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a href="https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioInterruptions/HandlingAudioInterruptions.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioInterruptions/HandlingAudioInterruptions.html</a></p>
 <p><a href="https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/如何高效的使用硬编码进行数据压缩/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiyun">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祁云的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/15/如何高效的使用硬编码进行数据压缩/" itemprop="url">如何高效的使用硬编码进行推流</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="如何高效的使用硬编码进行推流"><a href="#如何高效的使用硬编码进行推流" class="headerlink" title="如何高效的使用硬编码进行推流"></a>如何高效的使用硬编码进行推流</h1><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>从摄像头和麦克风获取的音视频数据（YUV、PCM）因原始数据体积较大，不适合直接在网络进行传输。</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxurz839d2j30oi0hptbd.jpg" alt></p>
-<p>在直播中实时传输音视频，需要将音视频流分解成小块数据包，而原始数据需要添加音视频同步信息保证接收端能还原出完整的音视频流。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">所以，获取的音视频数据需要分辨进行编码，目前编码比较高效的音视频方式分辨是h264和aac。</span><br><span class="line"></span><br><span class="line">编码后的数据，相比原始数据进行很大程度的压缩，将压缩的数据以一定格式进行封装，进行muxer后通过rtmp协议推送到服务端。</span><br></pre></td></tr></table></figure>
-<h3 id="推流参数介绍"><a href="#推流参数介绍" class="headerlink" title="推流参数介绍"></a>推流参数介绍</h3><ul>
-<li><p><strong>FPS</strong>：视频每秒包含多少帧，一帧就是一个静态的图像；</p>
-</li>
-<li><p><strong>I帧，B帧和P帧</strong>：I帧是靠尽可能去除图像空间冗余信息来压缩传输数据量的帧内编码图像； P帧是通过充分降低与图像序列中前面已编码帧的时间冗余信息来压缩传输数据量的编码图像，也叫预测帧； B帧是既考虑与源图像序列前面已编码帧，也顾及源图像序列后面已编码帧之间的时间冗余信息来压缩传输数据量的编码图像，也叫双向预测帧；一般地，I帧压缩效率最低，P帧较高，B帧最高。I帧是通过帧内预测编码的，在获取到I帧后能解码出相应的图像，而P帧和B帧需要依赖相邻的帧才能解码出图像；</p>
-</li>
-<li><p><strong>GOP</strong>：( <strong>Group of Pictures </strong>) 是一组连续的画面，由一张 I 帧和数张 B / P 帧组成，是视频图像编码器和解码器存取的基本单位，它的排列顺序将会一直重复到影像结束。</p>
-</li>
-<li><p><strong>GOP</strong>间隔：是指一个画面序列中相邻两个I帧的间隔时间。</p>
-</li>
-<li><p><strong>封装格式</strong>：音视频文件封装格式有<strong>avi</strong>、<strong>rmvb</strong>、<strong>flv</strong>、<strong>mkv</strong>、<strong>MP4</strong>等等，封装格式就是把音视频数据打包成一个文件的规范。一般会包含音视频编码类型，时间戳，采样率等信息，方便接收方解析出原始数据。</p>
-</li>
-<li><p><strong>视频码率</strong>：码率的单位为<strong>kbps</strong>，指每秒视频数据量，其值跟每秒视频帧数FPS，图像分辨率以及编码器压缩率有关。</p>
-</li>
-</ul>
-<h2 id="硬编码"><a href="#硬编码" class="headerlink" title="硬编码"></a>硬编码</h2><p>为了保证高清画质的视频数据在网络中达到实时直播的效果，且满足蜂窝网络、wifi下的正常使用。</p>
-<p>需要对图像进行编码，也就是压缩。</p>
-<p>常用的压缩算法有<strong>h264</strong>、<strong>HEVC</strong>、<strong>VP8</strong>、<strong>VP9</strong>等等。</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxus21trxtj30oa0gsacv.jpg" alt></p>
-<p><strong>以iOS为例，目前仅支持H264硬编码，ffmpeg实现软编码（H264、H265)</strong></p>
-<p><strong>在移动端使用，软编码占用CPU性能非常高，硬编码完全依赖GPU进行像素数据处理，速度会更快。</strong></p>
-<h2 id="编码等级"><a href="#编码等级" class="headerlink" title="编码等级"></a>编码等级</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">H.264有四种画质级别，分别是BP、EP、MP、HP：</span><br></pre></td></tr></table></figure>
-<p>在下面三种级别进行编码时，对应的耗电数据如下：</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuslp4kuxj30ob0ay404.jpg" alt></p>
-<p><strong>高级别的画质，对数据保留完整度更高</strong></p>
-<h3 id="CABAC和CAVLC比较"><a href="#CABAC和CAVLC比较" class="headerlink" title="CABAC和CAVLC比较"></a>CABAC和CAVLC比较</h3><p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuswsvt2bj30od0gpdjm.jpg" alt></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">越高的编码等级编解码越复杂，压缩率越高，同样的网络速率能传输更多的视频信息；</span><br><span class="line"></span><br><span class="line">CABAC充分发挥算术编码压缩效率高的特点，而且其基于上下文的特点使其可以充分利用不同视频流的统计特性和符号间的相关性，自适应不同符号（消息）出现的概率。</span><br><span class="line"></span><br><span class="line">因此，CABAC的编码性能更好。</span><br></pre></td></tr></table></figure>
-<p><strong>选择节能而码率相对较大的情况下，CAVLC明显更适合；<br>选择带宽节省的情况，CABAC无疑更好。</strong></p>
-<p><strong>CABAC虽然性能很好，但也存在不足：</strong></p>
-<ul>
-<li>复杂度过高，不易并行处理。存在块及依赖（左/上角的块没有码率估计/熵编码, 后继块就无法得到更新后的状态，从而无法开始码率估计/上编码）、Bin级依赖（统一个子队列的bin存在前后依赖性，后继的Bin要等前面Bin编完后才能得到更新后的上下文状态）以及编码的几个环节依赖，这些依赖性会影响编码器的并行实现。</li>
-<li>计算精度问题。为简化计算，CABAC采用128个状态来近似，根据原来状态和当前符号性质查表得到下个状态，这个过程会有一定程度的精度损失。</li>
-<li>Context的利用频率过高或过低。</li>
-</ul>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 根据当前网络环境，设置对应的实时码率能有效的解决直播卡顿、带宽成本的问题。</span><br><span class="line">2. 不同的分辨率、帧率、GOP需要谨慎决策，能对直播带来良好的体验。</span><br><span class="line">3. CABAC和CAVLC的选择需要取舍（带宽还是功耗）</span><br><span class="line">4. HEVC相比VP9差别不大，但VP9谷歌开源，HEVC却有非常多的专利机构，使用成本较高。但两者相比H264，有显著程度的提高。</span><br><span class="line">5. HEVC迟早会替代H264。</span><br></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://books.google.com/books?id=ysFeDwAAQBAJ&amp;pg=PT54&amp;lpg=PT54&amp;dq=cavlc+cabac比较&amp;source=bl&amp;ots=YIU0up78TW&amp;sig=AaFvh7527Oel2K-HaE5U1RUXeDs&amp;hl=zh-CN&amp;sa=X&amp;ved=2ahUKEwj2-6KloYXfAhVqx1QKHRQFACEQ6AEwCHoECAEQAQ#v=onepage&amp;q=cavlc%20cabac比较&amp;f=false" target="_blank" rel="noopener">网络电视技术</a></p>
-<p><a href="https://www.jianshu.com/p/7450fd22ffc6" target="_blank" rel="noopener">算术编码 CABAC CAVLC</a></p>
-<p><a href="http://www.lighterra.com/papers/videoencodingh264/" target="_blank" rel="noopener">H264视频编码设置</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/音频降噪算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiyun">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祁云的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/15/音频降噪算法/" itemprop="url">音频降噪算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="音频降噪算法"><a href="#音频降噪算法" class="headerlink" title="音频降噪算法"></a>音频降噪算法</h1><h2 id="WAV-Waveform-Audio-File-Format"><a href="#WAV-Waveform-Audio-File-Format" class="headerlink" title="WAV (Waveform Audio File Format)"></a>WAV (Waveform Audio File Format)</h2><p>此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。<br>也是其音乐发烧友中常用的指定规格之一。<br>由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。</p>
-<p><strong>制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么超过此最大频率的频段，将会产生混叠的情况，使原始信号受到污染，亦不能称此WAV文件就是无损文件。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">WAV文件遵守资源交换档案格式之规则，在文件的前44(或46)字节放置标头(header)，使播放器或编辑器能够简单掌握文件的基本信息，其内容以区块(chunk)为最小单位，每一区块长度为4字节，而区块之上则由子区块包裹，每一子区块长度不拘，但须在前头先宣告标签及长度(字节)。</span><br><span class="line"></span><br><span class="line">标头的前3个区块记录文件格式及长度；</span><br><span class="line">接着第一个子区块包含8个区块，记录声道数量、采样率等信息；</span><br><span class="line">接着第二个子区块才是真正的音频数据，长度则视音频长度而定。</span><br><span class="line"></span><br><span class="line">内容如下表所示。须注意的是，每个区块的端序不尽相同，而音频内容本身则是采用小端序。</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy61nb179gj30hx0drjto.jpg" alt></p>
-<h2 id="AAC-Advanced-Audio-Coding"><a href="#AAC-Advanced-Audio-Coding" class="headerlink" title="AAC (Advanced Audio Coding)"></a>AAC (Advanced Audio Coding)</h2><p>出现于1997年，为一种基于MPEG-2的有损数字音频压缩的专利音频编码标准。</p>
-<ul>
-<li><p>.aac - 使用MPEG-2 Audio Transport Stream（ADTS，参见MPEG-2）容器，区别于使用MPEG-4容器的MP4/M4A格式，属于传统的AAC编码（FAAC默认的封装，但FAAC亦可输出MPEG-4封装的AAC）。</p>
-</li>
-<li><p>.mp4 - 使用了MPEG-4 Part 14（第14部分）的简化版即3GPP Media Release 6 Basic（3gp6，参见3GP）进行封装的AAC编码（Nero AAC编码器仅能输出MPEG-4封装的AAC）。</p>
-</li>
-<li><p>.m4a - 为了区别纯音频MP4文件和包含视频的MP4文件而由苹果（Apple）公司使用的扩展名，Apple iTunes对纯音频MP4文件采用了”.m4a”命名。M4A的本质和音频MP4相同，故音频MP4文件亦可直接更改扩展名为M4A。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">作为一种高压缩比的音频压缩算法，AAC压缩比通常为18：1，也有数据说为20：1；</span><br><span class="line"></span><br><span class="line">在音质方面，由于采用多声道，和使用低复杂性的描述方式，使其比几乎所有的传统编码方式在同规格的情况下更胜一筹。</span><br><span class="line"></span><br><span class="line">不过直到2006年，使用这一格式存储音乐的并不多，可以播放该格式的mp3播放器更是少之又少，目前所知仅有苹果iPod、Sony Walkman（NWZ-A、NWZ-S、NWZ-E、NWZ-X系列）、任天堂NDSi和iPhone（微软推出的Windows 7附带的Windows Media Player 12也支持AAC）。</span><br><span class="line"></span><br><span class="line">此外计算机上很多音乐播放软件都支持AAC（前提是安装过AAC解码器），如苹果iTunes。</span><br><span class="line"></span><br><span class="line">但在移动电话领域，AAC的支持度已很普遍，Nokia、Sony Ericsson、Motorola等品牌均在其中高端产品中支持AAC（一开始主要是LC-AAC，随着移动电话性能的发展，HE-AAC的支持也已广泛）。</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AAC是一种宽带音频编码算法，主要利用以下两种编码策略来大幅减少存储高质量数字音频所需要的数据量：</span><br><span class="line">舍去与感知上无关的信号成分</span><br><span class="line">去除编码后信号的冗余部分</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/绝地求生存活人数识别Tesseract-OCR/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiyun">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祁云的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/15/绝地求生存活人数识别Tesseract-OCR/" itemprop="url">Tesseract OCR使用介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>#Tesseract OCR使用介绍</p>
-<p>##目录<br>[TOC]</p>
-<p>##下载地址及介绍</p>
-<ul>
-<li>官网介绍：<a href="http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3" target="_blank" rel="noopener">http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3</a></li>
-<li>Github源码连接： <a href="https://github.com/tesseract-ocr">https://github.com/tesseract-ocr</a></li>
-<li>开源贡献者主页 <a href="https://kevintechnology.com/" target="_blank" rel="noopener">https://kevintechnology.com/</a></li>
-</ul>
-<p>##安装 Tesseract</p>
-<ul>
-<li>语言包查看 <a href="https://www.macports.org/ports.php?by=name&amp;substr=tesseract-" target="_blank" rel="noopener">https://www.macports.org/ports.php?by=name&amp;substr=tesseract-</a></li>
-<li>支持Windows、linux、macOS</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、安装 tesseract和语言包</span><br><span class="line">sudo port install tesseract	</span><br><span class="line">sudo port install tesseract-&lt;langcode&gt;</span><br><span class="line"></span><br><span class="line">2、homebrew 安装</span><br><span class="line">brew install tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br><span class="line"></span><br><span class="line">3、重新安装</span><br><span class="line">brew uninstall tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Homebrew 是一个包管理器，如果没装的话，在终端执行</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
-<p>##使用 Tesseract</p>
-<ul>
-<li>使用命令行进行图像识别</li>
-<li>imagename 就是要识别的图片文件的名称，outputbase 就是识别结果输出文件的名称。</li>
-<li>lang 就是要识别的语言代码，例如英语为 eng、简体中文为 chi_sim 等等。可以同时识别多种语言，使用 “+” 相连，例如 eng+chi_sim。缺省时识别英语。</li>
-</ul>
-<p>1、格式信息如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract imagename outputbase [-l lang] [-psm pagesegmode] [configfile...]</span><br></pre></td></tr></table></figure></p>
-<p>2、示例: 识别image图片并将结果保存在out.txt文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tesseract image.png out -l chi_sim</span><br><span class="line">tesseract image.png out -l chi_sim -psm 10</span><br></pre></td></tr></table></figure></p>
-<p>3、pagesegmode 为识别的具体模式，具体包含以下模式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">•	0 = Orientation and script detection (OSD) only.</span><br><span class="line">•	1 = Automatic page segmentation with OSD.</span><br><span class="line">•	2 = Automatic page segmentation, but no OSD, or OCR</span><br><span class="line">•	3 = Fully automatic page segmentation, but no OSD. (Default)</span><br><span class="line">•	4 = Assume a single column of text of variable sizes.</span><br><span class="line">•	5 = Assume a single uniform block of vertically aligned text.</span><br><span class="line">•	6 = Assume a single uniform block of text.</span><br><span class="line">•	7 = Treat the image as a single text line.</span><br><span class="line">•	8 = Treat the image as a single word.</span><br><span class="line">•	9 = Treat the image as a single word in a circle.</span><br><span class="line">•	10 = Treat the image as a single character.</span><br><span class="line">•	11 = Sparse text. Find as much text as possible in no particular order.</span><br><span class="line">•	12 = Sparse text with OSD.</span><br><span class="line">•	13 = Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.</span><br></pre></td></tr></table></figure></p>
-<p>##训练样本</p>
-<ul>
-<li>训练工具 <a href="https://github.com/tesseract-ocr/tesseract/wiki/AddOns">https://github.com/tesseract-ocr/tesseract/wiki/AddOns</a></li>
-<li>使用教程 <a href="https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract">https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract</a></li>
-<li>提高识别率 <a href="https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality">https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality</a></li>
-<li>清理文本背景 <a href="http://www.fmwconcepts.com/imagemagick/textcleaner/index.php" target="_blank" rel="noopener">http://www.fmwconcepts.com/imagemagick/textcleaner/index.php</a></li>
-<li>提取文本区域 <a href="http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html" target="_blank" rel="noopener">http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html</a></li>
-<li>以jTessBoxEditor为例</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; 1、收集文本信息的图片</span><br><span class="line">&gt; 2、制作的图片转为tiff格式</span><br><span class="line">&gt; 3、jTessBoxEditor进行tiff格式图片合成 &lt;Tool-&gt;Merge TIFF&gt;</span><br><span class="line"></span><br><span class="line">合成后的图片取名规范 [lang].[fontname].exp[num].tif</span><br><span class="line">[lang]是语言，[fontname]是字体，[num]是标号</span><br></pre></td></tr></table></figure>
-<p>###1、Make Box Files</p>
-<ul>
-<li>使用 Tesseract 识别，生成 box 文件：</li>
-<li>确保 tif 和 box 文件同名且位于同一目录下，用 jTessBoxEditor 打开 tif 文件），或者直接用文本编辑器编辑。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -l chi_sim -psm 10 batch.nochop makebox</span><br></pre></td></tr></table></figure>
-<p>###2、Run Tesseract for Training</p>
-<ul>
-<li>使用修改正确后的 box 文件，对 Tesseract 进行训练，生成 .tr 文件：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -psm 10 nobatch box.train</span><br></pre></td></tr></table></figure>
-<p>###3、Compute the Character Set</p>
-<ul>
-<li>生成字符集的文本</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unicharset_extractor hz.font.exp0.box hz.font.exp1.box</span><br><span class="line"></span><br><span class="line">After 3.03</span><br><span class="line">training/set_unicharset_properties -U input_unicharset -O output_unicharset --script_dir=training/langdata</span><br></pre></td></tr></table></figure>
-<p>正确的格式应该如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">110</span><br><span class="line">NULL 0 NULL 0</span><br><span class="line">N 5 59,68,216,255,87,236,0,27,104,227 Latin 11 0 1 N</span><br><span class="line">Y 5 59,68,216,255,91,205,0,47,91,223 Latin 33 0 2 Y</span><br><span class="line">1 8 59,69,203,255,45,128,0,66,74,173 Common 3 2 3 1</span><br><span class="line">9 8 18,66,203,255,89,156,0,39,104,173 Common 4 2 4 9</span><br><span class="line">a 3 58,65,186,198,85,164,0,26,97,185 Latin 56 0 5 a</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
-<p>###4、font_properties (new in 3.01)</p>
-<ul>
-<li>定义字体特征文件，Tesseract-OCR 3.01 以上的版本在训练之前需要创建一个名称为 font_properties 的字体特征文件。font_properties 不含有 BOM 头，文件内容格式如下：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;fontname&gt; &lt;italic&gt; &lt;bold&gt; &lt;fixed&gt; &lt;serif&gt; &lt;fraktur&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>其中 fontname 为字体名称，必须与 [lang].[fontname].exp[num].box 中的名称保持一致。<italic> 、<bold> 、<fixed> 、<serif>、<fraktur> 的取值为 1 或 0，表示字体是否具有这些属性。</fraktur></serif></fixed></bold></italic></li>
-<li>这里就是普通字体，不倾斜不加粗，所以新建一个名为 font_properties 的文件，内容为： font 0 0 0 0 0</li>
-</ul>
-<p>###5、Clustering</p>
-<ul>
-<li>修改 Clustering 过程生成的 4 个文件（inttemp、pffmtable、normproto、shapetable）</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">shapeclustering -F font_properties -U unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">mftraining -F font_properties -U unicharset -O hz.unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">cntraining hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">* 生成后的文件需要添加前缀， 如这里改为 hz.inttemp、hz.pffmtable、hz.normproto、hz.shapetable。</span><br><span class="line"></span><br><span class="line">###6、Putting it all together</span><br><span class="line"></span><br><span class="line">* 生成最后的训练文件</span><br></pre></td></tr></table></figure>
-<p>combine_tessdata hz.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###7、use example</span><br><span class="line"></span><br><span class="line">* 使用训练的文件进行识别</span><br></pre></td></tr></table></figure></p>
-<p>tesseract test.png out -l hz<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##脚本运行</span><br></pre></td></tr></table></figure></p>
-<p>#!/bin/sh<br>read -p “输入你语言:” lang<br>echo ${lang}<br>read -p “输入你的字体:” font<br>echo ${font}<br>echo “完整文件名为：”<br>echo ${lang}.${font}.exp0.tif<br>echo “开始。。。”<br>echo ${font} 0 0 0 0 0 &gt;font_properties</p>
-<p>#tesseract  ${lang}.${font}.exp0.tif $(lang).$(font).exp0 -l chi_sim -psm 10 batch.nochop makebox</p>
-<p>#read -p “继续生产tr文件？”<br>tesseract  ${lang}.${font}.exp0.tif ${lang}.${font}.exp0 -psm 10 nobatch box.train<br>unicharset_extractor ${lang}.${font}.exp0.box<br>shapeclustering -F font_properties -U unicharset ${lang}.${font}.exp0.tr<br>mftraining -F font_properties -U unicharset -O unicharset ${lang}.${font}.exp0.tr<br>cntraining ${lang}.${font}.exp0.tr<br>echo “开始重命名文件”<br>mv inttemp ${font}.inttemp<br>mv normproto ${font}.normproto<br>mv pffmtable ${font}.pffmtable<br>mv shapetable ${font}.shapetable<br>mv unicharset ${font}.unicharset<br>echo “生成最终文件”<br>combine_tessdata ${font}.<br>echo “完成”<br><code>`</code></p>
 
           
         
@@ -1592,6 +1428,332 @@ x100         按指定高度缩放，保持宽高比
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/音频降噪算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/音频降噪算法/" itemprop="url">音频降噪算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="音频降噪算法"><a href="#音频降噪算法" class="headerlink" title="音频降噪算法"></a>音频降噪算法</h1><h2 id="WAV-Waveform-Audio-File-Format"><a href="#WAV-Waveform-Audio-File-Format" class="headerlink" title="WAV (Waveform Audio File Format)"></a>WAV (Waveform Audio File Format)</h2><p>此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。<br>也是其音乐发烧友中常用的指定规格之一。<br>由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。</p>
+<p><strong>制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么超过此最大频率的频段，将会产生混叠的情况，使原始信号受到污染，亦不能称此WAV文件就是无损文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">WAV文件遵守资源交换档案格式之规则，在文件的前44(或46)字节放置标头(header)，使播放器或编辑器能够简单掌握文件的基本信息，其内容以区块(chunk)为最小单位，每一区块长度为4字节，而区块之上则由子区块包裹，每一子区块长度不拘，但须在前头先宣告标签及长度(字节)。</span><br><span class="line"></span><br><span class="line">标头的前3个区块记录文件格式及长度；</span><br><span class="line">接着第一个子区块包含8个区块，记录声道数量、采样率等信息；</span><br><span class="line">接着第二个子区块才是真正的音频数据，长度则视音频长度而定。</span><br><span class="line"></span><br><span class="line">内容如下表所示。须注意的是，每个区块的端序不尽相同，而音频内容本身则是采用小端序。</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy61nb179gj30hx0drjto.jpg" alt></p>
+<h2 id="AAC-Advanced-Audio-Coding"><a href="#AAC-Advanced-Audio-Coding" class="headerlink" title="AAC (Advanced Audio Coding)"></a>AAC (Advanced Audio Coding)</h2><p>出现于1997年，为一种基于MPEG-2的有损数字音频压缩的专利音频编码标准。</p>
+<ul>
+<li><p>.aac - 使用MPEG-2 Audio Transport Stream（ADTS，参见MPEG-2）容器，区别于使用MPEG-4容器的MP4/M4A格式，属于传统的AAC编码（FAAC默认的封装，但FAAC亦可输出MPEG-4封装的AAC）。</p>
+</li>
+<li><p>.mp4 - 使用了MPEG-4 Part 14（第14部分）的简化版即3GPP Media Release 6 Basic（3gp6，参见3GP）进行封装的AAC编码（Nero AAC编码器仅能输出MPEG-4封装的AAC）。</p>
+</li>
+<li><p>.m4a - 为了区别纯音频MP4文件和包含视频的MP4文件而由苹果（Apple）公司使用的扩展名，Apple iTunes对纯音频MP4文件采用了”.m4a”命名。M4A的本质和音频MP4相同，故音频MP4文件亦可直接更改扩展名为M4A。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">作为一种高压缩比的音频压缩算法，AAC压缩比通常为18：1，也有数据说为20：1；</span><br><span class="line"></span><br><span class="line">在音质方面，由于采用多声道，和使用低复杂性的描述方式，使其比几乎所有的传统编码方式在同规格的情况下更胜一筹。</span><br><span class="line"></span><br><span class="line">不过直到2006年，使用这一格式存储音乐的并不多，可以播放该格式的mp3播放器更是少之又少，目前所知仅有苹果iPod、Sony Walkman（NWZ-A、NWZ-S、NWZ-E、NWZ-X系列）、任天堂NDSi和iPhone（微软推出的Windows 7附带的Windows Media Player 12也支持AAC）。</span><br><span class="line"></span><br><span class="line">此外计算机上很多音乐播放软件都支持AAC（前提是安装过AAC解码器），如苹果iTunes。</span><br><span class="line"></span><br><span class="line">但在移动电话领域，AAC的支持度已很普遍，Nokia、Sony Ericsson、Motorola等品牌均在其中高端产品中支持AAC（一开始主要是LC-AAC，随着移动电话性能的发展，HE-AAC的支持也已广泛）。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AAC是一种宽带音频编码算法，主要利用以下两种编码策略来大幅减少存储高质量数字音频所需要的数据量：</span><br><span class="line">舍去与感知上无关的信号成分</span><br><span class="line">去除编码后信号的冗余部分</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/绝地求生存活人数识别Tesseract-OCR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/绝地求生存活人数识别Tesseract-OCR/" itemprop="url">Tesseract OCR使用介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#Tesseract OCR使用介绍</p>
+<p>##目录<br>[TOC]</p>
+<p>##下载地址及介绍</p>
+<ul>
+<li>官网介绍：<a href="http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3" target="_blank" rel="noopener">http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3</a></li>
+<li>Github源码连接： <a href="https://github.com/tesseract-ocr">https://github.com/tesseract-ocr</a></li>
+<li>开源贡献者主页 <a href="https://kevintechnology.com/" target="_blank" rel="noopener">https://kevintechnology.com/</a></li>
+</ul>
+<p>##安装 Tesseract</p>
+<ul>
+<li>语言包查看 <a href="https://www.macports.org/ports.php?by=name&amp;substr=tesseract-" target="_blank" rel="noopener">https://www.macports.org/ports.php?by=name&amp;substr=tesseract-</a></li>
+<li>支持Windows、linux、macOS</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、安装 tesseract和语言包</span><br><span class="line">sudo port install tesseract	</span><br><span class="line">sudo port install tesseract-&lt;langcode&gt;</span><br><span class="line"></span><br><span class="line">2、homebrew 安装</span><br><span class="line">brew install tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br><span class="line"></span><br><span class="line">3、重新安装</span><br><span class="line">brew uninstall tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Homebrew 是一个包管理器，如果没装的话，在终端执行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
+<p>##使用 Tesseract</p>
+<ul>
+<li>使用命令行进行图像识别</li>
+<li>imagename 就是要识别的图片文件的名称，outputbase 就是识别结果输出文件的名称。</li>
+<li>lang 就是要识别的语言代码，例如英语为 eng、简体中文为 chi_sim 等等。可以同时识别多种语言，使用 “+” 相连，例如 eng+chi_sim。缺省时识别英语。</li>
+</ul>
+<p>1、格式信息如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract imagename outputbase [-l lang] [-psm pagesegmode] [configfile...]</span><br></pre></td></tr></table></figure></p>
+<p>2、示例: 识别image图片并将结果保存在out.txt文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tesseract image.png out -l chi_sim</span><br><span class="line">tesseract image.png out -l chi_sim -psm 10</span><br></pre></td></tr></table></figure></p>
+<p>3、pagesegmode 为识别的具体模式，具体包含以下模式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">•	0 = Orientation and script detection (OSD) only.</span><br><span class="line">•	1 = Automatic page segmentation with OSD.</span><br><span class="line">•	2 = Automatic page segmentation, but no OSD, or OCR</span><br><span class="line">•	3 = Fully automatic page segmentation, but no OSD. (Default)</span><br><span class="line">•	4 = Assume a single column of text of variable sizes.</span><br><span class="line">•	5 = Assume a single uniform block of vertically aligned text.</span><br><span class="line">•	6 = Assume a single uniform block of text.</span><br><span class="line">•	7 = Treat the image as a single text line.</span><br><span class="line">•	8 = Treat the image as a single word.</span><br><span class="line">•	9 = Treat the image as a single word in a circle.</span><br><span class="line">•	10 = Treat the image as a single character.</span><br><span class="line">•	11 = Sparse text. Find as much text as possible in no particular order.</span><br><span class="line">•	12 = Sparse text with OSD.</span><br><span class="line">•	13 = Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.</span><br></pre></td></tr></table></figure></p>
+<p>##训练样本</p>
+<ul>
+<li>训练工具 <a href="https://github.com/tesseract-ocr/tesseract/wiki/AddOns">https://github.com/tesseract-ocr/tesseract/wiki/AddOns</a></li>
+<li>使用教程 <a href="https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract">https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract</a></li>
+<li>提高识别率 <a href="https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality">https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality</a></li>
+<li>清理文本背景 <a href="http://www.fmwconcepts.com/imagemagick/textcleaner/index.php" target="_blank" rel="noopener">http://www.fmwconcepts.com/imagemagick/textcleaner/index.php</a></li>
+<li>提取文本区域 <a href="http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html" target="_blank" rel="noopener">http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html</a></li>
+<li>以jTessBoxEditor为例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; 1、收集文本信息的图片</span><br><span class="line">&gt; 2、制作的图片转为tiff格式</span><br><span class="line">&gt; 3、jTessBoxEditor进行tiff格式图片合成 &lt;Tool-&gt;Merge TIFF&gt;</span><br><span class="line"></span><br><span class="line">合成后的图片取名规范 [lang].[fontname].exp[num].tif</span><br><span class="line">[lang]是语言，[fontname]是字体，[num]是标号</span><br></pre></td></tr></table></figure>
+<p>###1、Make Box Files</p>
+<ul>
+<li>使用 Tesseract 识别，生成 box 文件：</li>
+<li>确保 tif 和 box 文件同名且位于同一目录下，用 jTessBoxEditor 打开 tif 文件），或者直接用文本编辑器编辑。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -l chi_sim -psm 10 batch.nochop makebox</span><br></pre></td></tr></table></figure>
+<p>###2、Run Tesseract for Training</p>
+<ul>
+<li>使用修改正确后的 box 文件，对 Tesseract 进行训练，生成 .tr 文件：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -psm 10 nobatch box.train</span><br></pre></td></tr></table></figure>
+<p>###3、Compute the Character Set</p>
+<ul>
+<li>生成字符集的文本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unicharset_extractor hz.font.exp0.box hz.font.exp1.box</span><br><span class="line"></span><br><span class="line">After 3.03</span><br><span class="line">training/set_unicharset_properties -U input_unicharset -O output_unicharset --script_dir=training/langdata</span><br></pre></td></tr></table></figure>
+<p>正确的格式应该如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">110</span><br><span class="line">NULL 0 NULL 0</span><br><span class="line">N 5 59,68,216,255,87,236,0,27,104,227 Latin 11 0 1 N</span><br><span class="line">Y 5 59,68,216,255,91,205,0,47,91,223 Latin 33 0 2 Y</span><br><span class="line">1 8 59,69,203,255,45,128,0,66,74,173 Common 3 2 3 1</span><br><span class="line">9 8 18,66,203,255,89,156,0,39,104,173 Common 4 2 4 9</span><br><span class="line">a 3 58,65,186,198,85,164,0,26,97,185 Latin 56 0 5 a</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>###4、font_properties (new in 3.01)</p>
+<ul>
+<li>定义字体特征文件，Tesseract-OCR 3.01 以上的版本在训练之前需要创建一个名称为 font_properties 的字体特征文件。font_properties 不含有 BOM 头，文件内容格式如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;fontname&gt; &lt;italic&gt; &lt;bold&gt; &lt;fixed&gt; &lt;serif&gt; &lt;fraktur&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其中 fontname 为字体名称，必须与 [lang].[fontname].exp[num].box 中的名称保持一致。<italic> 、<bold> 、<fixed> 、<serif>、<fraktur> 的取值为 1 或 0，表示字体是否具有这些属性。</fraktur></serif></fixed></bold></italic></li>
+<li>这里就是普通字体，不倾斜不加粗，所以新建一个名为 font_properties 的文件，内容为： font 0 0 0 0 0</li>
+</ul>
+<p>###5、Clustering</p>
+<ul>
+<li>修改 Clustering 过程生成的 4 个文件（inttemp、pffmtable、normproto、shapetable）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">shapeclustering -F font_properties -U unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">mftraining -F font_properties -U unicharset -O hz.unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">cntraining hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">* 生成后的文件需要添加前缀， 如这里改为 hz.inttemp、hz.pffmtable、hz.normproto、hz.shapetable。</span><br><span class="line"></span><br><span class="line">###6、Putting it all together</span><br><span class="line"></span><br><span class="line">* 生成最后的训练文件</span><br></pre></td></tr></table></figure>
+<p>combine_tessdata hz.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###7、use example</span><br><span class="line"></span><br><span class="line">* 使用训练的文件进行识别</span><br></pre></td></tr></table></figure></p>
+<p>tesseract test.png out -l hz<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##脚本运行</span><br></pre></td></tr></table></figure></p>
+<p>#!/bin/sh<br>read -p “输入你语言:” lang<br>echo ${lang}<br>read -p “输入你的字体:” font<br>echo ${font}<br>echo “完整文件名为：”<br>echo ${lang}.${font}.exp0.tif<br>echo “开始。。。”<br>echo ${font} 0 0 0 0 0 &gt;font_properties</p>
+<p>#tesseract  ${lang}.${font}.exp0.tif $(lang).$(font).exp0 -l chi_sim -psm 10 batch.nochop makebox</p>
+<p>#read -p “继续生产tr文件？”<br>tesseract  ${lang}.${font}.exp0.tif ${lang}.${font}.exp0 -psm 10 nobatch box.train<br>unicharset_extractor ${lang}.${font}.exp0.box<br>shapeclustering -F font_properties -U unicharset ${lang}.${font}.exp0.tr<br>mftraining -F font_properties -U unicharset -O unicharset ${lang}.${font}.exp0.tr<br>cntraining ${lang}.${font}.exp0.tr<br>echo “开始重命名文件”<br>mv inttemp ${font}.inttemp<br>mv normproto ${font}.normproto<br>mv pffmtable ${font}.pffmtable<br>mv shapetable ${font}.shapetable<br>mv unicharset ${font}.unicharset<br>echo “生成最终文件”<br>combine_tessdata ${font}.<br>echo “完成”<br><code>`</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/x264编码使用介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1721,6 +1883,193 @@ x100         按指定高度缩放，保持宽高比
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2018/01/05/Tensorflow-使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/05/Tensorflow-使用/" itemprop="url">Tensorflow 使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-05T15:24:03+08:00">
+                2018-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>##目录<br>[TOC]</p>
+<p>#Tensorflow V1.2</p>
+<p>GitHub地址: <a href="https://github.com/tensorflow/tensorflow">https://github.com/tensorflow/tensorflow</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TensorFlow is an open source software library for numerical computation using data flow graphs. </span><br><span class="line">The graph nodes represent mathematical operations, while the graph edges represent the multidimensional data arrays (tensors) that flow between them. </span><br><span class="line">This flexible architecture lets you deploy computation to one or more CPUs or GPUs in a desktop, server, or mobile device without rewriting code. </span><br><span class="line">TensorFlow also includes TensorBoard, a data visualization toolkit.</span><br></pre></td></tr></table></figure>
+<p>##环境设置<br>Linux CPU-only: <a href="https://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON2,label=cpu-slave/lastSuccessfulBuild/artifact/pip_test/whl/tf_nightly-1.head-cp27-none-linux_x86_64.whl" target="_blank" rel="noopener">Python 2</a> <a href="https://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON2,label=cpu-slave/" target="_blank" rel="noopener">(build history)</a> / <a href="https://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON3,label=cpu-slave/lastSuccessfulBuild/artifact/pip_test/whl/tf_nightly-1.head-cp34-cp34m-linux_x86_64.whl" target="_blank" rel="noopener">Python 3.4</a> <a href="https://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON3,label=cpu-slave/" target="_blank" rel="noopener">(build history)</a> / <a href="https://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON3.5,label=cpu-slave/lastSuccessfulBuild/artifact/pip_test/whl/tf_nightly-1.head-cp35-cp35m-linux_x86_64.whl" target="_blank" rel="noopener">Python 3.5</a> <a href="https://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON3.5,label=cpu-slave/" target="_blank" rel="noopener">(build history)</a> / <a href="http://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON3.6,label=cpu-slave/lastSuccessfulBuild/artifact/pip_test/whl/tf_nightly-1.head-cp36-cp36m-linux_x86_64.whl" target="_blank" rel="noopener">Python 3.6</a> <a href="https://ci.tensorflow.org/view/tf-nightly/job/tf-nightly-linux/TF_BUILD_IS_OPT=OPT,TF_BUILD_IS_PIP=PIP,TF_BUILD_PYTHON_VERSION=PYTHON3.6,label=cpu-slave/" target="_blank" rel="noopener">(build history)</a></p>
+<p>##安装编译</p>
+<p>TensorFlow Python API 依赖 Python 2.7 版本.<br>在 Linux 和 Mac 下最简单的安装方式, 是使用 <a href="https://pypi.python.org/pypi/pip" target="_blank" rel="noopener">pip</a> 安装.<br>如果在安装过程中遇到错误, 请查阅 <a href="http://www.tensorfly.cn/tfdoc/get_started/os_setup.html#common_install_problems" target="_blank" rel="noopener">常见问题</a>. 为了简化安装步骤, 建议使用 virtualenv, 教程见 <a href="http://www.tensorfly.cn/tfdoc/get_started/os_setup.html#virtualenv_install" target="_blank" rel="noopener">这里</a>.</p>
+<p>####Ubuntu/Linux<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 仅使用 CPU 的版本</span><br><span class="line">$ pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl</span><br><span class="line"></span><br><span class="line"># 开启 GPU 支持的版本 (安装该版本的前提是已经安装了 CUDA sdk)</span><br><span class="line">$ pip install https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl</span><br></pre></td></tr></table></figure></p>
+<p>####Mac OS X</p>
+<p>在 OS X 系统上, 推荐先安装 <a href="http://brew.sh/" target="_blank" rel="noopener">homebrew</a>, 然后执行 brew install python, 以便能够使用 homebrew 中的 Python 安装 TensorFlow. 另外一种推荐的方式是在 <a href="http://www.tensorfly.cn/tfdoc/get_started/os_setup.html#virtualenv_install" target="_blank" rel="noopener">virtualenv</a> 中安装 TensorFlow.</p>
+<p><a href="https://docs.bazel.build/versions/master/install-os-x.html" target="_blank" rel="noopener">安装步骤</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 当前版本只支持 CPU</span><br><span class="line">$ pip install https://storage.googleapis.com/tensorflow/mac/tensorflow-0.5.0-py2-none-any.whl</span><br></pre></td></tr></table></figure></p>
+<p>####基于 Docker 的安装</p>
+<p>也支持通过 <a href="http://docker.com/" target="_blank" rel="noopener">Docker</a> 运行 TensorFlow. 该方式的优点是不用操心软件依赖问题.<br>首先, <a href="http://docs.docker.com/engine/installation/" target="_blank" rel="noopener">安装 Docker</a>. 一旦 Docker 已经启动运行, 可以通过命令启动一个容器:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it b.gcr.io/tensorflow/tensorflow</span><br></pre></td></tr></table></figure>
+<p>####基于 VirtualEnv 的安装</p>
+<p>推荐使用 <a href="https://pypi.python.org/pypi/virtualenv" target="_blank" rel="noopener">virtualenv</a> 创建一个隔离的容器, 来安装 TensorFlow. 这是可选的, 但是这样做能使排查安装问题变得更容易.<br>首先, 安装所有必备工具:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 在 Linux 上:</span><br><span class="line">$ sudo apt-get install python-pip python-dev python-virtualenv</span><br><span class="line"></span><br><span class="line"># 在 Mac 上:</span><br><span class="line">$ sudo easy_install pip  # 如果还没有安装 pip</span><br><span class="line">$ sudo pip install --upgrade virtualenv</span><br></pre></td></tr></table></figure>
+<p>接下来, 建立一个全新的 virtualenv 环境. 为了将环境建在 ~/tensorflow 目录下, 执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ virtualenv --system-site-packages ~/tensorflow</span><br><span class="line">$ cd ~/tensorflow</span><br></pre></td></tr></table></figure>
+<p>然后, 激活 virtualenv:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ source bin/activate  # 如果使用 bash</span><br><span class="line">$ source bin/activate.csh  # 如果使用 csh</span><br><span class="line">(tensorflow)$  # 终端提示符应该发生变化</span><br></pre></td></tr></table></figure>
+<p>在 virtualenv 内, 安装 TensorFlow:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(tensorflow)$ pip install --upgrade &lt;$url_to_binary.whl&gt;</span><br></pre></td></tr></table></figure>
+<p>接下来, 使用类似命令运行 TensorFlow 程序:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(tensorflow)$ cd tensorflow/models/image/mnist</span><br><span class="line">(tensorflow)$ python convolutional.py</span><br><span class="line"></span><br><span class="line"># 当使用完 TensorFlow</span><br><span class="line">(tensorflow)$ deactivate  # 停用 virtualenv</span><br><span class="line"></span><br><span class="line">$  # 你的命令提示符会恢复原样</span><br></pre></td></tr></table></figure>
+<p>####从源码安装</p>
+<p>克隆 TensorFlow 仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone --recurse-submodules https://github.com/tensorflow/tensorflow</span><br></pre></td></tr></table></figure>
+<p>–recurse-submodules 参数是必须得, 用于获取 TesorFlow 依赖的 protobuf 库.</p>
+<p>####Linux 安装</p>
+<p><strong>安装 Bazel</strong><br>首先依照 <a href="http://bazel.io/docs/install.html" target="_blank" rel="noopener">教程</a> 安装 Bazel 的依赖. 然后使用下列命令下载和编译 Bazel 的源码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/bazelbuild/bazel.git</span><br><span class="line">$ cd bazel</span><br><span class="line">$ git checkout tags/0.1.0</span><br><span class="line">$ ./compile.sh</span><br></pre></td></tr></table></figure>
+<p>上面命令中拉取的代码标签为 0.1.0, 兼容 Tensorflow 目前版本. bazel 的HEAD 版本 (即最新版本) 在这里可能不稳定.<br>将执行路径 output/bazel 添加到 $PATH 环境变量中.</p>
+<p>安装其他依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install python-numpy swig python-dev</span><br></pre></td></tr></table></figure>
+<p><strong>可选: 安装 CUDA (在 Linux 上开启 GPU 支持)</strong><br>为了编译并运行能够使用 GPU 的 TensorFlow, 需要先安装 NVIDIA 提供的 Cuda Toolkit 7.0 和 CUDNN 6.5 V2.<br>TensorFlow 的 GPU 特性只支持 NVidia Compute Capability &gt;= 3.5 的显卡. 被支持的显卡 包括但不限于:</p>
+<pre><code>•    NVidia Titan
+•    NVidia Titan X
+•    NVidia K20
+•    NVidia K40
+</code></pre><p><strong>下载并安装 Cuda Toolkit 7.0</strong><br><a href="https://developer.nvidia.com/cuda-toolkit-70" target="_blank" rel="noopener">下载地址</a></p>
+<p><strong>下载并安装 CUDNN Toolkit 6.5</strong><br><a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">下载地址</a></p>
+<p>解压并拷贝 CUDNN 文件到 Cuda Toolkit 7.0 安装路径下. 假设 Cuda Toolkit 7.0 安装 在 /usr/local/cuda, 执行以下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar xvzf cudnn-6.5-linux-x64-v2.tgz</span><br><span class="line">sudo cp cudnn-6.5-linux-x64-v2/cudnn.h /usr/local/cuda/include</span><br><span class="line">sudo cp cudnn-6.5-linux-x64-v2/libcudnn* /usr/local/cuda/lib64</span><br></pre></td></tr></table></figure>
+<p><strong>配置 TensorFlow 的 Cuba 选项</strong><br>从源码树的根路径执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure</span><br><span class="line">Do you wish to bulid TensorFlow with GPU support? [y/n] y</span><br><span class="line">GPU support will be enabled for TensorFlow</span><br><span class="line"></span><br><span class="line">Please specify the location where CUDA 7.0 toolkit is installed. Refer to</span><br><span class="line">README.md for more details. [default is: /usr/local/cuda]: /usr/local/cuda</span><br><span class="line"></span><br><span class="line">Please specify the location where CUDNN 6.5 V2 library is installed. Refer to</span><br><span class="line">README.md for more details. [default is: /usr/local/cuda]: /usr/local/cuda</span><br><span class="line"></span><br><span class="line">Setting up Cuda include</span><br><span class="line">Setting up Cuda lib64</span><br><span class="line">Setting up Cuda bin</span><br><span class="line">Setting up Cuda nvvm</span><br><span class="line">Configuration finished</span><br></pre></td></tr></table></figure>
+<p>这些配置将建立到系统 Cuda 库的符号链接. 每当 Cuda 库的路径发生变更时, 必须重新执行上述 步骤, 否则无法调用 bazel 编译命令.</p>
+<p><strong>编译目标程序, 开启 GPU 支持</strong><br>从源码树的根路径执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ bazel build -c opt --config=cuda //tensorflow/cc:tutorials_example_trainer</span><br><span class="line"></span><br><span class="line">$ bazel-bin/tensorflow/cc/tutorials_example_trainer --use_gpu</span><br><span class="line"># 大量的输出信息. 这个例子用 GPU 迭代计算一个 2x2 矩阵的主特征值 (major eigenvalue).</span><br><span class="line"># 最后几行输出和下面的信息类似.</span><br><span class="line">000009/000005 lambda = 2.000000 x = [0.894427 -0.447214] y = [1.788854 -0.894427]</span><br><span class="line">000006/000001 lambda = 2.000000 x = [0.894427 -0.447214] y = [1.788854 -0.894427]</span><br><span class="line">000009/000009 lambda = 2.000000 x = [0.894427 -0.447214] y = [1.788854 -0.894427]</span><br></pre></td></tr></table></figure>
+<p>注意, GPU 支持需通过编译选项 “–config=cuda” 开启.</p>
+<p><strong>已知问题</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">尽管可以在同一个源码树下编译开启 Cuda 支持和禁用 Cuda 支持的版本, 我们还是推荐在 在切换这两种不同的编译配置时, 使用 &quot;bazel clean&quot; 清理环境.</span><br><span class="line"></span><br><span class="line">在执行 bazel 编译前必须先运行 configure, 否则编译会失败并提示错误信息. 未来, 我们可能考虑将 configure 步骤包含在编译过程中, 以简化整个过程, 前提是 bazel 能够提供新的特性支持这样.</span><br></pre></td></tr></table></figure>
+<p>##Example</p>
+<p>####第一个 TensorFlow 程序</p>
+<p>(可选) 启用 GPU 支持</p>
+<p>如果使用 pip 二进制包安装了开启 GPU 支持的 TensorFlow, 必须确保 系统里安装了正确的 CUDA sdk 和 CUDNN 版本. 请参间 <a href="http://www.tensorfly.cn/tfdoc/get_started/os_setup.html#install_cuda" target="_blank" rel="noopener">CUDA 安装教程</a><br>还需要设置 LD_LIBRARY_PATH 和 CUDA_HOME 环境变量. 可以考虑将下面的命令 添加到 ~/.bash_profile 文件中, 这样每次登陆后自动生效.<br>注意, 下面的命令 假定 CUDA 安装目录为 /usr/local/cuda:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=&quot;$LD_LIBRARY_PATH:/usr/local/cuda/lib64&quot;</span><br><span class="line">export CUDA_HOME=/usr/local/cuda</span><br></pre></td></tr></table></figure>
+<p>####运行 TensorFlow</p>
+<p>打开一个 python 终端:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import tensorflow as tf</span><br><span class="line">&gt;&gt;&gt; hello = tf.constant(&apos;Hello, TensorFlow!&apos;)</span><br><span class="line">&gt;&gt;&gt; sess = tf.Session()</span><br><span class="line">&gt;&gt;&gt; sess.run(hello)</span><br><span class="line">&apos;Hello, TensorFlow!&apos;</span><br><span class="line">&gt;&gt;&gt; a = tf.constant(10)</span><br><span class="line">&gt;&gt;&gt; b = tf.constant(32)</span><br><span class="line">&gt;&gt;&gt; sess.run(a + b)</span><br><span class="line">42</span><br><span class="line">&gt;&gt;&gt; sess.close()</span><br></pre></td></tr></table></figure>
+<p>####安装Anaconda</p>
+<p>对于Mac、Linux系统，Anaconda安装好后，实际上就是在主目录下多了个文件夹（~/anaconda）而已，Windows会写入注册表。安装时，安装程序会把bin目录加入PATH（Linux/Mac写入~/.bashrc，Windows添加到系统变量PATH），这些操作也完全可以自己完成。以Linux/Mac为例，安装完成后设置PATH的操作是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 将anaconda的bin目录加入PATH，根据版本不同，也可能是~/anaconda3/bin</span><br><span class="line">echo &apos;export PATH=&quot;~/anaconda2/bin:$PATH&quot;&apos; &gt;&gt; ~/.bashrc</span><br><span class="line"># 更新bashrc以立即生效</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<p>切换python版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 创建一个名为python34的环境，指定Python版本是3.4（不用管是3.4.x，conda会为我们自动寻找3.4.x中的最新版本）</span><br><span class="line">conda create --name python34 python=3.4</span><br><span class="line"></span><br><span class="line"># 安装好后，使用activate激活某个环境</span><br><span class="line">activate python34 # for Windows</span><br><span class="line">source activate python34 # for Linux &amp; Mac</span><br><span class="line"># 激活后，会发现terminal输入的地方多了python34的字样，实际上，此时系统做的事情就是把默认2.7环境从PATH中去除，再把3.4对应的命令加入PATH</span><br><span class="line"></span><br><span class="line"># 此时，再次输入</span><br><span class="line">python --version</span><br><span class="line"># 可以得到`Python 3.4.5 :: Anaconda 4.1.1 (64-bit)`，即系统已经切换到了3.4的环境</span><br><span class="line"></span><br><span class="line"># 如果想返回默认的python 2.7环境，运行</span><br><span class="line">deactivate python34 # for Windows</span><br><span class="line">source deactivate python34 # for Linux &amp; Mac</span><br><span class="line"></span><br><span class="line"># 删除一个已有的环境</span><br><span class="line">conda remove --name python34 --all</span><br></pre></td></tr></table></figure></p>
+<p>##Inception</p>
+<p><a href="https://arxiv.org/pdf/1512.00567v3.pdf" target="_blank" rel="noopener">Inception (GoogLeNet)</a>是Google 2014年发布的Deep Convolutional Neural Network，其它几个流行的CNN网络还有<a href="http://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf" target="_blank" rel="noopener">QuocNet</a>、<a href="http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf" target="_blank" rel="noopener">AlexNet</a>、<a href="http://arxiv.org/abs/1502.03167" target="_blank" rel="noopener">BN-Inception-v2</a>、<a href="https://arxiv.org/abs/1409.1556" target="_blank" rel="noopener">VGG</a>、<a href="https://arxiv.org/pdf/1512.03385v1.pdf" target="_blank" rel="noopener">ResNet</a>等等。</p>
+<p>Inception V3模型源码定义：<a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/slim/python/slim/nets/inception_v3.py">tensorflow/contrib/slim/python/slim/nets/inception_v3.py</a></p>
+<p>##总结</p>
+<p>###相关链接<br><a href="http://www.tensorfly.cn/tfdoc/get_started/introduction.html" target="_blank" rel="noopener">Tensorflow 中文社区</a><br><a href="https://www.anaconda.com/download/#macos" target="_blank" rel="noopener">Anaconda 下载</a><br><a href="https://www.jianshu.com/p/2f3be7781451" target="_blank" rel="noopener">Anaconda 使用总结</a><br><a href="http://blog.csdn.net/lijjianqing/article/details/54671503" target="_blank" rel="noopener">TensorFlow 安装教程</a><br><a href="http://blog.csdn.net/lijjianqing/article/details/54671503" target="_blank" rel="noopener">Tensorflow 安装 和集成到IDEA</a><br><a href="http://blog.topspeedsnail.com" target="_blank" rel="noopener">Tensorflow 使用实战</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1767,7 +2116,7 @@ x100         按指定高度缩放，保持宽高比
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
