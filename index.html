@@ -727,7 +727,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/音频降噪算法/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/机器学习之开源项目/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Qiyun">
@@ -746,7 +746,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/15/音频降噪算法/" itemprop="url">音频降噪算法</a></h1>
+                <a class="post-title-link" href="/2019/02/15/机器学习之开源项目/" itemprop="url">机器学习开源项目</a></h1>
         
 
         <div class="post-meta">
@@ -798,21 +798,392 @@
       
         
           
-            <h1 id="音频降噪算法"><a href="#音频降噪算法" class="headerlink" title="音频降噪算法"></a>音频降噪算法</h1><h2 id="WAV-Waveform-Audio-File-Format"><a href="#WAV-Waveform-Audio-File-Format" class="headerlink" title="WAV (Waveform Audio File Format)"></a>WAV (Waveform Audio File Format)</h2><p>此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。<br>也是其音乐发烧友中常用的指定规格之一。<br>由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。</p>
-<p><strong>制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么超过此最大频率的频段，将会产生混叠的情况，使原始信号受到污染，亦不能称此WAV文件就是无损文件。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">WAV文件遵守资源交换档案格式之规则，在文件的前44(或46)字节放置标头(header)，使播放器或编辑器能够简单掌握文件的基本信息，其内容以区块(chunk)为最小单位，每一区块长度为4字节，而区块之上则由子区块包裹，每一子区块长度不拘，但须在前头先宣告标签及长度(字节)。</span><br><span class="line"></span><br><span class="line">标头的前3个区块记录文件格式及长度；</span><br><span class="line">接着第一个子区块包含8个区块，记录声道数量、采样率等信息；</span><br><span class="line">接着第二个子区块才是真正的音频数据，长度则视音频长度而定。</span><br><span class="line"></span><br><span class="line">内容如下表所示。须注意的是，每个区块的端序不尽相同，而音频内容本身则是采用小端序。</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy61nb179gj30hx0drjto.jpg" alt></p>
-<h2 id="AAC-Advanced-Audio-Coding"><a href="#AAC-Advanced-Audio-Coding" class="headerlink" title="AAC (Advanced Audio Coding)"></a>AAC (Advanced Audio Coding)</h2><p>出现于1997年，为一种基于MPEG-2的有损数字音频压缩的专利音频编码标准。</p>
+            <p>##开源项目</p>
+<p>###开源框架</p>
 <ul>
-<li><p>.aac - 使用MPEG-2 Audio Transport Stream（ADTS，参见MPEG-2）容器，区别于使用MPEG-4容器的MP4/M4A格式，属于传统的AAC编码（FAAC默认的封装，但FAAC亦可输出MPEG-4封装的AAC）。</p>
+<li><p>OpenCV [GitHub - opencv/opencv: Open Source Computer Vision Library] (<a href="https://github.com/opencv/opencv">https://github.com/opencv/opencv</a>)</p>
 </li>
-<li><p>.mp4 - 使用了MPEG-4 Part 14（第14部分）的简化版即3GPP Media Release 6 Basic（3gp6，参见3GP）进行封装的AAC编码（Nero AAC编码器仅能输出MPEG-4封装的AAC）。</p>
+<li><p>dlib [GitHub - davisking/dlib: A toolkit for making real world machine learning and data analysis applications in C++] (<a href="https://github.com/davisking/dlib">https://github.com/davisking/dlib</a>)</p>
 </li>
-<li><p>.m4a - 为了区别纯音频MP4文件和包含视频的MP4文件而由苹果（Apple）公司使用的扩展名，Apple iTunes对纯音频MP4文件采用了”.m4a”命名。M4A的本质和音频MP4相同，故音频MP4文件亦可直接更改扩展名为M4A。</p>
+<li><p>[Scikit-Learn] (<a href="https://github.com/scikit-learn/scikit-learn">https://github.com/scikit-learn/scikit-learn</a>)<br> Scikit-Learn是用于机器学习的Python模块，它建立在SciPy之上。</p>
+</li>
+<li><p>[Caffe] (<a href="https://github.com/BVLC/caffe">https://github.com/BVLC/caffe</a>)<br> Caffe是由神经网络中的表达式、速度、模块化产生的深度学习框架。</p>
+</li>
+<li><p>[Mxnet] (<a href="https://github.com/apache/incubator-mxnet">https://github.com/apache/incubator-mxnet</a>)</p>
+</li>
+<li><p>[Tensorflow] (<a href="https://github.com/search?utf8=✓&amp;q=tensorflow">https://github.com/search?utf8=✓&amp;q=tensorflow</a>)<br> TensorFlow是谷歌发布的第二代机器学习系统。</p>
+</li>
+<li><p>[PredictionIO] (<a href="https://github.com/PredictionIO/PredictionIO">https://github.com/PredictionIO/PredictionIO</a>)<br> PredictionIO是面向开发人员和数据科学家的开源机器学习服务器。它支持事件采集、算法调度、评估，以及经由REST APIs的预测结果查询。</p>
+</li>
+<li><p>[Keras] (<a href="https://github.com/fchollet/keras">https://github.com/fchollet/keras</a>)<br> Keras是极其精简并高度模块化的神经网络库，在TensorFlow或Theano上都能够运行，是一个高度模块化的神经网络库，支持GPU和CPU运算。</p>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">作为一种高压缩比的音频压缩算法，AAC压缩比通常为18：1，也有数据说为20：1；</span><br><span class="line"></span><br><span class="line">在音质方面，由于采用多声道，和使用低复杂性的描述方式，使其比几乎所有的传统编码方式在同规格的情况下更胜一筹。</span><br><span class="line"></span><br><span class="line">不过直到2006年，使用这一格式存储音乐的并不多，可以播放该格式的mp3播放器更是少之又少，目前所知仅有苹果iPod、Sony Walkman（NWZ-A、NWZ-S、NWZ-E、NWZ-X系列）、任天堂NDSi和iPhone（微软推出的Windows 7附带的Windows Media Player 12也支持AAC）。</span><br><span class="line"></span><br><span class="line">此外计算机上很多音乐播放软件都支持AAC（前提是安装过AAC解码器），如苹果iTunes。</span><br><span class="line"></span><br><span class="line">但在移动电话领域，AAC的支持度已很普遍，Nokia、Sony Ericsson、Motorola等品牌均在其中高端产品中支持AAC（一开始主要是LC-AAC，随着移动电话性能的发展，HE-AAC的支持也已广泛）。</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AAC是一种宽带音频编码算法，主要利用以下两种编码策略来大幅减少存储高质量数字音频所需要的数据量：</span><br><span class="line">舍去与感知上无关的信号成分</span><br><span class="line">去除编码后信号的冗余部分</span><br></pre></td></tr></table></figure>
+<p>###视觉检测和追踪</p>
+<ul>
+<li>RCNN，[Fast-RCNN，Faster-RCNN 现在最主流的检测框架，GitHub - rbgirshick/py-faster-rcnn: Faster R-CNN (Python implementation) – see <a href="https://github.com/ShaoqingRen/faster_rcnn">https://github.com/ShaoqingRen/faster_rcnn</a> for the official MATLAB version] (<a href="https://github.com/rbgirshick/py-faster-rcnn">https://github.com/rbgirshick/py-faster-rcnn</a>)</li>
+<li>SSD，达到实时的检测算法，[GitHub - weiliu89/caffe at ssd] (<a href="https://github.com/weiliu89/caffe/tree/ssd">https://github.com/weiliu89/caffe/tree/ssd</a>)</li>
+<li>DPM，早期的检测算法，使用 latent SVM [GitHub - rbgirshick/voc-dpm: Object detection system using deformable part models (DPMs) and latent SVM (voc-release5). You may want to use the latest tarball on my website. The github code may include code changes that have not been tested as thoroughly and will not necessarily reproduce the results on the website.] (<a href="https://github.com/rbgirshick/voc-dpm">https://github.com/rbgirshick/voc-dpm</a>)</li>
+<li>TLD，非常鲁棒的跟踪算法 [GitHub - zk00006/OpenTLD: Official source code for TLD] (<a href="https://github.com/zk00006/OpenTLD">https://github.com/zk00006/OpenTLD</a>)</li>
+</ul>
+<p>###2018二月份最火的项目</p>
+<ol>
+<li><p>[FastPhotoStyle] (<a href="https://github.com/NVIDIA/FastPhotoStyle)（快速转换照片风格）">https://github.com/NVIDIA/FastPhotoStyle)（快速转换照片风格）</a></p>
+<p>  FastPhotoStyle 这个项目是英伟达（NVIDIA）开发的一个 Python 库。该模型将内容照片和风格照片作为输入。然后它将风格照片的风格转移到内容照片，即就是将内容照片的风格转换为我们输入的风格照片的风格。</p>
+<p>  开发人员举出了两个算法示例。首先，第一个是非常简单的迭代算法，只需要下载一张内容图和风格图，重新调整他们尺寸，然后运行图像风格化代码。第二个样例中，需要使用语义标签映射来创建程式化图像。</p>
+<p>  <img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqs4qi9mw8j30pj0oz0zy.jpg" alt></p>
+</li>
+</ol>
+<ol start="2">
+<li><p>[Twitter Scraper] (<a href="https://github.com/kennethreitz/twitter-scraper)（Twitter">https://github.com/kennethreitz/twitter-scraper)（Twitter</a> 爬虫）</p>
+<p> 如果你在 Twitter 上发过文章，就知道 Twitter 自身的 API 有流速限制，当然，作为国内用户大多数人都没用使用过 Twitter ，这个 Python 库就是考虑到这一点，它没有 API 限流（不需要任何身份验证），也没有限制，并且速度非常快。开发人员可以用这个库爬取任何用户的任意一条 Twitter （推文）。<br> 而且，这个项目可以用于制作马尔科夫链，但是目前它只能适用于 Python 3.6 及以上版本。</p>
+</li>
+<li><p>[Handwriting Synthesis] (<a href="https://github.com/sjvasquez/handwriting-synthesis)（手写体合成）">https://github.com/sjvasquez/handwriting-synthesis)（手写体合成）</a></p>
+<p> 这个项目来自亚历克斯 · 格雷夫斯（Alex Graves）撰写的论文（Generating Sequences with Recurrent Neural Networks）《用 RNN 生成序列》，正如存储库的名称所示，您可以生成不同风格的手写，是其中手写体合成实验的实现，它可以生成不同风格的手写字迹。模型包括初始化和偏置两个部分，其中初始化控制样例的风格，偏置控制样例的整洁度。作者在 GitHub 页面上呈现的样本的多样性真的很吸引人。他正在寻找贡献者来加强存储库，所以如果您有兴趣，可以研究去看看。</p>
+<p> <img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqs4qv0lcqj30gq0acab2.jpg" alt></p>
+</li>
+<li><p>[ENAS PyTorch] (<a href="https://github.com/carpedm20/ENAS-pytorch)（高效神经网络结构搜索）">https://github.com/carpedm20/ENAS-pytorch)（高效神经网络结构搜索）</a></p>
+<p> 该项目是对论文《参数共享的高效神经网络结构搜索（Efficient Neural Architecture Search (ENAS) via Parameters Sharing）》的实现。ENAS 做什么？高效神经网络结构搜索，即 ENAS 减少了计算需求，将 NAS 的 GPU 计算时间减少了 1000 倍。他们通过共享大型计算图中的子图模型之间的参数共享来完成此操作。<br> 如何使用它的过程已经在 GitHub 页面上得到了很好的展示。实现这个库的先决条件是：<br> •    Python 3.6+<br> •    需要 PyTorch<br> •    tqdm，imageio，graphviz，tqdm，tensorboardX</p>
+<p> <img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqs4r7to4qj30lt08mabq.jpg" alt><br> <img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqs4rikm1sj30qx08ejtg.jpg" alt><br> <img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqs4rttg37g30jy0q5npg.gif" alt="-w360"> <img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqs4sfpdr7g30jl0nfkjq.gif" alt="-w360"></p>
+</li>
+<li><p><a href="https://github.com/EvilPort2/Sign-Language">Sign Language</a>（手势语言识别）</p>
+<p> 这是一个相对简单但又十分吸引人的机器学习项目。在 Python 中使用卷积神经网络构造模型，可以识别手势并将其转换为机器上的文本。该项目存储库的作者用 Tensorflow 和 Keras 共同搭建了 CNN 模型，他特别详细地说明了他是怎么创建这个项目的，以及每一步是怎么进行的。<br> 是不是感觉非常不错的，如果你对机器学习感兴趣，可以去这些开源项目中去研究和学习一下。另外，通过这几个开源项目，我们又一次了解了 Python 的重要性，所以，对于想学编程的读者或者初入职场的计算机学生，可以往 Python 方向学习一下。<br><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqs4t4h2rpj30e806gdg2.jpg" alt></p>
+</li>
+</ol>
+<p>##shader编程</p>
+<ul>
+<li><a href="https://www.shadertoy.com" target="_blank" rel="noopener">Shadertoy</a>：视觉技术网站之一，shader 编程共享网站，里面很多很酷的例子。有一些已经被我移植到 opengl es 上了（详见：<a href="https://github.com/nekocode/murmur">nekocode/murmur · GitHub</a>）</li>
+<li><a href="https://www.openprocessing.org" target="_blank" rel="noopener">OpenProcessing</a>：图像处理，可视化的话 也不要忘记了 Processing ，这个站点上很多很酷的，甚至可交互的例子，有点 java 底子，又想研究可视化技术的话，它是一个十分经典而且不错的选择</li>
+<li><a href="http://transitions.glsl.io" target="_blank" rel="noopener">GLSL.io – Open Collection of GLSL Transitions</a>：也是一个 glsl shader 分享网站，主要关注于图片切换效果上</li>
+</ul>
+<h2 id="图像缩放"><a href="#图像缩放" class="headerlink" title="图像缩放"></a><a href="https://en.wikipedia.org/wiki/Image_scaling" target="_blank" rel="noopener">图像缩放</a></h2><ul>
+<li><a href="https://github.com/nagadomi/waifu2x">Github: nagadomi/waifu2x · GitHub</a></li>
+</ul>
+<p>使用卷积神经网络(Convolutional Neural Network, CNN)针对漫画风格的图片进行放大.<br>效果还是相当不错的, 下面是官方的Demo图:</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqs4tiviv0j30cr0r47e4.jpg" alt></p>
+<p>##车牌识别<br>EasyPR 开源的中文车牌识别项目,Opencv 实现代码清晰易读。<br><a href="https://github.com/liuruoze/EasyPR">GitHub - liuruoze/EasyPR: An open source project for chinese plate recognition. It aims to be Easy, Flexible, and Accurate. Welcome to contribute your expertise !</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/如何高效的使用硬编码进行数据压缩/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/如何高效的使用硬编码进行数据压缩/" itemprop="url">如何高效的使用硬编码进行推流</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="如何高效的使用硬编码进行推流"><a href="#如何高效的使用硬编码进行推流" class="headerlink" title="如何高效的使用硬编码进行推流"></a>如何高效的使用硬编码进行推流</h1><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>从摄像头和麦克风获取的音视频数据（YUV、PCM）因原始数据体积较大，不适合直接在网络进行传输。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxurz839d2j30oi0hptbd.jpg" alt></p>
+<p>在直播中实时传输音视频，需要将音视频流分解成小块数据包，而原始数据需要添加音视频同步信息保证接收端能还原出完整的音视频流。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">所以，获取的音视频数据需要分辨进行编码，目前编码比较高效的音视频方式分辨是h264和aac。</span><br><span class="line"></span><br><span class="line">编码后的数据，相比原始数据进行很大程度的压缩，将压缩的数据以一定格式进行封装，进行muxer后通过rtmp协议推送到服务端。</span><br></pre></td></tr></table></figure>
+<h3 id="推流参数介绍"><a href="#推流参数介绍" class="headerlink" title="推流参数介绍"></a>推流参数介绍</h3><ul>
+<li><p><strong>FPS</strong>：视频每秒包含多少帧，一帧就是一个静态的图像；</p>
+</li>
+<li><p><strong>I帧，B帧和P帧</strong>：I帧是靠尽可能去除图像空间冗余信息来压缩传输数据量的帧内编码图像； P帧是通过充分降低与图像序列中前面已编码帧的时间冗余信息来压缩传输数据量的编码图像，也叫预测帧； B帧是既考虑与源图像序列前面已编码帧，也顾及源图像序列后面已编码帧之间的时间冗余信息来压缩传输数据量的编码图像，也叫双向预测帧；一般地，I帧压缩效率最低，P帧较高，B帧最高。I帧是通过帧内预测编码的，在获取到I帧后能解码出相应的图像，而P帧和B帧需要依赖相邻的帧才能解码出图像；</p>
+</li>
+<li><p><strong>GOP</strong>：( <strong>Group of Pictures </strong>) 是一组连续的画面，由一张 I 帧和数张 B / P 帧组成，是视频图像编码器和解码器存取的基本单位，它的排列顺序将会一直重复到影像结束。</p>
+</li>
+<li><p><strong>GOP</strong>间隔：是指一个画面序列中相邻两个I帧的间隔时间。</p>
+</li>
+<li><p><strong>封装格式</strong>：音视频文件封装格式有<strong>avi</strong>、<strong>rmvb</strong>、<strong>flv</strong>、<strong>mkv</strong>、<strong>MP4</strong>等等，封装格式就是把音视频数据打包成一个文件的规范。一般会包含音视频编码类型，时间戳，采样率等信息，方便接收方解析出原始数据。</p>
+</li>
+<li><p><strong>视频码率</strong>：码率的单位为<strong>kbps</strong>，指每秒视频数据量，其值跟每秒视频帧数FPS，图像分辨率以及编码器压缩率有关。</p>
+</li>
+</ul>
+<h2 id="硬编码"><a href="#硬编码" class="headerlink" title="硬编码"></a>硬编码</h2><p>为了保证高清画质的视频数据在网络中达到实时直播的效果，且满足蜂窝网络、wifi下的正常使用。</p>
+<p>需要对图像进行编码，也就是压缩。</p>
+<p>常用的压缩算法有<strong>h264</strong>、<strong>HEVC</strong>、<strong>VP8</strong>、<strong>VP9</strong>等等。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxus21trxtj30oa0gsacv.jpg" alt></p>
+<p><strong>以iOS为例，目前仅支持H264硬编码，ffmpeg实现软编码（H264、H265)</strong></p>
+<p><strong>在移动端使用，软编码占用CPU性能非常高，硬编码完全依赖GPU进行像素数据处理，速度会更快。</strong></p>
+<h2 id="编码等级"><a href="#编码等级" class="headerlink" title="编码等级"></a>编码等级</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">H.264有四种画质级别，分别是BP、EP、MP、HP：</span><br></pre></td></tr></table></figure>
+<p>在下面三种级别进行编码时，对应的耗电数据如下：</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuslp4kuxj30ob0ay404.jpg" alt></p>
+<p><strong>高级别的画质，对数据保留完整度更高</strong></p>
+<h3 id="CABAC和CAVLC比较"><a href="#CABAC和CAVLC比较" class="headerlink" title="CABAC和CAVLC比较"></a>CABAC和CAVLC比较</h3><p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuswsvt2bj30od0gpdjm.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">越高的编码等级编解码越复杂，压缩率越高，同样的网络速率能传输更多的视频信息；</span><br><span class="line"></span><br><span class="line">CABAC充分发挥算术编码压缩效率高的特点，而且其基于上下文的特点使其可以充分利用不同视频流的统计特性和符号间的相关性，自适应不同符号（消息）出现的概率。</span><br><span class="line"></span><br><span class="line">因此，CABAC的编码性能更好。</span><br></pre></td></tr></table></figure>
+<p><strong>选择节能而码率相对较大的情况下，CAVLC明显更适合；<br>选择带宽节省的情况，CABAC无疑更好。</strong></p>
+<p><strong>CABAC虽然性能很好，但也存在不足：</strong></p>
+<ul>
+<li>复杂度过高，不易并行处理。存在块及依赖（左/上角的块没有码率估计/熵编码, 后继块就无法得到更新后的状态，从而无法开始码率估计/上编码）、Bin级依赖（统一个子队列的bin存在前后依赖性，后继的Bin要等前面Bin编完后才能得到更新后的上下文状态）以及编码的几个环节依赖，这些依赖性会影响编码器的并行实现。</li>
+<li>计算精度问题。为简化计算，CABAC采用128个状态来近似，根据原来状态和当前符号性质查表得到下个状态，这个过程会有一定程度的精度损失。</li>
+<li>Context的利用频率过高或过低。</li>
+</ul>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 根据当前网络环境，设置对应的实时码率能有效的解决直播卡顿、带宽成本的问题。</span><br><span class="line">2. 不同的分辨率、帧率、GOP需要谨慎决策，能对直播带来良好的体验。</span><br><span class="line">3. CABAC和CAVLC的选择需要取舍（带宽还是功耗）</span><br><span class="line">4. HEVC相比VP9差别不大，但VP9谷歌开源，HEVC却有非常多的专利机构，使用成本较高。但两者相比H264，有显著程度的提高。</span><br><span class="line">5. HEVC迟早会替代H264。</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://books.google.com/books?id=ysFeDwAAQBAJ&amp;pg=PT54&amp;lpg=PT54&amp;dq=cavlc+cabac比较&amp;source=bl&amp;ots=YIU0up78TW&amp;sig=AaFvh7527Oel2K-HaE5U1RUXeDs&amp;hl=zh-CN&amp;sa=X&amp;ved=2ahUKEwj2-6KloYXfAhVqx1QKHRQFACEQ6AEwCHoECAEQAQ#v=onepage&amp;q=cavlc%20cabac比较&amp;f=false" target="_blank" rel="noopener">网络电视技术</a></p>
+<p><a href="https://www.jianshu.com/p/7450fd22ffc6" target="_blank" rel="noopener">算术编码 CABAC CAVLC</a></p>
+<p><a href="http://www.lighterra.com/papers/videoencodingh264/" target="_blank" rel="noopener">H264视频编码设置</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/ImageMagick-7-0-7-16使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/ImageMagick-7-0-7-16使用/" itemprop="url">ImageMagick 7.0.7-16使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="ImageMagick-7-0-7-16使用"><a href="#ImageMagick-7-0-7-16使用" class="headerlink" title="ImageMagick 7.0.7-16使用"></a>ImageMagick 7.0.7-16使用</h2><p><strong>相关链接</strong></p>
+<ul>
+<li>HomePage: <a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">https://www.imagemagick.org/script/index.php</a></li>
+<li>Download: <a href="https://github.com/ImageMagick/ImageMagick">https://github.com/ImageMagick/ImageMagick</a></li>
+</ul>
+<p>##安装<br>    •brew install ImageMagick</p>
+<p>##使用</p>
+<p><strong>Edge Detection</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert input.png -colorspace gray -canny 0x1+10%+30% output.png</span><br></pre></td></tr></table></figure></p>
+<p><strong>Compositon Image</strong></p>
+<p>把一张图片按80的质量去压缩(jpg的压缩参数),同时按图片比例非强制缩放成不超过280x140的图片.居中裁剪280x140,去掉图片裁减后的空白和图片exif信息,通常这种指令是为了保证图片大小正好为280x140<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert +profile &apos;*&apos; /Users/qiyun/Desktop/屏幕快照\ 2018-01-03\ 下午2.04.04.png -quality 80 -resize &apos;280x140^&gt;&apos; -gravity Center -crop 280x140+0+0 +repage /Users/qiyun/Desktop/新图片.jpg</span><br></pre></td></tr></table></figure></p>
+<p><code>-quality   图片质量,jpg默认99,png默认75
+-resize
+100x100      高度和宽度比例保留最高值，高比不变
+100x100^     高度和宽度比例保留最低值，宽高比不变
+100x100!     宽度和高度强制转换，忽视宽高比
+100x100&gt;     更改长宽，当图片长或宽超过规定的尺寸
+100x100&lt;     更改长宽 只有当图片长宽都超过规定的尺寸
+100x100^&gt;    更改长宽，当图片长或宽超过规定的尺寸。高度和宽度比例保留最低值
+100x100^&lt;    更改长宽，只有当图片长宽都超过规定的尺寸。高度和宽度比例保留最低值
+100          按指定的宽度缩放，保持宽高比例
+x100         按指定高度缩放，保持宽高比
+-gravity NorthWest, North, NorthEast, West, Center, East,  SouthWest, South, SouthEast截取用的定位指令,定位截取区域在图片中的方位
+-crop 200x200+0+0 截取用的截取指令 ,在用定位指令后,按后两位的偏移值偏移截取范围左上角的像素后,再按前两位的数值,从左上角开始截取相应大小的图片
++repage         去掉图片裁减后的空白
+-dissolve 30    设定组合图片透明度dissolve示例
++/-profile *    去掉/添加图片exif信息</code></p>
+<p><strong>把原始图片分割成多张小图</strong></p>
+<pre><code>•convert src.jpg -crop 100x100 dest.jpg
+</code></pre><p>假设src.jpg的大小是300x200,执行命令后将得到名为dest-0.jpg、dest-1.jpg…dest-5.jpg的6张大小为100x100的小图片。注意如果尺寸不是目标图片的整数倍，那么右边缘和下边缘的一部分图片就用实际尺寸</p>
+<p><strong>在原始图片上剪裁一张指定尺寸的小图</strong></p>
+<pre><code>•convert src.jpg -crop 100x80+50+30 dest.jpg
+</code></pre><p>在原始图片的上距离上部30像素左部50为起点的位置,分别向右向下截取一块大小为100x80的图片。如果x相对于坐标，宽度不够100，那就取实际值。</p>
+<pre><code>•convert src.jpg -gravity center -crop 100x80+0+0 dest.jpg
+</code></pre><p>在原始图上截取中心部分一块100x80的图片</p>
+<pre><code>•convert src.jpg -gravity southeast -crop 100x80+10+5 dest.jpg
+</code></pre><p>在原始图上截取右下角距离下边缘10个像素，右边缘5个像素一块100x80的图片</p>
+<p><strong>图片进行反色处理</strong></p>
+<pre><code>•convert -negate src.jpg negate.jpg
+</code></pre><p>##示例</p>
+<p><strong>转换rgb为灰度图</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">计算公式 &gt;&gt; Grey = (R*38 + G*75 + B*15)&gt;&gt; 7</span><br><span class="line">convert /Users/qiyun/Desktop/屏幕快照\ 2018-02-23\ 下午2.51.29.png -set colorspace Gray -separate -average 1111.jpeg</span><br></pre></td></tr></table></figure>
+<p><strong>-crop参数是从一个图片截取一个指定区域的子图片</strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式如下:convert -crop widthxheight&#123;+-&#125;x&#123;+-&#125;y&#123;%&#125;</span><br></pre></td></tr></table></figure></p>
+<p> <em>width 子图片宽度</em> <em>height 子图片高度</em><br> x 为正数时为从区域左上角的x坐标,为负数时,左上角坐标为0,然后从截出的子图片右边减去x象素宽度. y 为正数时为从区域左上角的y坐标,为负数时,左上角坐标为0,然后从截出的子图片上边减去y象素高度.  如convert -crop 300x400+10+10 src.jpg dest.jpg 从src.jpg坐标为x:10 y:10截取300x400的图片存为dest.jpg convert -crop 300x400-10+10 src.jpg dest.jpg 从src.jpg坐标为x:0 y:10截取290x400的图片存为dest.jpg</p>
+<p>##总结</p>
 
           
         
@@ -1254,351 +1625,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/ImageMagick-7-0-7-16使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiyun">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祁云的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/15/ImageMagick-7-0-7-16使用/" itemprop="url">ImageMagick 7.0.7-16使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="ImageMagick-7-0-7-16使用"><a href="#ImageMagick-7-0-7-16使用" class="headerlink" title="ImageMagick 7.0.7-16使用"></a>ImageMagick 7.0.7-16使用</h2><p><strong>相关链接</strong></p>
-<ul>
-<li>HomePage: <a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">https://www.imagemagick.org/script/index.php</a></li>
-<li>Download: <a href="https://github.com/ImageMagick/ImageMagick">https://github.com/ImageMagick/ImageMagick</a></li>
-</ul>
-<p>##安装<br>    •brew install ImageMagick</p>
-<p>##使用</p>
-<p><strong>Edge Detection</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert input.png -colorspace gray -canny 0x1+10%+30% output.png</span><br></pre></td></tr></table></figure></p>
-<p><strong>Compositon Image</strong></p>
-<p>把一张图片按80的质量去压缩(jpg的压缩参数),同时按图片比例非强制缩放成不超过280x140的图片.居中裁剪280x140,去掉图片裁减后的空白和图片exif信息,通常这种指令是为了保证图片大小正好为280x140<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert +profile &apos;*&apos; /Users/qiyun/Desktop/屏幕快照\ 2018-01-03\ 下午2.04.04.png -quality 80 -resize &apos;280x140^&gt;&apos; -gravity Center -crop 280x140+0+0 +repage /Users/qiyun/Desktop/新图片.jpg</span><br></pre></td></tr></table></figure></p>
-<p><code>-quality   图片质量,jpg默认99,png默认75
--resize
-100x100      高度和宽度比例保留最高值，高比不变
-100x100^     高度和宽度比例保留最低值，宽高比不变
-100x100!     宽度和高度强制转换，忽视宽高比
-100x100&gt;     更改长宽，当图片长或宽超过规定的尺寸
-100x100&lt;     更改长宽 只有当图片长宽都超过规定的尺寸
-100x100^&gt;    更改长宽，当图片长或宽超过规定的尺寸。高度和宽度比例保留最低值
-100x100^&lt;    更改长宽，只有当图片长宽都超过规定的尺寸。高度和宽度比例保留最低值
-100          按指定的宽度缩放，保持宽高比例
-x100         按指定高度缩放，保持宽高比
--gravity NorthWest, North, NorthEast, West, Center, East,  SouthWest, South, SouthEast截取用的定位指令,定位截取区域在图片中的方位
--crop 200x200+0+0 截取用的截取指令 ,在用定位指令后,按后两位的偏移值偏移截取范围左上角的像素后,再按前两位的数值,从左上角开始截取相应大小的图片
-+repage         去掉图片裁减后的空白
--dissolve 30    设定组合图片透明度dissolve示例
-+/-profile *    去掉/添加图片exif信息</code></p>
-<p><strong>把原始图片分割成多张小图</strong></p>
-<pre><code>•convert src.jpg -crop 100x100 dest.jpg
-</code></pre><p>假设src.jpg的大小是300x200,执行命令后将得到名为dest-0.jpg、dest-1.jpg…dest-5.jpg的6张大小为100x100的小图片。注意如果尺寸不是目标图片的整数倍，那么右边缘和下边缘的一部分图片就用实际尺寸</p>
-<p><strong>在原始图片上剪裁一张指定尺寸的小图</strong></p>
-<pre><code>•convert src.jpg -crop 100x80+50+30 dest.jpg
-</code></pre><p>在原始图片的上距离上部30像素左部50为起点的位置,分别向右向下截取一块大小为100x80的图片。如果x相对于坐标，宽度不够100，那就取实际值。</p>
-<pre><code>•convert src.jpg -gravity center -crop 100x80+0+0 dest.jpg
-</code></pre><p>在原始图上截取中心部分一块100x80的图片</p>
-<pre><code>•convert src.jpg -gravity southeast -crop 100x80+10+5 dest.jpg
-</code></pre><p>在原始图上截取右下角距离下边缘10个像素，右边缘5个像素一块100x80的图片</p>
-<p><strong>图片进行反色处理</strong></p>
-<pre><code>•convert -negate src.jpg negate.jpg
-</code></pre><p>##示例</p>
-<p><strong>转换rgb为灰度图</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">计算公式 &gt;&gt; Grey = (R*38 + G*75 + B*15)&gt;&gt; 7</span><br><span class="line">convert /Users/qiyun/Desktop/屏幕快照\ 2018-02-23\ 下午2.51.29.png -set colorspace Gray -separate -average 1111.jpeg</span><br></pre></td></tr></table></figure>
-<p><strong>-crop参数是从一个图片截取一个指定区域的子图片</strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式如下:convert -crop widthxheight&#123;+-&#125;x&#123;+-&#125;y&#123;%&#125;</span><br></pre></td></tr></table></figure></p>
-<p> <em>width 子图片宽度</em> <em>height 子图片高度</em><br> x 为正数时为从区域左上角的x坐标,为负数时,左上角坐标为0,然后从截出的子图片右边减去x象素宽度. y 为正数时为从区域左上角的y坐标,为负数时,左上角坐标为0,然后从截出的子图片上边减去y象素高度.  如convert -crop 300x400+10+10 src.jpg dest.jpg 从src.jpg坐标为x:10 y:10截取300x400的图片存为dest.jpg convert -crop 300x400-10+10 src.jpg dest.jpg 从src.jpg坐标为x:0 y:10截取290x400的图片存为dest.jpg</p>
-<p>##总结</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/机器学习之开源项目/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiyun">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祁云的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/15/机器学习之开源项目/" itemprop="url">机器学习开源项目</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>##开源项目</p>
-<p>###开源框架</p>
-<ul>
-<li><p>OpenCV [GitHub - opencv/opencv: Open Source Computer Vision Library] (<a href="https://github.com/opencv/opencv">https://github.com/opencv/opencv</a>)</p>
-</li>
-<li><p>dlib [GitHub - davisking/dlib: A toolkit for making real world machine learning and data analysis applications in C++] (<a href="https://github.com/davisking/dlib">https://github.com/davisking/dlib</a>)</p>
-</li>
-<li><p>[Scikit-Learn] (<a href="https://github.com/scikit-learn/scikit-learn">https://github.com/scikit-learn/scikit-learn</a>)<br> Scikit-Learn是用于机器学习的Python模块，它建立在SciPy之上。</p>
-</li>
-<li><p>[Caffe] (<a href="https://github.com/BVLC/caffe">https://github.com/BVLC/caffe</a>)<br> Caffe是由神经网络中的表达式、速度、模块化产生的深度学习框架。</p>
-</li>
-<li><p>[Mxnet] (<a href="https://github.com/apache/incubator-mxnet">https://github.com/apache/incubator-mxnet</a>)</p>
-</li>
-<li><p>[Tensorflow] (<a href="https://github.com/search?utf8=✓&amp;q=tensorflow">https://github.com/search?utf8=✓&amp;q=tensorflow</a>)<br> TensorFlow是谷歌发布的第二代机器学习系统。</p>
-</li>
-<li><p>[PredictionIO] (<a href="https://github.com/PredictionIO/PredictionIO">https://github.com/PredictionIO/PredictionIO</a>)<br> PredictionIO是面向开发人员和数据科学家的开源机器学习服务器。它支持事件采集、算法调度、评估，以及经由REST APIs的预测结果查询。</p>
-</li>
-<li><p>[Keras] (<a href="https://github.com/fchollet/keras">https://github.com/fchollet/keras</a>)<br> Keras是极其精简并高度模块化的神经网络库，在TensorFlow或Theano上都能够运行，是一个高度模块化的神经网络库，支持GPU和CPU运算。</p>
-</li>
-</ul>
-<p>###视觉检测和追踪</p>
-<ul>
-<li>RCNN，[Fast-RCNN，Faster-RCNN 现在最主流的检测框架，GitHub - rbgirshick/py-faster-rcnn: Faster R-CNN (Python implementation) – see <a href="https://github.com/ShaoqingRen/faster_rcnn">https://github.com/ShaoqingRen/faster_rcnn</a> for the official MATLAB version] (<a href="https://github.com/rbgirshick/py-faster-rcnn">https://github.com/rbgirshick/py-faster-rcnn</a>)</li>
-<li>SSD，达到实时的检测算法，[GitHub - weiliu89/caffe at ssd] (<a href="https://github.com/weiliu89/caffe/tree/ssd">https://github.com/weiliu89/caffe/tree/ssd</a>)</li>
-<li>DPM，早期的检测算法，使用 latent SVM [GitHub - rbgirshick/voc-dpm: Object detection system using deformable part models (DPMs) and latent SVM (voc-release5). You may want to use the latest tarball on my website. The github code may include code changes that have not been tested as thoroughly and will not necessarily reproduce the results on the website.] (<a href="https://github.com/rbgirshick/voc-dpm">https://github.com/rbgirshick/voc-dpm</a>)</li>
-<li>TLD，非常鲁棒的跟踪算法 [GitHub - zk00006/OpenTLD: Official source code for TLD] (<a href="https://github.com/zk00006/OpenTLD">https://github.com/zk00006/OpenTLD</a>)</li>
-</ul>
-<p>###2018二月份最火的项目</p>
-<ol>
-<li><p>[FastPhotoStyle] (<a href="https://github.com/NVIDIA/FastPhotoStyle)（快速转换照片风格）">https://github.com/NVIDIA/FastPhotoStyle)（快速转换照片风格）</a></p>
-<p>  FastPhotoStyle 这个项目是英伟达（NVIDIA）开发的一个 Python 库。该模型将内容照片和风格照片作为输入。然后它将风格照片的风格转移到内容照片，即就是将内容照片的风格转换为我们输入的风格照片的风格。</p>
-<p>  开发人员举出了两个算法示例。首先，第一个是非常简单的迭代算法，只需要下载一张内容图和风格图，重新调整他们尺寸，然后运行图像风格化代码。第二个样例中，需要使用语义标签映射来创建程式化图像。</p>
-<p>  <img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqs4qi9mw8j30pj0oz0zy.jpg" alt></p>
-</li>
-</ol>
-<ol start="2">
-<li><p>[Twitter Scraper] (<a href="https://github.com/kennethreitz/twitter-scraper)（Twitter">https://github.com/kennethreitz/twitter-scraper)（Twitter</a> 爬虫）</p>
-<p> 如果你在 Twitter 上发过文章，就知道 Twitter 自身的 API 有流速限制，当然，作为国内用户大多数人都没用使用过 Twitter ，这个 Python 库就是考虑到这一点，它没有 API 限流（不需要任何身份验证），也没有限制，并且速度非常快。开发人员可以用这个库爬取任何用户的任意一条 Twitter （推文）。<br> 而且，这个项目可以用于制作马尔科夫链，但是目前它只能适用于 Python 3.6 及以上版本。</p>
-</li>
-<li><p>[Handwriting Synthesis] (<a href="https://github.com/sjvasquez/handwriting-synthesis)（手写体合成）">https://github.com/sjvasquez/handwriting-synthesis)（手写体合成）</a></p>
-<p> 这个项目来自亚历克斯 · 格雷夫斯（Alex Graves）撰写的论文（Generating Sequences with Recurrent Neural Networks）《用 RNN 生成序列》，正如存储库的名称所示，您可以生成不同风格的手写，是其中手写体合成实验的实现，它可以生成不同风格的手写字迹。模型包括初始化和偏置两个部分，其中初始化控制样例的风格，偏置控制样例的整洁度。作者在 GitHub 页面上呈现的样本的多样性真的很吸引人。他正在寻找贡献者来加强存储库，所以如果您有兴趣，可以研究去看看。</p>
-<p> <img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqs4qv0lcqj30gq0acab2.jpg" alt></p>
-</li>
-<li><p>[ENAS PyTorch] (<a href="https://github.com/carpedm20/ENAS-pytorch)（高效神经网络结构搜索）">https://github.com/carpedm20/ENAS-pytorch)（高效神经网络结构搜索）</a></p>
-<p> 该项目是对论文《参数共享的高效神经网络结构搜索（Efficient Neural Architecture Search (ENAS) via Parameters Sharing）》的实现。ENAS 做什么？高效神经网络结构搜索，即 ENAS 减少了计算需求，将 NAS 的 GPU 计算时间减少了 1000 倍。他们通过共享大型计算图中的子图模型之间的参数共享来完成此操作。<br> 如何使用它的过程已经在 GitHub 页面上得到了很好的展示。实现这个库的先决条件是：<br> •    Python 3.6+<br> •    需要 PyTorch<br> •    tqdm，imageio，graphviz，tqdm，tensorboardX</p>
-<p> <img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqs4r7to4qj30lt08mabq.jpg" alt><br> <img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqs4rikm1sj30qx08ejtg.jpg" alt><br> <img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqs4rttg37g30jy0q5npg.gif" alt="-w360"> <img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqs4sfpdr7g30jl0nfkjq.gif" alt="-w360"></p>
-</li>
-<li><p><a href="https://github.com/EvilPort2/Sign-Language">Sign Language</a>（手势语言识别）</p>
-<p> 这是一个相对简单但又十分吸引人的机器学习项目。在 Python 中使用卷积神经网络构造模型，可以识别手势并将其转换为机器上的文本。该项目存储库的作者用 Tensorflow 和 Keras 共同搭建了 CNN 模型，他特别详细地说明了他是怎么创建这个项目的，以及每一步是怎么进行的。<br> 是不是感觉非常不错的，如果你对机器学习感兴趣，可以去这些开源项目中去研究和学习一下。另外，通过这几个开源项目，我们又一次了解了 Python 的重要性，所以，对于想学编程的读者或者初入职场的计算机学生，可以往 Python 方向学习一下。<br><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqs4t4h2rpj30e806gdg2.jpg" alt></p>
-</li>
-</ol>
-<p>##shader编程</p>
-<ul>
-<li><a href="https://www.shadertoy.com" target="_blank" rel="noopener">Shadertoy</a>：视觉技术网站之一，shader 编程共享网站，里面很多很酷的例子。有一些已经被我移植到 opengl es 上了（详见：<a href="https://github.com/nekocode/murmur">nekocode/murmur · GitHub</a>）</li>
-<li><a href="https://www.openprocessing.org" target="_blank" rel="noopener">OpenProcessing</a>：图像处理，可视化的话 也不要忘记了 Processing ，这个站点上很多很酷的，甚至可交互的例子，有点 java 底子，又想研究可视化技术的话，它是一个十分经典而且不错的选择</li>
-<li><a href="http://transitions.glsl.io" target="_blank" rel="noopener">GLSL.io – Open Collection of GLSL Transitions</a>：也是一个 glsl shader 分享网站，主要关注于图片切换效果上</li>
-</ul>
-<h2 id="图像缩放"><a href="#图像缩放" class="headerlink" title="图像缩放"></a><a href="https://en.wikipedia.org/wiki/Image_scaling" target="_blank" rel="noopener">图像缩放</a></h2><ul>
-<li><a href="https://github.com/nagadomi/waifu2x">Github: nagadomi/waifu2x · GitHub</a></li>
-</ul>
-<p>使用卷积神经网络(Convolutional Neural Network, CNN)针对漫画风格的图片进行放大.<br>效果还是相当不错的, 下面是官方的Demo图:</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqs4tiviv0j30cr0r47e4.jpg" alt></p>
-<p>##车牌识别<br>EasyPR 开源的中文车牌识别项目,Opencv 实现代码清晰易读。<br><a href="https://github.com/liuruoze/EasyPR">GitHub - liuruoze/EasyPR: An open source project for chinese plate recognition. It aims to be Easy, Flexible, and Accurate. Welcome to contribute your expertise !</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/第三方音乐软件播放导致直播中断/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1738,7 +1764,7 @@ x100         按指定高度缩放，保持宽高比
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/如何高效的使用硬编码进行数据压缩/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/音频降噪算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Qiyun">
@@ -1757,7 +1783,7 @@ x100         按指定高度缩放，保持宽高比
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/15/如何高效的使用硬编码进行数据压缩/" itemprop="url">如何高效的使用硬编码进行推流</a></h1>
+                <a class="post-title-link" href="/2019/02/15/音频降噪算法/" itemprop="url">音频降噪算法</a></h1>
         
 
         <div class="post-meta">
@@ -1809,47 +1835,21 @@ x100         按指定高度缩放，保持宽高比
       
         
           
-            <h1 id="如何高效的使用硬编码进行推流"><a href="#如何高效的使用硬编码进行推流" class="headerlink" title="如何高效的使用硬编码进行推流"></a>如何高效的使用硬编码进行推流</h1><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>从摄像头和麦克风获取的音视频数据（YUV、PCM）因原始数据体积较大，不适合直接在网络进行传输。</p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxurz839d2j30oi0hptbd.jpg" alt></p>
-<p>在直播中实时传输音视频，需要将音视频流分解成小块数据包，而原始数据需要添加音视频同步信息保证接收端能还原出完整的音视频流。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">所以，获取的音视频数据需要分辨进行编码，目前编码比较高效的音视频方式分辨是h264和aac。</span><br><span class="line"></span><br><span class="line">编码后的数据，相比原始数据进行很大程度的压缩，将压缩的数据以一定格式进行封装，进行muxer后通过rtmp协议推送到服务端。</span><br></pre></td></tr></table></figure>
-<h3 id="推流参数介绍"><a href="#推流参数介绍" class="headerlink" title="推流参数介绍"></a>推流参数介绍</h3><ul>
-<li><p><strong>FPS</strong>：视频每秒包含多少帧，一帧就是一个静态的图像；</p>
-</li>
-<li><p><strong>I帧，B帧和P帧</strong>：I帧是靠尽可能去除图像空间冗余信息来压缩传输数据量的帧内编码图像； P帧是通过充分降低与图像序列中前面已编码帧的时间冗余信息来压缩传输数据量的编码图像，也叫预测帧； B帧是既考虑与源图像序列前面已编码帧，也顾及源图像序列后面已编码帧之间的时间冗余信息来压缩传输数据量的编码图像，也叫双向预测帧；一般地，I帧压缩效率最低，P帧较高，B帧最高。I帧是通过帧内预测编码的，在获取到I帧后能解码出相应的图像，而P帧和B帧需要依赖相邻的帧才能解码出图像；</p>
-</li>
-<li><p><strong>GOP</strong>：( <strong>Group of Pictures </strong>) 是一组连续的画面，由一张 I 帧和数张 B / P 帧组成，是视频图像编码器和解码器存取的基本单位，它的排列顺序将会一直重复到影像结束。</p>
-</li>
-<li><p><strong>GOP</strong>间隔：是指一个画面序列中相邻两个I帧的间隔时间。</p>
-</li>
-<li><p><strong>封装格式</strong>：音视频文件封装格式有<strong>avi</strong>、<strong>rmvb</strong>、<strong>flv</strong>、<strong>mkv</strong>、<strong>MP4</strong>等等，封装格式就是把音视频数据打包成一个文件的规范。一般会包含音视频编码类型，时间戳，采样率等信息，方便接收方解析出原始数据。</p>
-</li>
-<li><p><strong>视频码率</strong>：码率的单位为<strong>kbps</strong>，指每秒视频数据量，其值跟每秒视频帧数FPS，图像分辨率以及编码器压缩率有关。</p>
-</li>
-</ul>
-<h2 id="硬编码"><a href="#硬编码" class="headerlink" title="硬编码"></a>硬编码</h2><p>为了保证高清画质的视频数据在网络中达到实时直播的效果，且满足蜂窝网络、wifi下的正常使用。</p>
-<p>需要对图像进行编码，也就是压缩。</p>
-<p>常用的压缩算法有<strong>h264</strong>、<strong>HEVC</strong>、<strong>VP8</strong>、<strong>VP9</strong>等等。</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxus21trxtj30oa0gsacv.jpg" alt></p>
-<p><strong>以iOS为例，目前仅支持H264硬编码，ffmpeg实现软编码（H264、H265)</strong></p>
-<p><strong>在移动端使用，软编码占用CPU性能非常高，硬编码完全依赖GPU进行像素数据处理，速度会更快。</strong></p>
-<h2 id="编码等级"><a href="#编码等级" class="headerlink" title="编码等级"></a>编码等级</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">H.264有四种画质级别，分别是BP、EP、MP、HP：</span><br></pre></td></tr></table></figure>
-<p>在下面三种级别进行编码时，对应的耗电数据如下：</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuslp4kuxj30ob0ay404.jpg" alt></p>
-<p><strong>高级别的画质，对数据保留完整度更高</strong></p>
-<h3 id="CABAC和CAVLC比较"><a href="#CABAC和CAVLC比较" class="headerlink" title="CABAC和CAVLC比较"></a>CABAC和CAVLC比较</h3><p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxuswsvt2bj30od0gpdjm.jpg" alt></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">越高的编码等级编解码越复杂，压缩率越高，同样的网络速率能传输更多的视频信息；</span><br><span class="line"></span><br><span class="line">CABAC充分发挥算术编码压缩效率高的特点，而且其基于上下文的特点使其可以充分利用不同视频流的统计特性和符号间的相关性，自适应不同符号（消息）出现的概率。</span><br><span class="line"></span><br><span class="line">因此，CABAC的编码性能更好。</span><br></pre></td></tr></table></figure>
-<p><strong>选择节能而码率相对较大的情况下，CAVLC明显更适合；<br>选择带宽节省的情况，CABAC无疑更好。</strong></p>
-<p><strong>CABAC虽然性能很好，但也存在不足：</strong></p>
+            <h1 id="音频降噪算法"><a href="#音频降噪算法" class="headerlink" title="音频降噪算法"></a>音频降噪算法</h1><h2 id="WAV-Waveform-Audio-File-Format"><a href="#WAV-Waveform-Audio-File-Format" class="headerlink" title="WAV (Waveform Audio File Format)"></a>WAV (Waveform Audio File Format)</h2><p>此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。<br>也是其音乐发烧友中常用的指定规格之一。<br>由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。</p>
+<p><strong>制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么超过此最大频率的频段，将会产生混叠的情况，使原始信号受到污染，亦不能称此WAV文件就是无损文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">WAV文件遵守资源交换档案格式之规则，在文件的前44(或46)字节放置标头(header)，使播放器或编辑器能够简单掌握文件的基本信息，其内容以区块(chunk)为最小单位，每一区块长度为4字节，而区块之上则由子区块包裹，每一子区块长度不拘，但须在前头先宣告标签及长度(字节)。</span><br><span class="line"></span><br><span class="line">标头的前3个区块记录文件格式及长度；</span><br><span class="line">接着第一个子区块包含8个区块，记录声道数量、采样率等信息；</span><br><span class="line">接着第二个子区块才是真正的音频数据，长度则视音频长度而定。</span><br><span class="line"></span><br><span class="line">内容如下表所示。须注意的是，每个区块的端序不尽相同，而音频内容本身则是采用小端序。</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy61nb179gj30hx0drjto.jpg" alt></p>
+<h2 id="AAC-Advanced-Audio-Coding"><a href="#AAC-Advanced-Audio-Coding" class="headerlink" title="AAC (Advanced Audio Coding)"></a>AAC (Advanced Audio Coding)</h2><p>出现于1997年，为一种基于MPEG-2的有损数字音频压缩的专利音频编码标准。</p>
 <ul>
-<li>复杂度过高，不易并行处理。存在块及依赖（左/上角的块没有码率估计/熵编码, 后继块就无法得到更新后的状态，从而无法开始码率估计/上编码）、Bin级依赖（统一个子队列的bin存在前后依赖性，后继的Bin要等前面Bin编完后才能得到更新后的上下文状态）以及编码的几个环节依赖，这些依赖性会影响编码器的并行实现。</li>
-<li>计算精度问题。为简化计算，CABAC采用128个状态来近似，根据原来状态和当前符号性质查表得到下个状态，这个过程会有一定程度的精度损失。</li>
-<li>Context的利用频率过高或过低。</li>
+<li><p>.aac - 使用MPEG-2 Audio Transport Stream（ADTS，参见MPEG-2）容器，区别于使用MPEG-4容器的MP4/M4A格式，属于传统的AAC编码（FAAC默认的封装，但FAAC亦可输出MPEG-4封装的AAC）。</p>
+</li>
+<li><p>.mp4 - 使用了MPEG-4 Part 14（第14部分）的简化版即3GPP Media Release 6 Basic（3gp6，参见3GP）进行封装的AAC编码（Nero AAC编码器仅能输出MPEG-4封装的AAC）。</p>
+</li>
+<li><p>.m4a - 为了区别纯音频MP4文件和包含视频的MP4文件而由苹果（Apple）公司使用的扩展名，Apple iTunes对纯音频MP4文件采用了”.m4a”命名。M4A的本质和音频MP4相同，故音频MP4文件亦可直接更改扩展名为M4A。</p>
+</li>
 </ul>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 根据当前网络环境，设置对应的实时码率能有效的解决直播卡顿、带宽成本的问题。</span><br><span class="line">2. 不同的分辨率、帧率、GOP需要谨慎决策，能对直播带来良好的体验。</span><br><span class="line">3. CABAC和CAVLC的选择需要取舍（带宽还是功耗）</span><br><span class="line">4. HEVC相比VP9差别不大，但VP9谷歌开源，HEVC却有非常多的专利机构，使用成本较高。但两者相比H264，有显著程度的提高。</span><br><span class="line">5. HEVC迟早会替代H264。</span><br></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://books.google.com/books?id=ysFeDwAAQBAJ&amp;pg=PT54&amp;lpg=PT54&amp;dq=cavlc+cabac比较&amp;source=bl&amp;ots=YIU0up78TW&amp;sig=AaFvh7527Oel2K-HaE5U1RUXeDs&amp;hl=zh-CN&amp;sa=X&amp;ved=2ahUKEwj2-6KloYXfAhVqx1QKHRQFACEQ6AEwCHoECAEQAQ#v=onepage&amp;q=cavlc%20cabac比较&amp;f=false" target="_blank" rel="noopener">网络电视技术</a></p>
-<p><a href="https://www.jianshu.com/p/7450fd22ffc6" target="_blank" rel="noopener">算术编码 CABAC CAVLC</a></p>
-<p><a href="http://www.lighterra.com/papers/videoencodingh264/" target="_blank" rel="noopener">H264视频编码设置</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">作为一种高压缩比的音频压缩算法，AAC压缩比通常为18：1，也有数据说为20：1；</span><br><span class="line"></span><br><span class="line">在音质方面，由于采用多声道，和使用低复杂性的描述方式，使其比几乎所有的传统编码方式在同规格的情况下更胜一筹。</span><br><span class="line"></span><br><span class="line">不过直到2006年，使用这一格式存储音乐的并不多，可以播放该格式的mp3播放器更是少之又少，目前所知仅有苹果iPod、Sony Walkman（NWZ-A、NWZ-S、NWZ-E、NWZ-X系列）、任天堂NDSi和iPhone（微软推出的Windows 7附带的Windows Media Player 12也支持AAC）。</span><br><span class="line"></span><br><span class="line">此外计算机上很多音乐播放软件都支持AAC（前提是安装过AAC解码器），如苹果iTunes。</span><br><span class="line"></span><br><span class="line">但在移动电话领域，AAC的支持度已很普遍，Nokia、Sony Ericsson、Motorola等品牌均在其中高端产品中支持AAC（一开始主要是LC-AAC，随着移动电话性能的发展，HE-AAC的支持也已广泛）。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AAC是一种宽带音频编码算法，主要利用以下两种编码策略来大幅减少存储高质量数字音频所需要的数据量：</span><br><span class="line">舍去与感知上无关的信号成分</span><br><span class="line">去除编码后信号的冗余部分</span><br></pre></td></tr></table></figure>
 
           
         
@@ -2203,18 +2203,9 @@ x100         按指定高度缩放，保持宽高比
 
 
 
-  
-  
 
 
 
-  
-  
-
-
-
-  
-  
 
 
 
@@ -2255,26 +2246,6 @@ x100         按指定高度缩放，保持宽高比
   
   
     <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
   
 
   
