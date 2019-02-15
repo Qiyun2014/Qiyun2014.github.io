@@ -754,6 +754,145 @@ x100         按指定高度缩放，保持宽高比
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/第三方音乐软件播放导致直播中断/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/第三方音乐软件播放导致直播中断/" itemprop="url">第三方音乐软件播放导致直播中断</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxdgblht5ej30go0tn47f.jpg" alt="-w240"> <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxdgbn3mqkj30go0tnh2h.jpg" alt="-w240"> <img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxdgbr7vc7j30go0tnn65.jpg" alt="-w240"></p>
+<p>音频开播（最左）<br>退入到后台后<br>打开qq音乐并选择音乐进行播放（中间）<br>退入后台<br>回到斗鱼app（最右）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">开播时，观众可以正常听到主播的声音。</span><br><span class="line">开启qq音乐后，观众端一直处于“鲨鱼娘努力加载中...”的场景，并无法恢复直播。</span><br></pre></td></tr></table></figure>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>麦克风（播放和录制）、耳机（插入和拔出）都会通知Device进行指令接收，进行扬声器播放或者耳机音频数据传输。</p>
+<p>可以使用音频会话向系统传达打算如何在应用中使用音频。<br>此音频会话充当应用和操作系统之间的中介 - 进而是底层音频硬件。<br>可以使用它来向操作系统传达应用程序音频的性质，而无需详细说明特定行为或与音频硬件的所需交互。将这些细节的管理委派给音频会话可确保最佳地管理用户的音频体验。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxdgtafs5ij30pf0j3ac5.jpg" alt="-w600"></p>
+<pre><code>•    Configure the audio session category and mode to communicate to the system how you intend to use audio in your app
+•    Activate your app’s audio session to put your category and mode configuration into action
+•    Subscribe and respond to important audio session notifications, such as audio interruptions and route changes
+•    Perform advanced audio device configuration such as setting sample rate, I/O buffer duration, and number of channels
+</code></pre><h4 id="打断场景"><a href="#打断场景" class="headerlink" title="打断场景"></a>打断场景</h4><p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxdhwy63emj30tz0hqq50.jpg" alt="-w600"></p>
+<p>当直播库录制时，会创建一个session用于向系统传达指令。这个session在系统级的Device的session之上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">开启直播，就会开启session；</span><br><span class="line"></span><br><span class="line">第三方音乐应用开启，会创建自己的session，抢占当前我们直播的session，导致直播音频录制停止。</span><br><span class="line"></span><br><span class="line">Facetime或者来电等请求接收时，设备的session会下发通知，当前有更底层的session需要使用，我们直播的session会被打断，导致直播音频录制停止。如果用户主动拒绝这些请求，打断会恢复，直播继续。</span><br></pre></td></tr></table></figure>
+<p>==出现无法直播的的问题就是第三方音乐app抢占了session，直播直接停止==</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxdi8iegqhj315v080tat.jpg" alt></p>
+<p>iOS系统支持后台模式以及播放和录制情形共同使用的场景</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 为了保证音频录制能在iOS系统后台持续工作，首先需要开启UIBackgroundModes配置，保证应用在静音、锁屏下正常使用。</span><br><span class="line">2. 监听当前Session的状态，是否打断、恢复</span><br><span class="line">3. 监听当前应用Active，第一时间响应app进入前后台的工作场景</span><br><span class="line">4. 回到前台时，重新启动Session并且设置Category允许Record和Play</span><br><span class="line">5. reactivate当前的AudioSession</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AVAudioSession *session = [AVAudioSession sharedInstance];</span><br><span class="line">[session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers | AVAudioSessionCategoryOptionAllowBluetooth error:nil];</span><br><span class="line">[session setActive:YES error:nil];</span><br></pre></td></tr></table></figure>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a href="https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioInterruptions/HandlingAudioInterruptions.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioInterruptions/HandlingAudioInterruptions.html</a></p>
+<p><a href="https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/机器学习之开源项目/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -888,6 +1027,198 @@ x100         按指定高度缩放，保持宽高比
 <p>使用卷积神经网络(Convolutional Neural Network, CNN)针对漫画风格的图片进行放大.<br>效果还是相当不错的, 下面是官方的Demo图:</p>
 <p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqs4tiviv0j30cr0r47e4.jpg" alt></p>
 <p>##车牌识别<br>EasyPR 开源的中文车牌识别项目,Opencv 实现代码清晰易读。<br><a href="https://github.com/liuruoze/EasyPR">GitHub - liuruoze/EasyPR: An open source project for chinese plate recognition. It aims to be Easy, Flexible, and Accurate. Welcome to contribute your expertise !</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/绝地求生存活人数识别Tesseract-OCR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/绝地求生存活人数识别Tesseract-OCR/" itemprop="url">Tesseract OCR使用介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#Tesseract OCR使用介绍</p>
+<p>##目录<br>[TOC]</p>
+<p>##下载地址及介绍</p>
+<ul>
+<li>官网介绍：<a href="http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3" target="_blank" rel="noopener">http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3</a></li>
+<li>Github源码连接： <a href="https://github.com/tesseract-ocr">https://github.com/tesseract-ocr</a></li>
+<li>开源贡献者主页 <a href="https://kevintechnology.com/" target="_blank" rel="noopener">https://kevintechnology.com/</a></li>
+</ul>
+<p>##安装 Tesseract</p>
+<ul>
+<li>语言包查看 <a href="https://www.macports.org/ports.php?by=name&amp;substr=tesseract-" target="_blank" rel="noopener">https://www.macports.org/ports.php?by=name&amp;substr=tesseract-</a></li>
+<li>支持Windows、linux、macOS</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、安装 tesseract和语言包</span><br><span class="line">sudo port install tesseract	</span><br><span class="line">sudo port install tesseract-&lt;langcode&gt;</span><br><span class="line"></span><br><span class="line">2、homebrew 安装</span><br><span class="line">brew install tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br><span class="line"></span><br><span class="line">3、重新安装</span><br><span class="line">brew uninstall tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Homebrew 是一个包管理器，如果没装的话，在终端执行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
+<p>##使用 Tesseract</p>
+<ul>
+<li>使用命令行进行图像识别</li>
+<li>imagename 就是要识别的图片文件的名称，outputbase 就是识别结果输出文件的名称。</li>
+<li>lang 就是要识别的语言代码，例如英语为 eng、简体中文为 chi_sim 等等。可以同时识别多种语言，使用 “+” 相连，例如 eng+chi_sim。缺省时识别英语。</li>
+</ul>
+<p>1、格式信息如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract imagename outputbase [-l lang] [-psm pagesegmode] [configfile...]</span><br></pre></td></tr></table></figure></p>
+<p>2、示例: 识别image图片并将结果保存在out.txt文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tesseract image.png out -l chi_sim</span><br><span class="line">tesseract image.png out -l chi_sim -psm 10</span><br></pre></td></tr></table></figure></p>
+<p>3、pagesegmode 为识别的具体模式，具体包含以下模式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">•	0 = Orientation and script detection (OSD) only.</span><br><span class="line">•	1 = Automatic page segmentation with OSD.</span><br><span class="line">•	2 = Automatic page segmentation, but no OSD, or OCR</span><br><span class="line">•	3 = Fully automatic page segmentation, but no OSD. (Default)</span><br><span class="line">•	4 = Assume a single column of text of variable sizes.</span><br><span class="line">•	5 = Assume a single uniform block of vertically aligned text.</span><br><span class="line">•	6 = Assume a single uniform block of text.</span><br><span class="line">•	7 = Treat the image as a single text line.</span><br><span class="line">•	8 = Treat the image as a single word.</span><br><span class="line">•	9 = Treat the image as a single word in a circle.</span><br><span class="line">•	10 = Treat the image as a single character.</span><br><span class="line">•	11 = Sparse text. Find as much text as possible in no particular order.</span><br><span class="line">•	12 = Sparse text with OSD.</span><br><span class="line">•	13 = Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.</span><br></pre></td></tr></table></figure></p>
+<p>##训练样本</p>
+<ul>
+<li>训练工具 <a href="https://github.com/tesseract-ocr/tesseract/wiki/AddOns">https://github.com/tesseract-ocr/tesseract/wiki/AddOns</a></li>
+<li>使用教程 <a href="https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract">https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract</a></li>
+<li>提高识别率 <a href="https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality">https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality</a></li>
+<li>清理文本背景 <a href="http://www.fmwconcepts.com/imagemagick/textcleaner/index.php" target="_blank" rel="noopener">http://www.fmwconcepts.com/imagemagick/textcleaner/index.php</a></li>
+<li>提取文本区域 <a href="http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html" target="_blank" rel="noopener">http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html</a></li>
+<li>以jTessBoxEditor为例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; 1、收集文本信息的图片</span><br><span class="line">&gt; 2、制作的图片转为tiff格式</span><br><span class="line">&gt; 3、jTessBoxEditor进行tiff格式图片合成 &lt;Tool-&gt;Merge TIFF&gt;</span><br><span class="line"></span><br><span class="line">合成后的图片取名规范 [lang].[fontname].exp[num].tif</span><br><span class="line">[lang]是语言，[fontname]是字体，[num]是标号</span><br></pre></td></tr></table></figure>
+<p>###1、Make Box Files</p>
+<ul>
+<li>使用 Tesseract 识别，生成 box 文件：</li>
+<li>确保 tif 和 box 文件同名且位于同一目录下，用 jTessBoxEditor 打开 tif 文件），或者直接用文本编辑器编辑。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -l chi_sim -psm 10 batch.nochop makebox</span><br></pre></td></tr></table></figure>
+<p>###2、Run Tesseract for Training</p>
+<ul>
+<li>使用修改正确后的 box 文件，对 Tesseract 进行训练，生成 .tr 文件：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -psm 10 nobatch box.train</span><br></pre></td></tr></table></figure>
+<p>###3、Compute the Character Set</p>
+<ul>
+<li>生成字符集的文本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unicharset_extractor hz.font.exp0.box hz.font.exp1.box</span><br><span class="line"></span><br><span class="line">After 3.03</span><br><span class="line">training/set_unicharset_properties -U input_unicharset -O output_unicharset --script_dir=training/langdata</span><br></pre></td></tr></table></figure>
+<p>正确的格式应该如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">110</span><br><span class="line">NULL 0 NULL 0</span><br><span class="line">N 5 59,68,216,255,87,236,0,27,104,227 Latin 11 0 1 N</span><br><span class="line">Y 5 59,68,216,255,91,205,0,47,91,223 Latin 33 0 2 Y</span><br><span class="line">1 8 59,69,203,255,45,128,0,66,74,173 Common 3 2 3 1</span><br><span class="line">9 8 18,66,203,255,89,156,0,39,104,173 Common 4 2 4 9</span><br><span class="line">a 3 58,65,186,198,85,164,0,26,97,185 Latin 56 0 5 a</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>###4、font_properties (new in 3.01)</p>
+<ul>
+<li>定义字体特征文件，Tesseract-OCR 3.01 以上的版本在训练之前需要创建一个名称为 font_properties 的字体特征文件。font_properties 不含有 BOM 头，文件内容格式如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;fontname&gt; &lt;italic&gt; &lt;bold&gt; &lt;fixed&gt; &lt;serif&gt; &lt;fraktur&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其中 fontname 为字体名称，必须与 [lang].[fontname].exp[num].box 中的名称保持一致。<italic> 、<bold> 、<fixed> 、<serif>、<fraktur> 的取值为 1 或 0，表示字体是否具有这些属性。</fraktur></serif></fixed></bold></italic></li>
+<li>这里就是普通字体，不倾斜不加粗，所以新建一个名为 font_properties 的文件，内容为： font 0 0 0 0 0</li>
+</ul>
+<p>###5、Clustering</p>
+<ul>
+<li>修改 Clustering 过程生成的 4 个文件（inttemp、pffmtable、normproto、shapetable）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">shapeclustering -F font_properties -U unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">mftraining -F font_properties -U unicharset -O hz.unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">cntraining hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">* 生成后的文件需要添加前缀， 如这里改为 hz.inttemp、hz.pffmtable、hz.normproto、hz.shapetable。</span><br><span class="line"></span><br><span class="line">###6、Putting it all together</span><br><span class="line"></span><br><span class="line">* 生成最后的训练文件</span><br></pre></td></tr></table></figure>
+<p>combine_tessdata hz.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###7、use example</span><br><span class="line"></span><br><span class="line">* 使用训练的文件进行识别</span><br></pre></td></tr></table></figure></p>
+<p>tesseract test.png out -l hz<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##脚本运行</span><br></pre></td></tr></table></figure></p>
+<p>#!/bin/sh<br>read -p “输入你语言:” lang<br>echo ${lang}<br>read -p “输入你的字体:” font<br>echo ${font}<br>echo “完整文件名为：”<br>echo ${lang}.${font}.exp0.tif<br>echo “开始。。。”<br>echo ${font} 0 0 0 0 0 &gt;font_properties</p>
+<p>#tesseract  ${lang}.${font}.exp0.tif $(lang).$(font).exp0 -l chi_sim -psm 10 batch.nochop makebox</p>
+<p>#read -p “继续生产tr文件？”<br>tesseract  ${lang}.${font}.exp0.tif ${lang}.${font}.exp0 -psm 10 nobatch box.train<br>unicharset_extractor ${lang}.${font}.exp0.box<br>shapeclustering -F font_properties -U unicharset ${lang}.${font}.exp0.tr<br>mftraining -F font_properties -U unicharset -O unicharset ${lang}.${font}.exp0.tr<br>cntraining ${lang}.${font}.exp0.tr<br>echo “开始重命名文件”<br>mv inttemp ${font}.inttemp<br>mv normproto ${font}.normproto<br>mv pffmtable ${font}.pffmtable<br>mv shapetable ${font}.shapetable<br>mv unicharset ${font}.unicharset<br>echo “生成最终文件”<br>combine_tessdata ${font}.<br>echo “完成”<br><code>`</code></p>
 
           
         
@@ -1329,145 +1660,6 @@ x100         按指定高度缩放，保持宽高比
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/第三方音乐软件播放导致直播中断/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiyun">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祁云的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/15/第三方音乐软件播放导致直播中断/" itemprop="url">第三方音乐软件播放导致直播中断</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxdgblht5ej30go0tn47f.jpg" alt="-w240"> <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxdgbn3mqkj30go0tnh2h.jpg" alt="-w240"> <img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxdgbr7vc7j30go0tnn65.jpg" alt="-w240"></p>
-<p>音频开播（最左）<br>退入到后台后<br>打开qq音乐并选择音乐进行播放（中间）<br>退入后台<br>回到斗鱼app（最右）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">开播时，观众可以正常听到主播的声音。</span><br><span class="line">开启qq音乐后，观众端一直处于“鲨鱼娘努力加载中...”的场景，并无法恢复直播。</span><br></pre></td></tr></table></figure>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>麦克风（播放和录制）、耳机（插入和拔出）都会通知Device进行指令接收，进行扬声器播放或者耳机音频数据传输。</p>
-<p>可以使用音频会话向系统传达打算如何在应用中使用音频。<br>此音频会话充当应用和操作系统之间的中介 - 进而是底层音频硬件。<br>可以使用它来向操作系统传达应用程序音频的性质，而无需详细说明特定行为或与音频硬件的所需交互。将这些细节的管理委派给音频会话可确保最佳地管理用户的音频体验。</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxdgtafs5ij30pf0j3ac5.jpg" alt="-w600"></p>
-<pre><code>•    Configure the audio session category and mode to communicate to the system how you intend to use audio in your app
-•    Activate your app’s audio session to put your category and mode configuration into action
-•    Subscribe and respond to important audio session notifications, such as audio interruptions and route changes
-•    Perform advanced audio device configuration such as setting sample rate, I/O buffer duration, and number of channels
-</code></pre><h4 id="打断场景"><a href="#打断场景" class="headerlink" title="打断场景"></a>打断场景</h4><p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxdhwy63emj30tz0hqq50.jpg" alt="-w600"></p>
-<p>当直播库录制时，会创建一个session用于向系统传达指令。这个session在系统级的Device的session之上。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">开启直播，就会开启session；</span><br><span class="line"></span><br><span class="line">第三方音乐应用开启，会创建自己的session，抢占当前我们直播的session，导致直播音频录制停止。</span><br><span class="line"></span><br><span class="line">Facetime或者来电等请求接收时，设备的session会下发通知，当前有更底层的session需要使用，我们直播的session会被打断，导致直播音频录制停止。如果用户主动拒绝这些请求，打断会恢复，直播继续。</span><br></pre></td></tr></table></figure>
-<p>==出现无法直播的的问题就是第三方音乐app抢占了session，直播直接停止==</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxdi8iegqhj315v080tat.jpg" alt></p>
-<p>iOS系统支持后台模式以及播放和录制情形共同使用的场景</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 为了保证音频录制能在iOS系统后台持续工作，首先需要开启UIBackgroundModes配置，保证应用在静音、锁屏下正常使用。</span><br><span class="line">2. 监听当前Session的状态，是否打断、恢复</span><br><span class="line">3. 监听当前应用Active，第一时间响应app进入前后台的工作场景</span><br><span class="line">4. 回到前台时，重新启动Session并且设置Category允许Record和Play</span><br><span class="line">5. reactivate当前的AudioSession</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AVAudioSession *session = [AVAudioSession sharedInstance];</span><br><span class="line">[session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers | AVAudioSessionCategoryOptionAllowBluetooth error:nil];</span><br><span class="line">[session setActive:YES error:nil];</span><br></pre></td></tr></table></figure>
-<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a href="https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioInterruptions/HandlingAudioInterruptions.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/HandlingAudioInterruptions/HandlingAudioInterruptions.html</a></p>
-<p><a href="https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html" target="_blank" rel="noopener">https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioSessionCategoriesandModes/AudioSessionCategoriesandModes.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/音频降噪算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1554,198 +1746,6 @@ x100         按指定高度缩放，保持宽高比
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">作为一种高压缩比的音频压缩算法，AAC压缩比通常为18：1，也有数据说为20：1；</span><br><span class="line"></span><br><span class="line">在音质方面，由于采用多声道，和使用低复杂性的描述方式，使其比几乎所有的传统编码方式在同规格的情况下更胜一筹。</span><br><span class="line"></span><br><span class="line">不过直到2006年，使用这一格式存储音乐的并不多，可以播放该格式的mp3播放器更是少之又少，目前所知仅有苹果iPod、Sony Walkman（NWZ-A、NWZ-S、NWZ-E、NWZ-X系列）、任天堂NDSi和iPhone（微软推出的Windows 7附带的Windows Media Player 12也支持AAC）。</span><br><span class="line"></span><br><span class="line">此外计算机上很多音乐播放软件都支持AAC（前提是安装过AAC解码器），如苹果iTunes。</span><br><span class="line"></span><br><span class="line">但在移动电话领域，AAC的支持度已很普遍，Nokia、Sony Ericsson、Motorola等品牌均在其中高端产品中支持AAC（一开始主要是LC-AAC，随着移动电话性能的发展，HE-AAC的支持也已广泛）。</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AAC是一种宽带音频编码算法，主要利用以下两种编码策略来大幅减少存储高质量数字音频所需要的数据量：</span><br><span class="line">舍去与感知上无关的信号成分</span><br><span class="line">去除编码后信号的冗余部分</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/绝地求生存活人数识别Tesseract-OCR/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Qiyun">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祁云的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/15/绝地求生存活人数识别Tesseract-OCR/" itemprop="url">Tesseract OCR使用介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>#Tesseract OCR使用介绍</p>
-<p>##目录<br>[TOC]</p>
-<p>##下载地址及介绍</p>
-<ul>
-<li>官网介绍：<a href="http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3" target="_blank" rel="noopener">http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3</a></li>
-<li>Github源码连接： <a href="https://github.com/tesseract-ocr">https://github.com/tesseract-ocr</a></li>
-<li>开源贡献者主页 <a href="https://kevintechnology.com/" target="_blank" rel="noopener">https://kevintechnology.com/</a></li>
-</ul>
-<p>##安装 Tesseract</p>
-<ul>
-<li>语言包查看 <a href="https://www.macports.org/ports.php?by=name&amp;substr=tesseract-" target="_blank" rel="noopener">https://www.macports.org/ports.php?by=name&amp;substr=tesseract-</a></li>
-<li>支持Windows、linux、macOS</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、安装 tesseract和语言包</span><br><span class="line">sudo port install tesseract	</span><br><span class="line">sudo port install tesseract-&lt;langcode&gt;</span><br><span class="line"></span><br><span class="line">2、homebrew 安装</span><br><span class="line">brew install tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br><span class="line"></span><br><span class="line">3、重新安装</span><br><span class="line">brew uninstall tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br></pre></td></tr></table></figure>
-<ul>
-<li>Homebrew 是一个包管理器，如果没装的话，在终端执行</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
-<p>##使用 Tesseract</p>
-<ul>
-<li>使用命令行进行图像识别</li>
-<li>imagename 就是要识别的图片文件的名称，outputbase 就是识别结果输出文件的名称。</li>
-<li>lang 就是要识别的语言代码，例如英语为 eng、简体中文为 chi_sim 等等。可以同时识别多种语言，使用 “+” 相连，例如 eng+chi_sim。缺省时识别英语。</li>
-</ul>
-<p>1、格式信息如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract imagename outputbase [-l lang] [-psm pagesegmode] [configfile...]</span><br></pre></td></tr></table></figure></p>
-<p>2、示例: 识别image图片并将结果保存在out.txt文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tesseract image.png out -l chi_sim</span><br><span class="line">tesseract image.png out -l chi_sim -psm 10</span><br></pre></td></tr></table></figure></p>
-<p>3、pagesegmode 为识别的具体模式，具体包含以下模式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">•	0 = Orientation and script detection (OSD) only.</span><br><span class="line">•	1 = Automatic page segmentation with OSD.</span><br><span class="line">•	2 = Automatic page segmentation, but no OSD, or OCR</span><br><span class="line">•	3 = Fully automatic page segmentation, but no OSD. (Default)</span><br><span class="line">•	4 = Assume a single column of text of variable sizes.</span><br><span class="line">•	5 = Assume a single uniform block of vertically aligned text.</span><br><span class="line">•	6 = Assume a single uniform block of text.</span><br><span class="line">•	7 = Treat the image as a single text line.</span><br><span class="line">•	8 = Treat the image as a single word.</span><br><span class="line">•	9 = Treat the image as a single word in a circle.</span><br><span class="line">•	10 = Treat the image as a single character.</span><br><span class="line">•	11 = Sparse text. Find as much text as possible in no particular order.</span><br><span class="line">•	12 = Sparse text with OSD.</span><br><span class="line">•	13 = Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.</span><br></pre></td></tr></table></figure></p>
-<p>##训练样本</p>
-<ul>
-<li>训练工具 <a href="https://github.com/tesseract-ocr/tesseract/wiki/AddOns">https://github.com/tesseract-ocr/tesseract/wiki/AddOns</a></li>
-<li>使用教程 <a href="https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract">https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract</a></li>
-<li>提高识别率 <a href="https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality">https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality</a></li>
-<li>清理文本背景 <a href="http://www.fmwconcepts.com/imagemagick/textcleaner/index.php" target="_blank" rel="noopener">http://www.fmwconcepts.com/imagemagick/textcleaner/index.php</a></li>
-<li>提取文本区域 <a href="http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html" target="_blank" rel="noopener">http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html</a></li>
-<li>以jTessBoxEditor为例</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; 1、收集文本信息的图片</span><br><span class="line">&gt; 2、制作的图片转为tiff格式</span><br><span class="line">&gt; 3、jTessBoxEditor进行tiff格式图片合成 &lt;Tool-&gt;Merge TIFF&gt;</span><br><span class="line"></span><br><span class="line">合成后的图片取名规范 [lang].[fontname].exp[num].tif</span><br><span class="line">[lang]是语言，[fontname]是字体，[num]是标号</span><br></pre></td></tr></table></figure>
-<p>###1、Make Box Files</p>
-<ul>
-<li>使用 Tesseract 识别，生成 box 文件：</li>
-<li>确保 tif 和 box 文件同名且位于同一目录下，用 jTessBoxEditor 打开 tif 文件），或者直接用文本编辑器编辑。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -l chi_sim -psm 10 batch.nochop makebox</span><br></pre></td></tr></table></figure>
-<p>###2、Run Tesseract for Training</p>
-<ul>
-<li>使用修改正确后的 box 文件，对 Tesseract 进行训练，生成 .tr 文件：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -psm 10 nobatch box.train</span><br></pre></td></tr></table></figure>
-<p>###3、Compute the Character Set</p>
-<ul>
-<li>生成字符集的文本</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unicharset_extractor hz.font.exp0.box hz.font.exp1.box</span><br><span class="line"></span><br><span class="line">After 3.03</span><br><span class="line">training/set_unicharset_properties -U input_unicharset -O output_unicharset --script_dir=training/langdata</span><br></pre></td></tr></table></figure>
-<p>正确的格式应该如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">110</span><br><span class="line">NULL 0 NULL 0</span><br><span class="line">N 5 59,68,216,255,87,236,0,27,104,227 Latin 11 0 1 N</span><br><span class="line">Y 5 59,68,216,255,91,205,0,47,91,223 Latin 33 0 2 Y</span><br><span class="line">1 8 59,69,203,255,45,128,0,66,74,173 Common 3 2 3 1</span><br><span class="line">9 8 18,66,203,255,89,156,0,39,104,173 Common 4 2 4 9</span><br><span class="line">a 3 58,65,186,198,85,164,0,26,97,185 Latin 56 0 5 a</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
-<p>###4、font_properties (new in 3.01)</p>
-<ul>
-<li>定义字体特征文件，Tesseract-OCR 3.01 以上的版本在训练之前需要创建一个名称为 font_properties 的字体特征文件。font_properties 不含有 BOM 头，文件内容格式如下：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;fontname&gt; &lt;italic&gt; &lt;bold&gt; &lt;fixed&gt; &lt;serif&gt; &lt;fraktur&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>其中 fontname 为字体名称，必须与 [lang].[fontname].exp[num].box 中的名称保持一致。<italic> 、<bold> 、<fixed> 、<serif>、<fraktur> 的取值为 1 或 0，表示字体是否具有这些属性。</fraktur></serif></fixed></bold></italic></li>
-<li>这里就是普通字体，不倾斜不加粗，所以新建一个名为 font_properties 的文件，内容为： font 0 0 0 0 0</li>
-</ul>
-<p>###5、Clustering</p>
-<ul>
-<li>修改 Clustering 过程生成的 4 个文件（inttemp、pffmtable、normproto、shapetable）</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">shapeclustering -F font_properties -U unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">mftraining -F font_properties -U unicharset -O hz.unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">cntraining hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">* 生成后的文件需要添加前缀， 如这里改为 hz.inttemp、hz.pffmtable、hz.normproto、hz.shapetable。</span><br><span class="line"></span><br><span class="line">###6、Putting it all together</span><br><span class="line"></span><br><span class="line">* 生成最后的训练文件</span><br></pre></td></tr></table></figure>
-<p>combine_tessdata hz.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###7、use example</span><br><span class="line"></span><br><span class="line">* 使用训练的文件进行识别</span><br></pre></td></tr></table></figure></p>
-<p>tesseract test.png out -l hz<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##脚本运行</span><br></pre></td></tr></table></figure></p>
-<p>#!/bin/sh<br>read -p “输入你语言:” lang<br>echo ${lang}<br>read -p “输入你的字体:” font<br>echo ${font}<br>echo “完整文件名为：”<br>echo ${lang}.${font}.exp0.tif<br>echo “开始。。。”<br>echo ${font} 0 0 0 0 0 &gt;font_properties</p>
-<p>#tesseract  ${lang}.${font}.exp0.tif $(lang).$(font).exp0 -l chi_sim -psm 10 batch.nochop makebox</p>
-<p>#read -p “继续生产tr文件？”<br>tesseract  ${lang}.${font}.exp0.tif ${lang}.${font}.exp0 -psm 10 nobatch box.train<br>unicharset_extractor ${lang}.${font}.exp0.box<br>shapeclustering -F font_properties -U unicharset ${lang}.${font}.exp0.tr<br>mftraining -F font_properties -U unicharset -O unicharset ${lang}.${font}.exp0.tr<br>cntraining ${lang}.${font}.exp0.tr<br>echo “开始重命名文件”<br>mv inttemp ${font}.inttemp<br>mv normproto ${font}.normproto<br>mv pffmtable ${font}.pffmtable<br>mv shapetable ${font}.shapetable<br>mv unicharset ${font}.unicharset<br>echo “生成最终文件”<br>combine_tessdata ${font}.<br>echo “完成”<br><code>`</code></p>
 
           
         
@@ -2278,13 +2278,26 @@ x100         按指定高度缩放，保持宽高比
   
 
 
+  
 
 
 
+  
+  
 
 
 
+  
+  
 
+
+
+  
+  
+
+
+
+  
 
 
 
@@ -2316,6 +2329,36 @@ x100         按指定高度缩放，保持宽高比
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
+  
+
+  
+  
+    <script id="ribbon" type="text/javascript" size="300" alpha="0.6" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
   
 
 
