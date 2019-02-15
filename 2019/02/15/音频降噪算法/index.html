@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="音频降噪算法WAV (Waveform Audio File Format)此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。也是其音乐发烧友中常用的指定规格之一。由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。 制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2019/02/15/音频降噪算法/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="音频降噪算法WAV (Waveform Audio File Format)此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。也是其音乐发烧友中常用的指定规格之一。由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。 制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy61nb179gj30hx0drjto.jpg">
+<meta property="og:updated_time" content="2019-02-15T06:42:22.392Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="音频降噪算法WAV (Waveform Audio File Format)此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。也是其音乐发烧友中常用的指定规格之一。由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。 制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fy61nb179gj30hx0drjto.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-音频降噪算法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/15/音频降噪算法/" class="article-date">
+  <time datetime="2019-02-15T06:42:07.313Z" itemprop="datePublished">2019-02-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="音频降噪算法"><a href="#音频降噪算法" class="headerlink" title="音频降噪算法"></a>音频降噪算法</h1><h2 id="WAV-Waveform-Audio-File-Format"><a href="#WAV-Waveform-Audio-File-Format" class="headerlink" title="WAV (Waveform Audio File Format)"></a>WAV (Waveform Audio File Format)</h2><p>此格式属于资源交换档案格式(RIFF)的应用之一，通常会将采用脉冲编码调制的音频资存储在区块中。<br>也是其音乐发烧友中常用的指定规格之一。<br>由于此音频格式未经过压缩，所以在音质方面不会出现失真的情况，但文件的体积因而在众多音频格式中较为大。</p>
+<p><strong>制作WAV文件时，会有一个采样率，根据采样定理，若此采样率低于信号最高频率的两倍时，那么超过此最大频率的频段，将会产生混叠的情况，使原始信号受到污染，亦不能称此WAV文件就是无损文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">WAV文件遵守资源交换档案格式之规则，在文件的前44(或46)字节放置标头(header)，使播放器或编辑器能够简单掌握文件的基本信息，其内容以区块(chunk)为最小单位，每一区块长度为4字节，而区块之上则由子区块包裹，每一子区块长度不拘，但须在前头先宣告标签及长度(字节)。</span><br><span class="line"></span><br><span class="line">标头的前3个区块记录文件格式及长度；</span><br><span class="line">接着第一个子区块包含8个区块，记录声道数量、采样率等信息；</span><br><span class="line">接着第二个子区块才是真正的音频数据，长度则视音频长度而定。</span><br><span class="line"></span><br><span class="line">内容如下表所示。须注意的是，每个区块的端序不尽相同，而音频内容本身则是采用小端序。</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fy61nb179gj30hx0drjto.jpg" alt></p>
+<h2 id="AAC-Advanced-Audio-Coding"><a href="#AAC-Advanced-Audio-Coding" class="headerlink" title="AAC (Advanced Audio Coding)"></a>AAC (Advanced Audio Coding)</h2><p>出现于1997年，为一种基于MPEG-2的有损数字音频压缩的专利音频编码标准。</p>
+<ul>
+<li><p>.aac - 使用MPEG-2 Audio Transport Stream（ADTS，参见MPEG-2）容器，区别于使用MPEG-4容器的MP4/M4A格式，属于传统的AAC编码（FAAC默认的封装，但FAAC亦可输出MPEG-4封装的AAC）。</p>
+</li>
+<li><p>.mp4 - 使用了MPEG-4 Part 14（第14部分）的简化版即3GPP Media Release 6 Basic（3gp6，参见3GP）进行封装的AAC编码（Nero AAC编码器仅能输出MPEG-4封装的AAC）。</p>
+</li>
+<li><p>.m4a - 为了区别纯音频MP4文件和包含视频的MP4文件而由苹果（Apple）公司使用的扩展名，Apple iTunes对纯音频MP4文件采用了”.m4a”命名。M4A的本质和音频MP4相同，故音频MP4文件亦可直接更改扩展名为M4A。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">作为一种高压缩比的音频压缩算法，AAC压缩比通常为18：1，也有数据说为20：1；</span><br><span class="line"></span><br><span class="line">在音质方面，由于采用多声道，和使用低复杂性的描述方式，使其比几乎所有的传统编码方式在同规格的情况下更胜一筹。</span><br><span class="line"></span><br><span class="line">不过直到2006年，使用这一格式存储音乐的并不多，可以播放该格式的mp3播放器更是少之又少，目前所知仅有苹果iPod、Sony Walkman（NWZ-A、NWZ-S、NWZ-E、NWZ-X系列）、任天堂NDSi和iPhone（微软推出的Windows 7附带的Windows Media Player 12也支持AAC）。</span><br><span class="line"></span><br><span class="line">此外计算机上很多音乐播放软件都支持AAC（前提是安装过AAC解码器），如苹果iTunes。</span><br><span class="line"></span><br><span class="line">但在移动电话领域，AAC的支持度已很普遍，Nokia、Sony Ericsson、Motorola等品牌均在其中高端产品中支持AAC（一开始主要是LC-AAC，随着移动电话性能的发展，HE-AAC的支持也已广泛）。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AAC是一种宽带音频编码算法，主要利用以下两种编码策略来大幅减少存储高质量数字音频所需要的数据量：</span><br><span class="line">舍去与感知上无关的信号成分</span><br><span class="line">去除编码后信号的冗余部分</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/02/15/音频降噪算法/" data-id="cjs5p1sxw0007l05u4s7jffq3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/15/ImageMagick-7-0-7-16使用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/02/15/神经网路介绍/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/02/15/x264编码使用介绍/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/ImageMagick-7-0-7-16使用/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/音频降噪算法/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/神经网路介绍/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/如何高效的使用硬编码进行数据压缩/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

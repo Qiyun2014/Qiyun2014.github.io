@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#ImageMagick 7.0.7-16使用 相关链接  HomePage: https://www.imagemagick.org/script/index.php Download: https://github.com/ImageMagick/ImageMagick  ##安装    •brew install ImageMagick ##使用 Edge Detection1convert">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2019/02/15/ImageMagick-7-0-7-16使用/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#ImageMagick 7.0.7-16使用 相关链接  HomePage: https://www.imagemagick.org/script/index.php Download: https://github.com/ImageMagick/ImageMagick  ##安装    •brew install ImageMagick ##使用 Edge Detection1convert">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-15T06:44:07.660Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="#ImageMagick 7.0.7-16使用 相关链接  HomePage: https://www.imagemagick.org/script/index.php Download: https://github.com/ImageMagick/ImageMagick  ##安装    •brew install ImageMagick ##使用 Edge Detection1convert">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ImageMagick-7-0-7-16使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/15/ImageMagick-7-0-7-16使用/" class="article-date">
+  <time datetime="2019-02-15T06:43:56.956Z" itemprop="datePublished">2019-02-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#ImageMagick 7.0.7-16使用</p>
+<p><strong>相关链接</strong></p>
+<ul>
+<li>HomePage: <a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">https://www.imagemagick.org/script/index.php</a></li>
+<li>Download: <a href="https://github.com/ImageMagick/ImageMagick" target="_blank" rel="noopener">https://github.com/ImageMagick/ImageMagick</a></li>
+</ul>
+<p>##安装<br>    •brew install ImageMagick</p>
+<p>##使用</p>
+<p><strong>Edge Detection</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert input.png -colorspace gray -canny 0x1+10%+30% output.png</span><br></pre></td></tr></table></figure></p>
+<p><strong>Compositon Image</strong></p>
+<p>把一张图片按80的质量去压缩(jpg的压缩参数),同时按图片比例非强制缩放成不超过280x140的图片.居中裁剪280x140,去掉图片裁减后的空白和图片exif信息,通常这种指令是为了保证图片大小正好为280x140<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert +profile &apos;*&apos; /Users/qiyun/Desktop/屏幕快照\ 2018-01-03\ 下午2.04.04.png -quality 80 -resize &apos;280x140^&gt;&apos; -gravity Center -crop 280x140+0+0 +repage /Users/qiyun/Desktop/新图片.jpg</span><br></pre></td></tr></table></figure></p>
+<p><code>-quality   图片质量,jpg默认99,png默认75
+-resize
+100x100      高度和宽度比例保留最高值，高比不变
+100x100^     高度和宽度比例保留最低值，宽高比不变
+100x100!     宽度和高度强制转换，忽视宽高比
+100x100&gt;     更改长宽，当图片长或宽超过规定的尺寸
+100x100&lt;     更改长宽 只有当图片长宽都超过规定的尺寸
+100x100^&gt;    更改长宽，当图片长或宽超过规定的尺寸。高度和宽度比例保留最低值
+100x100^&lt;    更改长宽，只有当图片长宽都超过规定的尺寸。高度和宽度比例保留最低值
+100          按指定的宽度缩放，保持宽高比例
+x100         按指定高度缩放，保持宽高比
+-gravity NorthWest, North, NorthEast, West, Center, East,  SouthWest, South, SouthEast截取用的定位指令,定位截取区域在图片中的方位
+-crop 200x200+0+0 截取用的截取指令 ,在用定位指令后,按后两位的偏移值偏移截取范围左上角的像素后,再按前两位的数值,从左上角开始截取相应大小的图片
++repage         去掉图片裁减后的空白
+-dissolve 30    设定组合图片透明度dissolve示例
++/-profile *    去掉/添加图片exif信息</code></p>
+<p><strong>把原始图片分割成多张小图</strong></p>
+<pre><code>•convert src.jpg -crop 100x100 dest.jpg
+</code></pre><p>假设src.jpg的大小是300x200,执行命令后将得到名为dest-0.jpg、dest-1.jpg…dest-5.jpg的6张大小为100x100的小图片。注意如果尺寸不是目标图片的整数倍，那么右边缘和下边缘的一部分图片就用实际尺寸</p>
+<p><strong>在原始图片上剪裁一张指定尺寸的小图</strong></p>
+<pre><code>•convert src.jpg -crop 100x80+50+30 dest.jpg
+</code></pre><p>在原始图片的上距离上部30像素左部50为起点的位置,分别向右向下截取一块大小为100x80的图片。如果x相对于坐标，宽度不够100，那就取实际值。</p>
+<pre><code>•convert src.jpg -gravity center -crop 100x80+0+0 dest.jpg
+</code></pre><p>在原始图上截取中心部分一块100x80的图片</p>
+<pre><code>•convert src.jpg -gravity southeast -crop 100x80+10+5 dest.jpg
+</code></pre><p>在原始图上截取右下角距离下边缘10个像素，右边缘5个像素一块100x80的图片</p>
+<p><strong>图片进行反色处理</strong></p>
+<pre><code>•convert -negate src.jpg negate.jpg
+</code></pre><p>##示例</p>
+<p><strong>转换rgb为灰度图</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">计算公式 &gt;&gt; Grey = (R*38 + G*75 + B*15)&gt;&gt; 7</span><br><span class="line">convert /Users/qiyun/Desktop/屏幕快照\ 2018-02-23\ 下午2.51.29.png -set colorspace Gray -separate -average 1111.jpeg</span><br></pre></td></tr></table></figure>
+<p><strong>-crop参数是从一个图片截取一个指定区域的子图片</strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式如下:convert -crop widthxheight&#123;+-&#125;x&#123;+-&#125;y&#123;%&#125;</span><br></pre></td></tr></table></figure></p>
+<p> <em>width 子图片宽度</em> <em>height 子图片高度</em><br> x 为正数时为从区域左上角的x坐标,为负数时,左上角坐标为0,然后从截出的子图片右边减去x象素宽度. y 为正数时为从区域左上角的y坐标,为负数时,左上角坐标为0,然后从截出的子图片上边减去y象素高度.  如convert -crop 300x400+10+10 src.jpg dest.jpg 从src.jpg坐标为x:10 y:10截取300x400的图片存为dest.jpg convert -crop 300x400-10+10 src.jpg dest.jpg 从src.jpg坐标为x:0 y:10截取290x400的图片存为dest.jpg</p>
+<p>##总结</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/02/15/ImageMagick-7-0-7-16使用/" data-id="cjs5p1sxh0000l05uhbdcvtpx" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/15/x264编码使用介绍/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/02/15/音频降噪算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/02/15/x264编码使用介绍/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/ImageMagick-7-0-7-16使用/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/音频降噪算法/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/神经网路介绍/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/02/15/如何高效的使用硬编码进行数据压缩/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
