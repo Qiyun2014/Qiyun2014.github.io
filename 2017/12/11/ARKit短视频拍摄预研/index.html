@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="#ARKit短视频拍摄预研 ##应用场景1231.  短视频录制中，开启相机，使用ARKit的SLAM（机器人同时定位与建图）系统检测平面（地面或物体表面），在平面上布置展现的元素（2D帧动画或3D模型）并混合相机图像数据进行同步录制到MP4文件。2D帧动画添加多样化元素或3D动画制作不一样的动画效果，设定触发条件用于动画变化。在播放对应的动画时添加声音。2.  使用Sprite可以实现背景墙拍摄">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARKit短视频拍摄预研">
+<meta property="og:url" content="https://github.com/Qiyun2014/2017/12/11/ARKit短视频拍摄预研/index.html">
+<meta property="og:site_name" content="祁云的博客">
+<meta property="og:description" content="#ARKit短视频拍摄预研 ##应用场景1231.  短视频录制中，开启相机，使用ARKit的SLAM（机器人同时定位与建图）系统检测平面（地面或物体表面），在平面上布置展现的元素（2D帧动画或3D模型）并混合相机图像数据进行同步录制到MP4文件。2D帧动画添加多样化元素或3D动画制作不一样的动画效果，设定触发条件用于动画变化。在播放对应的动画时添加声音。2.  使用Sprite可以实现背景墙拍摄">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/Qiyun2014/2017/12/11/images/ARKit图片/ARSKView.png">
+<meta property="og:image" content="https://github.com/Qiyun2014/2017/12/11/images/ARKit图片/ARSCNView.png">
+<meta property="og:image" content="https://github.com/Qiyun2014/2017/12/11/images/ARKit图片/ARSCNView结构图.png">
+<meta property="og:image" content="https://github.com/Qiyun2014/2017/12/11/images/ARKit图片/ARKit_Scene.gif">
+<meta property="og:image" content="https://github.com/Qiyun2014/2017/12/11/images/ARKit图片/ARKit_demo示例.png">
+<meta property="og:updated_time" content="2019-05-09T06:27:49.692Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ARKit短视频拍摄预研">
+<meta name="twitter:description" content="#ARKit短视频拍摄预研 ##应用场景1231.  短视频录制中，开启相机，使用ARKit的SLAM（机器人同时定位与建图）系统检测平面（地面或物体表面），在平面上布置展现的元素（2D帧动画或3D模型）并混合相机图像数据进行同步录制到MP4文件。2D帧动画添加多样化元素或3D动画制作不一样的动画效果，设定触发条件用于动画变化。在播放对应的动画时添加声音。2.  使用Sprite可以实现背景墙拍摄">
+<meta name="twitter:image" content="https://github.com/Qiyun2014/2017/12/11/images/ARKit图片/ARSKView.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/Qiyun2014/2017/12/11/ARKit短视频拍摄预研/">
+
+
+
+
+
+  <title>ARKit短视频拍摄预研 | 祁云的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">祁云的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            Schedule
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2017/12/11/ARKit短视频拍摄预研/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ARKit短视频拍摄预研</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-11T15:08:48+08:00">
+                2017-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/11/ARKit短视频拍摄预研/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/11/ARKit短视频拍摄预研/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#ARKit短视频拍摄预研</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="##应用场景"></a>##应用场景</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.  短视频录制中，开启相机，使用ARKit的SLAM（机器人同时定位与建图）系统检测平面（地面或物体表面），在平面上布置展现的元素（2D帧动画或3D模型）并混合相机图像数据进行同步录制到MP4文件。2D帧动画添加多样化元素或3D动画制作不一样的动画效果，设定触发条件用于动画变化。在播放对应的动画时添加声音。</span><br><span class="line">2.  使用Sprite可以实现背景墙拍摄短片和mv，在相机上进行贴图和贴视频等。</span><br><span class="line">3.  应用3d效果可以对当前天气进行变换，模拟雨天、打雷、阴天等场景，如Snapchat应用。</span><br></pre></td></tr></table></figure>
+<h2 id="ARKit介绍"><a href="#ARKit介绍" class="headerlink" title="##ARKit介绍"></a>##ARKit介绍</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-   在ARKit中，需要理解ARSCNView、ARSKView、ARSession以及ARCamera；</span><br><span class="line"></span><br><span class="line">1.  ARSCNView：包含我们从手机摄像头捕捉到的真实世界的画面以及我们添加上的物体（3d模型、3d文字、图像等）的可视化视图。</span><br><span class="line">2.  ARSKView：包含我们从手机摄像头捕捉到的真实世界的画面以及我们添加上的物体（2d图像、文字、视频或者其他）的可视化视图。</span><br><span class="line">3.  ARSession：SLAM系统的相关配置管理（如设备是否支持，识别状态、人脸跟踪、获取当前相机等相关信息）。</span><br><span class="line">4.  ARCamera：控制物体的相对角度及其世界坐标管理。可以在3d世界捕捉到物体的坐标点，进行物体跟踪和相关信息读取。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>针对2d的场景，需要使用对应的2d引擎框架SpriteKit，而SpriteKit与ARKit的桥梁就是ARSKView。<br><img src="../images/ARKit图片/ARSKView.png" alt="-w130" title="fig:calc.png"></li>
+<li>在3d的场景中，可以使用3d引擎Screenkit，而Screenkit与ARKit的桥梁就是ARSCNView。<br><img src="../images/ARKit图片/ARSCNView.png" alt="-w130" title="fig:calc.png"></li>
+</ul>
+<h4 id="开启AR功能"><a href="#开启AR功能" class="headerlink" title="开启AR功能"></a>开启AR功能</h4><pre><code>//  create sceneView，start plane detection of example
+- (ARSCNView *)sceneView{
+
+    if (!_sceneView) {
+        _sceneView = [[ARSCNView alloc] initWithFrame:self.bounds];
+
+        // Set the view&apos;s delegate
+        _sceneView.delegate = self;
+
+        // Show statistics such as fps and timing information
+        _sceneView.showsStatistics = YES;
+        _sceneView.automaticallyUpdatesLighting = YES;
+        _sceneView.autoenablesDefaultLighting = YES;
+        //_sceneView.debugOptions =   ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
+
+        // Create a session configuration
+        ARWorldTrackingConfiguration *configuration = [[ARWorldTrackingConfiguration alloc] init];
+        configuration.planeDetection = ARPlaneDetectionHorizontal;
+
+        // Run the view&apos;s session
+        [_sceneView.session runWithConfiguration:configuration options:ARSessionRunOptionResetTracking | ARSessionRunOptionRemoveExistingAnchors];
+
+        // Add session delegate
+        //_sceneView.session.delegate = self;
+
+        // Add contact delegate
+        _sceneView.scene.physicsWorld.contactDelegate = self;
+    }
+    return _sceneView;
+}
+</code></pre><ul>
+<li>Screenkit结构图如下，我们显示的3d模型或文字信息等都在Node进行显示<br><img src="../images/ARKit图片/ARSCNView结构图.png" alt="-w130" title="fig:calc.png"></li>
+</ul>
+<h4 id="添加3d模型"><a href="#添加3d模型" class="headerlink" title="添加3d模型"></a>添加3d模型</h4><ul>
+<li>如果要添加一个足球到识别到的平面（根据3d足球模型的存储路径进行加载进行创建一个SCNNode对象），设置足球显示的相关信息（在3d世界中的坐标，大小，颜色及物理碰撞掩码等）</li>
+</ul>
+<!-- -->
+<pre><code>@implementation DYARBallNode
+static NSString *ar_ball_scnpath = @&quot;sportModel.scnassets/Ball DAE&quot;;
+
+- (id)initWithNode{
+
+    if (self == [super init]) {
+
+        [self asc_addChildNodeNamed:ar_ball_name fromSceneNamed:ar_ball_scnpath withScale:0.1];
+
+        // set node position
+        self.position = SCNVector3Make(0, 0.4, 0);
+        self.rotation = SCNVector4Make(M_PI_2, 0, 0, 0);
+        self.name = ar_ball_name;
+
+        // set meterial attribute
+        self.physicsBody = [SCNPhysicsBody dynamicBody];
+        self.geometry.firstMaterial.multiply.contents = [UIColor darkGrayColor];
+        self.light.castsShadow = YES;
+        //self.light.color = [UIColor redColor];
+
+        // add contact detect
+        self.physicsBody.categoryBitMask = DYARNodeDetectionMaskBall;
+        self.physicsBody.collisionBitMask = DYARNodeDetectionMaskBall | DYARNodeDetectionMaskCharacter;
+        self.physicsBody.contactTestBitMask = DYARNodeDetectionMaskBall | DYARNodeDetectionMaskCharacter;
+    }
+    return self;
+}
+
+@end
+</code></pre><ul>
+<li>从文件路径中解析加载scene并获取指定的node（即3d模型）</li>
+</ul>
+<!-- -->
+<pre><code>- (SCNNode *)asc_addChildNodeNamed:(nullable NSString *)name fromSceneNamed:(NSString *)path withScale:(CGFloat)scale {
+    // Load the scene from the specified file
+    SCNScene *scene = [SCNScene sceneNamed:path inDirectory:nil options:nil];
+
+    // Retrieve the root node
+    SCNNode *node = scene.rootNode;
+
+    // Search for the node named &quot;name&quot;
+    if (name) {
+        node = [node childNodeWithName:name recursively:YES];
+    }
+    else {
+        // Take the first child if no name is passed
+        node = node.childNodes[0];
+    }
+
+    if (scale != 0) {
+        // Rescale based on the current bounding box and the desired scale
+        // Align the node to 0 on the Y axis
+        SCNVector3 min, max;
+        [node getBoundingBoxMin:&amp;min max:&amp;max];
+
+        GLKVector3 mid = GLKVector3Add(SCNVector3ToGLKVector3(min), SCNVector3ToGLKVector3(max));
+        mid = GLKVector3MultiplyScalar(mid, 0.5);
+        mid.y = min.y; // Align on bottom
+
+        GLKVector3 size = GLKVector3Subtract(SCNVector3ToGLKVector3(max), SCNVector3ToGLKVector3(min));
+        CGFloat maxSize = MAX(MAX(size.x, size.y), size.z);
+
+        scale = scale / maxSize;
+        mid = GLKVector3MultiplyScalar(mid, scale);
+        mid = GLKVector3Negate(mid);
+
+        node.scale = SCNVector3Make(scale, scale, scale);
+        node.position = SCNVector3FromGLKVector3(mid);
+    }
+
+    // Add to the container passed in argument
+    [self addChildNode:node];
+
+    return node;
+}
+</code></pre><h4 id="解析3d模型动画"><a href="#解析3d模型动画" class="headerlink" title="解析3d模型动画"></a>解析3d模型动画</h4><ul>
+<li>读取到动画后进行存储，可以在特定情况下对当前模型进行动作更换。类似游戏中人物跑步、踢腿、爬等等行为。</li>
+</ul>
+<!-- -->
+<pre><code>SCNSceneSource *sceneSource = [SCNSceneSource sceneSourceWithURL:[NSURL fileURLWithPath:scenePath] options:nil];
+// get animation ids
+NSArray *animationIDs =  [sceneSource identifiersOfEntriesWithClass:[CAAnimation class]];
+NSString *identifier = animationIDs.firstObject;
+CAAnimation *animation = [sceneSource entryWithIdentifier:identifier withClass:[CAAnimation class]];
+</code></pre><h4 id="添加3d文字和3d图形"><a href="#添加3d文字和3d图形" class="headerlink" title="添加3d文字和3d图形"></a>添加3d文字和3d图形</h4><ul>
+<li>SCNText可以用于添加文件</li>
+<li>SCNShaper可以用于添加图像（正方形、球形、梯形等各种图形）</li>
+</ul>
+<!-- -->
+<pre><code>SCNText *text = [SCNText textWithString:@&quot;斗鱼TV&quot; extrusionDepth:0.01];
+SCNNode *textNode = [SCNNode nodeWithGeometry:text];
+text.font = [UIFont systemFontOfSize:0.15];
+textNode.geometry.firstMaterial.diffuse.contents = [UIColor redColor];
+SCNNode *rootNode = self.sceneView.scene.rootNode;
+textNode.worldPosition = SCNVector3Make(hitResult.worldTransform.columns[3].x, hitResult.worldTransform.columns[3].y, hitResult.worldTransform.columns[3].z);
+[rootNode addChildNode:textNode];
+</code></pre><ul>
+<li>添加一个球，颜色随机配置，并添加物理碰撞效果</li>
+</ul>
+<!-- -->
+<pre><code>SCNBox *cube = [SCNBox boxWithWidth:dimension height:dimension length:dimension chamferRadius:0];
+cube.chamferRadius = 0.5f;
+
+SCNNode *node = [SCNNode nodeWithGeometry:cube];
+int R = (arc4random() % 256) ;
+int G = (arc4random() % 256) ;
+int B = (arc4random() % 256) ;
+///float A = (arc4random() % 10)/10.0;
+node.geometry.firstMaterial.diffuse.contents = [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1.0];
+
+// The physicsBody tells SceneKit this geometry should be manipulated by the physics engine
+node.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeDynamic shape:nil];
+node.physicsBody.mass = 1.0;
+node.physicsBody.categoryBitMask = DYARNodeDetectionMaskCategoryCube;
+
+// We insert the geometry slightly above the point the user tapped, so that it drops onto the plane
+// using the physics engine
+float insertionYOffset = 1.5;
+node.position = SCNVector3Make(
+                                   hitResult.worldTransform.columns[3].x,
+                                   hitResult.worldTransform.columns[3].y + insertionYOffset,
+                                   hitResult.worldTransform.columns[3].z
+                                   );
+
+SCNNode *fNode = [self.sceneView.scene.rootNode childNodes].firstObject;
+fNode.scale = SCNVector3Make(2, 2, 2);
+
+[self.sceneView.scene.rootNode addChildNode:node];
+</code></pre><h4 id="粒子系统"><a href="#粒子系统" class="headerlink" title="粒子系统"></a>粒子系统</h4><ul>
+<li>粒子效果的文件可以用xcode创建，并配合例子生命周期，存活时长、例子数量、动画曲线等等效果。</li>
+<li>SCNParticleSystem类有对相关属性的配置。</li>
+<li>下面是一个下雨的粒子效果，添加到平面上，模拟下雨场景。</li>
+</ul>
+<!-- -->
+<pre><code>SCNParticleSystem *ps = [SCNParticleSystem particleSystemNamed:@&quot;rain&quot; inDirectory:nil];
+SCNParticleSystem *pss = [SCNParticleSystem particleSystemNamed:@&quot;plok&quot; inDirectory:nil];
+pss.idleDuration = 0;
+pss.loops = NO;
+[ps setSystemSpawnedOnCollision:pss];
+[plane addParticleSystem:ps];
+</code></pre><p><img src="../images/ARKit图片/ARKit_Scene.gif" alt title="fig:calc.gif"></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>加载3d模型在ios中仅仅支持指定的几种格式.dae/.abd,这两个是能直接转换为.scn用于3d引起Screenkit场景加载</li>
+<li>dae模型动画从3d软件工作导出时，动画是分多个甚至几十个，需要统一放入一个AnimationGroup进行读取，否则无法对模型进行更换动画效果</li>
+<li>获取3d世界中某一个物体的坐标需要正确的使用ARHitTestResultType类型去获取，根据场景设定不同类型</li>
+<li>控制某个物体需要调用node的parentNode属性进行设置，否则无效</li>
+<li>ARKit是左手坐标系，右边👉是x的正方向，上面👆是z的正方向，正对着自己是y的正方向</li>
+<li>推荐使用camera.transform来计算物体的距离</li>
+</ul>
+<h2 id="竞品"><a href="#竞品" class="headerlink" title="竞品"></a>竞品</h2><ol>
+<li>从APPStore商店上架的AR产品中，有视+短视频和AR Dragon宠物模拟、Paint<br>Space AR绘画等软件使用AR功能。</li>
+<li>Snapchat天气变换和Facebook直播等。</li>
+</ol>
+<h2 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h2><p><img src="../images/ARKit图片/ARKit_demo示例.png" alt title="fig:calc.gif"></p>
+<ul>
+<li>上图是识别屏幕放置一个3d模型的杯子示例图片，根据使用有以下几处：</li>
+</ul>
+<ol>
+<li>仅适用A9及以上芯片手机和iOS 11及以上版本（最低iPhone6s）</li>
+<li>iphone6plus上相机画面光线有轻度闪动，iPhone7正常</li>
+<li>依赖于机型的传感器校准3d坐标，部分机型有可能产生抖动</li>
+</ol>
+<h2 id="性能消耗"><a href="#性能消耗" class="headerlink" title="性能消耗"></a>性能消耗</h2><ol>
+<li>cpu占用较高，iPhone6s占用45%</li>
+<li>一套模型，内存约占20m（取决模型素材大小）</li>
+</ol>
+<p><a href="Category:技术预研" title="wikilink" target="_blank" rel="noopener">Category:技术预研</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/05/Tensorflow-使用/" rel="prev" title="Tensorflow 使用">
+                Tensorflow 使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2017/12/11/ARKit短视频拍摄预研/" data-title="ARKit短视频拍摄预研" data-url="https://github.com/Qiyun2014/2017/12/11/ARKit短视频拍摄预研/">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Qiyun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Qiyun2014" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="shagengba@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景"><span class="nav-number">1.</span> <span class="nav-text">##应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARKit介绍"><span class="nav-number">2.</span> <span class="nav-text">##ARKit介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开启AR功能"><span class="nav-number">2.0.1.</span> <span class="nav-text">开启AR功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加3d模型"><span class="nav-number">2.0.2.</span> <span class="nav-text">添加3d模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析3d模型动画"><span class="nav-number">2.0.3.</span> <span class="nav-text">解析3d模型动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加3d文字和3d图形"><span class="nav-number">2.0.4.</span> <span class="nav-text">添加3d文字和3d图形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#粒子系统"><span class="nav-number">2.0.5.</span> <span class="nav-text">粒子系统</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#竞品"><span class="nav-number">4.</span> <span class="nav-text">竞品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限制"><span class="nav-number">5.</span> <span class="nav-text">限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能消耗"><span class="nav-number">6.</span> <span class="nav-text">性能消耗</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qiyun</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"qiyun"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>

@@ -239,6 +239,1226 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/神经网路介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/神经网路介绍/" itemprop="url">深度神经网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T15:08:48+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/15/神经网路介绍/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/02/15/神经网路介绍/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="深度神经网络"><a href="#深度神经网络" class="headerlink" title="深度神经网络"></a>深度神经网络</h1><h2 id="TOC"><a href="#TOC" class="headerlink" title="TOC"></a>TOC</h2><p>[TOC]</p>
+<p><strong>介绍</strong></p>
+<p>2016 年 3 月，谷歌公司的 AlphaGo 向韩国棋院围棋九段大师李世石发起挑战，而这棋局走法的可能性有 361!种，最终 AlphaGo 战 胜了这场“棋局数比可见宇宙中的原子数还多”的智力游戏。2015 年 11 月 9 日(在距这场比 赛前4个月)，谷歌公司开源了它的第二代深度学习系统TensorFlow，也就是AlphaGo的基础 程序。 </p>
+<p>2017 年 2 月，TensorFlow 的首届开发者峰会(2017 TensorFlow Dev Summit)在美国的 加利福尼亚州举行。在会上，谷歌公司宣布正式发布 TensorFlow 1.0 版本.</p>
+<p>众所周知，人工智能是高级计算智能最宽泛的概念，机器学习是研究人工智能的一个工 具，深度学习是机器学习的一个子集，是目前研究领域卓有成效的学习方法。深度学习的框 架有很多，而 TensorFlow 将神经网络、算法这些平时停留在理论层面的知识，组织成一个平 台框架，集合了神经网络的各个算法函数组成一个工具箱，让广大工程师可以专心建造自己 的目标领域的“轮子”，而且 TensorFlow 是基于 Python 语言的，极易上手，这些优势迅速吸 引了全世界的工程师。 </p>
+<h2 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h2><h3 id="深度"><a href="#深度" class="headerlink" title="深度"></a>深度</h3><p>深度学习的前身是人工神经网络(artificial neural network，ANN)，它的基本特点就是试图 模仿人脑的神经元之间传递和处理信息的模式。神经网络这个词本身可以指生物神经网络和人 工神经网络。在机器学习中，我们说的神经网络一般就是指人工神经网络。</p>
+<p>下图给出的是一个最基本的人工神经网络的 3 层模型。 </p>
+<p>前馈神经网络示意图 </p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8gk2gs7j307206zmxt.jpg" alt></p>
+<h3 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h3><p><strong>前馈神经网络</strong><br><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqr8h9k4jhj31en0mfgo1.jpg" alt></p>
+<ul>
+<li><p>神经网络其实是一个非常宽泛的称呼，它包括两类，一类是用计算机的方式去模拟人脑，这就是我们常说的ANN（人工神经网络），另一类是研究生物学上的神经网络，又叫生物神经网络。对于我们计算机人士而言，肯定是研究前者。</p>
+</li>
+<li><p>在人工神经网络之中，又分为前馈神经网络和反馈神经网络这两种。那么它们两者的区别是什么呢？这个其实在于它们的结构图。我们可以把结构图看作是一个有向图。其中神经元代表顶点，连接代表有向边。对于前馈神经网络中，这个有向图是没有回路的。你可以仔细观察本文中出现的所有神经网络的结构图，确认一下。而对于反馈神经网络中，结构图的有向图是有回路的。反馈神经网络也是一类重要的神经网络。其中Hopfield网络就是反馈神经网络。深度学习中的RNN也属于一种反馈神经网络。</p>
+</li>
+<li><p>本文中所分别描述的三个网络：单层神经网络，双层神经网络，以及多层神经网络。深度学习中的CNN属于一种特殊的多层神经网络。另外，在一些Blog中和文献中看到的BP神经网络是什么？其实它们就是使用了反向传播BP算法的两层前馈神经网络。也是最普遍的一种两层神经网络。</p>
+</li>
+</ul>
+<p>神经网络是一种模拟人脑的神经网络以期能够实现类人工智能的机器学习技术。人脑中的神经网络是一个非常复杂的组织。成人的大脑中估计有1000亿个神经元之多。</p>
+<ul>
+<li>它包括输入层（input layer）、输出层（output layer）和一个或多个隐藏层（hidden layers）。上图的神经网络由3个单元的输入层，4个单元的隐藏层和2个单元的输出层组成。单元等于感知器。</li>
+<li>输入层的单元是隐藏层单元的输入，隐藏层单元的输出是输出层单元的输入。</li>
+<li>两个感知器之间的连接有一个权量。</li>
+<li>第t层的每个感知器与第t-1层的每个感知器相互关联。当然，你也可以设置权量为0，从而在实质上取消连接。</li>
+<li>在加工输入数据时，你将输入数据赋予输入层的每个单元，而隐藏层的每个单元是输入层每个单元的加权求和。也就是说，输入层的数据会被前向传播到隐藏层的每个单元。同理，隐藏层的输出作为输入会前向传播到输入层，计算得到最后的输出，即神经网络的输出。</li>
+<li>多个隐藏层的神经网络同理。</li>
+</ul>
+<h3 id="神经元"><a href="#神经元" class="headerlink" title="神经元"></a>神经元</h3><ul>
+<li>对于神经元的研究由来已久，1904年生物学家就已经知晓了神经元的组成结构。</li>
+<li>一个神经元通常具有多个树突，主要用来接受传入信息；而轴突只有一条，轴突尾端有许多轴突末梢可以给其他多个神经元传递信息。轴突末梢跟其他神经元的树突产生连接，从而传递信号。这个连接的位置在生物学上叫做“突触”。</li>
+</ul>
+<p>人脑中的神经元形状可以用下图做简单的说明：<br><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8hrvi0xj30d807ugpk.jpg" alt></p>
+<ul>
+<li>神经元模型是一个包含输入，输出与计算功能的模型。输入可以类比为神经元的树突，而输出可以类比为神经元的轴突，计算则可以类比为细胞核。</li>
+<li>下图是一个典型的神经元模型：包含有3个输入，1个输出，以及2个计算功能。</li>
+<li>注意中间的箭头线。这些线称为“连接”。每个上有一个“权值”。</li>
+</ul>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqr8i4zslcj30gu09qq4i.jpg" alt></p>
+<ul>
+<li>连接是神经元中最重要的东西。每一个连接上都有一个权重。</li>
+<li>一个神经网络的训练算法就是让权重的值调整到最佳，以使得整个网络的预测效果最好。</li>
+<li>我们使用a来表示输入，用w来表示权值。一个表示连接的有向箭头可以这样理解：在初端，传递的信号大小仍然是a，端中间有加权参数w，经过这个加权后的信号会变成a<em>w，因此在连接的末端，信号的大小就变成了a</em>w。</li>
+<li>在其他绘图模型里，有向箭头可能表示的是值的不变传递。而在神经元模型里，每个有向箭头表示的是值的加权传递。</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8io5cinj30ca06z750.jpg" alt></p>
+<ul>
+<li>如果我们将神经元图中的所有变量用符号表示，并且写出输出的计算公式的话，就是下图。</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8j3kkboj30hd099gmp.jpg" alt></p>
+<ul>
+<li>可见z是在输入和权值的线性加权和叠加了一个函数g的值。在MP模型里，函数g是sgn函数，也就是取符号函数。这个函数当输入大于0时，输出1，否则输出0。</li>
+<li>下面对神经元模型的图进行一些扩展。首先将sum函数与sgn函数合并到一个圆圈里，代表神经元的内部计算。其次，把输入a与输出z写到连接线的左上方，便于后面画复杂的网络。最后说明，一个神经元可以引出多个代表输出的有向箭头，但值都是一样的。</li>
+<li>神经元可以看作一个计算与存储单元。计算是神经元对其的输入进行计算功能。存储是神经元会暂存计算结果，并传递到下一层</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8jk38saj30ma08rac1.jpg" alt></p>
+<ul>
+<li>当我们用“神经元”组成网络以后，描述网络中的某个“神经元”时，我们更多地会用“单元”（unit）来指代。同时由于神经网络的表现形式是一个有向图，有时也会用“节点”（node）来表达同样的意思。 </li>
+</ul>
+<p><strong>神经元模型的使用可以这样理解:</strong></p>
+<ul>
+<li>我们有一个数据，称之为样本。样本有四个属性，其中三个属性已知，一个属性未知。我们需要做的就是通过三个已知属性预测未知属性。</li>
+<li>具体办法就是使用神经元的公式进行计算。三个已知属性的值是a1，a2，a3，未知属性的值是z。z可以通过公式计算出来。</li>
+<li>这里，已知的属性称之为特征，未知的属性称之为目标。假设特征与目标之间确实是线性关系，并且我们已经得到表示这个关系的权值w1，w2，w3。那么，我们就可以通过神经元模型预测新样本的目</li>
+</ul>
+<h3 id="两层神经网络"><a href="#两层神经网络" class="headerlink" title="两层神经网络"></a>两层神经网络</h3><ul>
+<li>单层神经网络无法解决异或问题。但是当增加一个计算层以后，两层神经网络不仅可以解决异或问题，而且具有非常好的非线性分类效果。不过两层神经网络的计算是一个问题，没有一个较好的解法</li>
+<li>两层神经网络除了包含一个输入层，一个输出层以外，还增加了一个中间层。此时，中间层和输出层都是计算层。我们扩展上节的单层神经网络，在右边新加一个层次（只含有一个节点）。</li>
+</ul>
+<p><strong>例如ax(y)代表第y层的第x个节点。z1，z2变成了a1(2)，a2(2)。下图给出了a1(2)，a2(2)的计算公式。</strong></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8jthf9gj30fx0au77c.jpg" alt></p>
+<p><strong>计算最终输出z的方式是利用了中间层的a1(2)，a2(2)和第二个权值矩阵计算得到的，如下图。</strong></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8k7oq83j30g60at76v.jpg" alt></p>
+<p><strong>与单层神经网络不同。理论证明，两层神经网络可以无限逼近任意连续函数。</strong><br><strong>这是什么意思呢？也就是说，面对复杂的非线性分类任务，两层（带一个隐藏层）神经网络可以分类的很好</strong></p>
+<ul>
+<li>两层神经网络通过两层的线性模型模拟了数据内真实的非线性函数。因此，多层的神经网络的本质就是复杂函数拟合。</li>
+<li>在设计一个神经网络时，输入层的节点数需要与特征的维度匹配，输出层的节点数要与目标的维度匹配。而中间层的节点数，却是由设计者指定的。因此，“自由”把握在设计者的手中。但是，节点数设置的多少，却会影响到整个模型的效果。如何决定这个自由层的节点数呢？目前业界没有完善的理论来指导这个决策。一般是根据经验来设置。较好的方法就是预先设定几个可选值，通过切换这几个值来看整个模型的预测效果，选择效果最好的值作为最终选择。这种方法又叫做Grid Search（网格搜索）</li>
+</ul>
+<p>如EasyPR字符识别网络架构（下图）。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8kevp4pj30fa0atgnx.jpg" alt></p>
+<p>EasyPR使用了字符的图像去进行字符文字的识别。输入是120维的向量。输出是要预测的文字类别，共有65类。根据实验，我们测试了一些隐藏层数目，发现当值为40时，整个网络在测试集上的效果较好，因此选择网络的最终结构就是120，40，65。</p>
+<h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p><code>1958年，计算科学家Rosenblatt提出了由两层神经元组成的神经网络。他给它起了一个名字--“感知器”（Perceptron）（有的文献翻译成“感知机”）。</code><br><code>感知器是当时首个可以学习的人工神经网络。Rosenblatt现场演示了其学习识别简单图像的过程，在当时的社会引起了轰动。</code></p>
+<h4 id="loss"><a href="#loss" class="headerlink" title="loss"></a>loss</h4><ul>
+<li>Rosenblat提出的感知器模型中，模型中的参数可以被训练，但是使用的方法较为简单，并没有使用目前机器学习中通用的方法，这导致其扩展性与适用性非常有限。从两层神经网络开始，神经网络的研究人员开始使用机器学习相关的技术进行神经网络的训练。例如用大量的数据（1000-10000左右），使用算法进行优化等等，从而使得模型训练可以获得性能与数据利用上的双重优势。</li>
+<li>机器学习模型训练的目的，就是使得参数尽可能的与真实的模型逼近。具体做法是这样的。首先给所有参数赋上随机值。我们使用这些随机生成的参数值，来预测训练数据中的样本。样本的预测目标为yp，真实目标为y。那么，定义一个值loss，计算公式如下。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loss = (yp - y)2</span><br></pre></td></tr></table></figure>
+<p>==这个值称之为损失（loss），我们的目标就是使对所有训练数据的损失和尽可能的小。==<br><strong>如果将先前的神经网络预测的矩阵公式带入到yp中（因为有z=yp），那么我们可以把损失写为关于参数（parameter）的函数，这个函数称之为损失函数（loss function）。下面的问题就是求：如何优化参数，能够让损失函数的值最小。</strong></p>
+<p>此时这个问题就被转化为一个优化问题。一个常用方法就是高等数学中的求导，但是这里的问题由于参数不止一个，求导后计算导数等于0的运算量很大，所以一般来说解决这个优化问题使用的是梯度下降算法。梯度下降算法每次计算参数在当前的梯度，然后让参数向着梯度的反方向前进一段距离，不断重复，直到梯度接近零时截止。一般这个时候，所有的参数恰好达到使损失函数达到一个最低值的状态。</p>
+<p>在神经网络模型中，由于结构复杂，每次计算梯度的代价很大。因此还需要使用反向传播算法。反向传播算法是利用了神经网络的结构进行的计算。不一次计算所有参数的梯度，而是从后往前。首先计算输出层的梯度，然后是第二个参数矩阵的梯度，接着是中间层的梯度，再然后是第一个参数矩阵的梯度，最后是输入层的梯度。计算结束以后，所要的两个参数矩阵的梯度就都有了。</p>
+<h4 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h4><p>==反向传播算法可以直观的理解为下图。梯度的计算从后往前，一层层反向传播。前缀E代表着相对导数的意思。==</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8kpxij9j30b80aqtak.jpg" alt></p>
+<p><strong>反向传播算法的启示是数学中的链式法则。在此需要说明的是，尽管早期神经网络的研究人员努力从生物学中得到启发，但从BP算法开始，研究者们更多地从数学上寻求问题的最优解。不再盲目模拟人脑网络是神经网络研究走向成熟的标志。正如科学家们可以从鸟类的飞行中得到启发，但没有必要一定要完全模拟鸟类的飞行方式，也能制造可以飞天的飞机。</strong></p>
+<h4 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h4><p><strong>优化问题只是训练中的一个部分。机器学习问题之所以称为学习问题，而不是优化问题，就是因为它不仅要求数据在训练集上求得一个较小的误差，在测试集上也要表现好。因为模型最终是要部署到没有见过训练数据的真实场景。提升模型在测试集上的预测效果的主题叫做泛化（generalization），相关方法被称作正则化（regularization）。神经网络中常用的泛化技术有权重衰减等。</strong></p>
+<p>两层神经网络在多个地方的应用说明了其效用与价值。10年前困扰神经网络界的异或问题被轻松解决。神经网络在这个时候，已经可以发力于语音识别，图像识别，自动驾驶等多个领域。<br>但是神经网络仍然存在若干的问题：尽管使用了BP算法，一次神经网络的训练仍然耗时太久，而且困扰训练优化的一个问题就是局部最优解问题，这使得神经网络的优化较为困难。同时，隐藏层的节点数需要调参，这使得使用不太方便，工程和研究人员对此多有抱怨。</p>
+<h4 id="SVM"><a href="#SVM" class="headerlink" title="SVM"></a>SVM</h4><p>90年代中期，由Vapnik等人发明的SVM（Support Vector Machines，支持向量机）算法诞生，很快就在若干个方面体现出了对比神经网络的优势：无需调参；高效；全局最优解。基于以上种种理由，SVM迅速打败了神经网络算法成为主流。</p>
+<h3 id="多层神经网络（深度学习）"><a href="#多层神经网络（深度学习）" class="headerlink" title="多层神经网络（深度学习）"></a>多层神经网络（深度学习）</h3><p><strong>2006年，Hinton在《Science》和相关期刊上发表了论文，首次提出了“深度信念网络”的概念。与传统的训练方式不同，“深度信念网络”有一个“预训练”（pre-training）的过程，这可以方便的让神经网络中的权值找到一个接近最优解的值，之后再使用“微调”(fine-tuning)技术来对整个网络进行优化训练。这两个技术的运用大幅度减少了训练多层神经网络的时间。他给多层神经网络相关的学习方法赋予了一个新名词–“深度学习”。</strong></p>
+<p><strong>很快，深度学习在语音识别领域暂露头角。接着，2012年，深度学习技术又在图像识别领域大展拳脚。Hinton与他的学生在ImageNet竞赛中，用多层的卷积神经网络成功地对包含一千类别的一百万张图片进行了训练，取得了分类错误率15%的好成绩，这个成绩比第二名高了近11个百分点，充分证明了多层神经网络识别效果的优越性。</strong></p>
+<p><strong>在这之后，关于深度神经网络的研究与应用不断涌现。</strong></p>
+<p>在两层神经网络的输出层后面，继续添加层次。原来的输出层变成中间层，新加的层次成为新的输出层。所以可以得到下图。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8kyx0b0j30f509pwgy.jpg" alt></p>
+<p>依照这样的方式不断添加，我们可以得到更多层的多层神经网络。公式推导的话其实跟两层神经网络类似，使用矩阵运算的话就仅仅是加一个公式而已。<br>==在已知输入a(1)，参数W(1)，W(2)，W(3)的情况下，输出z的推导公式如下：==<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">g(W(1) * a(1)) = a(2); </span><br><span class="line">     g(W(2) * a(2)) = a(3);</span><br><span class="line">g(W(3) * a(3)) = z;</span><br></pre></td></tr></table></figure></p>
+<p>多层神经网络中，输出也是按照一层一层的方式来计算。从最外面的层开始，算出所有单元的值以后，再继续计算更深一层。只有当前层所有单元的值都计算完毕以后，才会算下一层。有点像计算向前不断推进的感觉。所以这个过程叫做“正向传播”。</p>
+<p>==首先看第一张图，可以看出W(1)中有6个参数，W(2)中有4个参数，W(3)中有6个参数，所以整个神经网络中的参数有16个（这里我们不考虑偏置节点，下同）。==</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8m1g5q1j30gf0cvdiu.jpg" alt></p>
+<p>==假设我们将中间层的节点数做一下调整。第一个中间层改为3个单元，第二个中间层改为4个单元。经过调整以后，整个网络的参数变成了33个。==</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqr8m91njxj30hf0dqtd4.jpg" alt></p>
+<p>==虽然层数保持不变，但是第二个神经网络的参数数量却是第一个神经网络的接近两倍之多，从而带来了更好的表示（represention）能力。表示能力是多层神经网络的一个重要性质。<br>在参数一致的情况下，我们也可以获得一个“更深”的网络==</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8mlqpt1j30iw0chtdc.jpg" alt></p>
+<p>==上图的网络中，虽然参数数量仍然是33，但却有4个中间层，是原来层数的接近两倍。这意味着一样的参数数量，可以用更深的层次去表达。==</p>
+<p><strong>与两层层神经网络不同。多层神经网络中的层数增加了很多。<br>增加更多的层次有什么好处？更深入的表示特征，以及更强的函数模拟能力。 更深入的表示特征可以这样理解，随着网络的层数增加，每一层对于前一层次的抽象表示更深入。在神经网络中，每一层神经元学习到的是前一层神经元值的更抽象的表示。例如第一个隐藏层学习到的是“边缘”的特征，第二个隐藏层学习到的是由“边缘”组成的“形状”的特征，第三个隐藏层学习到的是由“形状”组成的“图案”的特征，最后的隐藏层学习到的是由“图案”组成的“目标”的特征。通过抽取更抽象的特征来对事物进行区分，从而获得更好的区分与分类能力。</strong></p>
+<p><strong>多层神经网络特征学习如图：</strong></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8mw3nuwj30m70c9tch.jpg" alt></p>
+<ul>
+<li>更强的函数模拟能力是由于随着层数的增加，整个网络的参数就越多。而神经网络其实本质就是模拟特征与目标之间的真实关系函数的方法，更多的参数意味着其模拟的函数可以更加的复杂，可以有更多的容量（capcity）去拟合真正的关系。</li>
+<li>通过研究发现，在参数数量一样的情况下，更深的网络往往具有比浅层的网络更好的识别效率。这点也在ImageNet的多次大赛中得到了证实。从2012年起，每年获得ImageNet冠军的深度神经网络的层数逐年增加，2015年最好的方法GoogleNet是一个多达22层的神经网络。</li>
+<li>在最新一届的ImageNet大赛上，目前拿到最好成绩的MSRA团队的方法使用的更是一个深达152层的网络！关于这个方法更多的信息有兴趣的可以查阅ImageNet网站。</li>
+</ul>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><ul>
+<li>在单层神经网络时，我们使用的激活函数是sgn函数。到了两层神经网络时，我们使用的最多的是sigmoid函数。而到了多层神经网络时，通过一系列的研究发现，ReLU函数在训练多层神经网络时，更容易收敛，并且预测性能更好。因此，目前在深度学习中，最流行的非线性函数是ReLU函数。ReLU函数不是传统的非线性函数，而是分段线性函数。其表达式非常简单，就是y=max(x,0)。简而言之，在x大于0，输出就是输入，而在x小于0时，输出就保持为0。这种函数的设计启发来自于生物神经元对于激励的线性响应，以及当低于某个阈值后就不再响应的模拟。</li>
+<li>在多层神经网络中，训练的主题仍然是优化和泛化。当使用足够强的计算芯片（例如GPU图形加速卡）时，梯度下降算法以及反向传播算法在多层神经网络中的训练中仍然工作的很好。目前学术界主要的研究既在于开发新的算法，也在于对这两个算法进行不断的优化，例如，增加了一种带动量因子（momentum）的梯度下降算法。　</li>
+<li>在深度学习中，泛化技术变的比以往更加的重要。这主要是因为神经网络的层数增加了，参数也增加了，表示能力大幅度增强，很容易出现过拟合现象。因此正则化技术就显得十分重要。目前，Dropout技术，以及数据扩容（Data-Augmentation）技术是目前使用的最多的正则化技术</li>
+</ul>
+<h2 id="神经网络发展"><a href="#神经网络发展" class="headerlink" title="神经网络发展"></a>神经网络发展</h2><p>多层神经网络的研究仍在进行中。现在最为火热的研究技术包括RNN，LSTM等，研究方向则是图像理解方面。图像理解技术是给计算机一幅图片，让它用语言来表达这幅图片的意思。ImageNet竞赛也在不断召开，有更多的方法涌现出来，刷新以往的正确率。</p>
+<p>神经网络的发展历史曲折荡漾，既有被人捧上天的时刻，也有摔落在街头无人问津的时段，中间经历了数次大起大落。<br>从单层神经网络（感知器）开始，到包含一个隐藏层的两层神经网络，再到多层的深度神经网络，一共有三次兴起过程。详见下图。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8n3bkcvj30m90eiwi8.jpg" alt></p>
+<ul>
+<li><p>上图中的顶点与谷底可以看作神经网络发展的高峰与低谷。图中的横轴是时间，以年为单位。纵轴是一个神经网络影响力的示意表示。如果把1949年Hebb模型提出到1958年的感知机诞生这个10年视为落下（没有兴起）的话，那么神经网络算是经历了“三起三落”这样一个过程，跟“小平”同志类似。俗话说，天将降大任于斯人也，必先苦其心志，劳其筋骨。经历过如此多波折的神经网络能够在现阶段取得成功也可以被看做是磨砺的积累吧。</p>
+</li>
+<li><p>历史最大的好处是可以给现在做参考。科学的研究呈现螺旋形上升的过程，不可能一帆风顺。同时，这也给现在过分热衷深度学习与人工智能的人敲响警钟，因为这不是第一次人们因为神经网络而疯狂了。1958年到1969年，以及1985年到1995，这两个十年间人们对于神经网络以及人工智能的期待并不现在低，可结果如何大家也能看的很清楚。</p>
+</li>
+<li><p>因此，冷静才是对待目前深度学习热潮的最好办法。如果因为深度学习火热，或者可以有“钱景”就一窝蜂的涌入，那么最终的受害人只能是自己。神经网络界已经两次有被人们捧上天了的境况，相信也对于捧得越高，摔得越惨这句话深有体会。因此，神经网络界的学者也必须给这股热潮浇上一盆水，不要让媒体以及投资家们过分的高看这门技术。很有可能，三十年河东，三十年河西，在几年后，神经网络就再次陷入谷底。根据上图的历史曲线图，这是很有可能的。</p>
+</li>
+</ul>
+<h3 id="表示能力"><a href="#表示能力" class="headerlink" title="表示能力"></a>表示能力</h3><p>==下面说一下神经网络为什么能这么火热？简而言之，就是其学习效果的强大。随着神经网络的发展，其表示性能越来越强。==<br>==从单层神经网络，到两层神经网络，再到多层神经网络，下图说明了，随着网络层数的增加，以及激活函数的调整，神经网络所能拟合的决策分界平面的能力。==</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8nae3loj31go0yzdjx.jpg" alt></p>
+<p>可以看出，随着层数增加，其非线性分界拟合能力不断增强。图中的分界线并不代表真实训练出的效果，更多的是示意效果。<br>神经网络的研究与应用之所以能够不断地火热发展下去，与其强大的函数拟合能力是分不开关系的。</p>
+<p>当然，光有强大的内在能力，并不一定能成功。一个成功的技术与方法，不仅需要内因的作用，还需要时势与环境的配合。神经网络的发展背后的外在原因可以被总结为：更强的计算性能，更多的数据，以及更好的训练方法。只有满足这些条件时，神经网络的函数拟合能力才能得已体现，见下图。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqr8nid4z3j31010ml76c.jpg" alt></p>
+<ul>
+<li><p>之所以在单层神经网络年代，Rosenblat无法制作一个双层分类器，就在于当时的计算性能不足，Minsky也以此来打压神经网络。但是Minsky没有料到，仅仅10年以后，计算机CPU的快速发展已经使得我们可以做两层神经网络的训练，并且还有快速的学习算法BP。</p>
+</li>
+<li><p>但是在两层神经网络快速流行的年代。更高层的神经网络由于计算性能的问题，以及一些计算方法的问题，其优势无法得到体现。直到2012年，研究人员发现，用于高性能计算的图形加速卡（GPU）可以极佳地匹配神经网络训练所需要的要求：高并行性，高存储，没有太多的控制需求，配合预训练等算法，神经网络才得以大放光彩。</p>
+</li>
+<li><p>互联网时代，大量的数据被收集整理，更好的训练方法不断被发现。所有这一切都满足了多层神经网络发挥能力的条件。</p>
+</li>
+</ul>
+<h3 id="展望"><a href="#展望" class="headerlink" title="展望"></a>展望</h3><h4 id="量子计算"><a href="#量子计算" class="headerlink" title="量子计算"></a>量子计算</h4><ul>
+<li><p>回到我们对神经网络历史的讨论，根据历史趋势图来看，神经网络以及深度学习会不会像以往一样再次陷入谷底？作者认为，这个过程可能取决于量子计算机的发展。</p>
+</li>
+<li><p>根据一些最近的研究发现，人脑内部进行的计算可能是类似于量子计算形态的东西。而且目前已知的最大神经网络跟人脑的神经元数量相比，仍然显得非常小，仅不及1%左右。所以未来真正想实现人脑神经网络的模拟，可能需要借助量子计算的强大计算能力。</p>
+</li>
+<li><p>各大研究组也已经认识到了量子计算的重要性。谷歌就在开展量子计算机D-wave的研究，希望用量子计算来进行机器学习，并且在前段时间有了突破性的进展。国内方面，阿里和中科院合作成立了量子计算实验室，意图进行量子计算的研究。</p>
+</li>
+<li><p>如果量子计算发展不力，仍然需要数十年才能使我们的计算能力得以突飞猛进的发展，那么缺少了强大计算能力的神经网络可能会无法一帆风顺的发展下去。这种情况可以类比为80-90年时期神经网络因为计算能力的限制而被低估与忽视。假设量子计算机真的能够与神经网络结合，并且助力真正的人工智能技术的诞生，而且量子计算机发展需要10年的话，那么神经网络可能还有10年的发展期。直到那时期以后，神经网络才能真正接近实现AI这一目标。</p>
+</li>
+</ul>
+<h4 id="人工智能"><a href="#人工智能" class="headerlink" title="人工智能"></a>人工智能</h4><ul>
+<li><p>虽然现在人工智能非常火热，但是距离真正的人工智能还有很大的距离。就拿计算机视觉方向来说，面对稍微复杂一些的场景，以及易于混淆的图像，计算机就可能难以识别。因此，这个方向还有很多的工作要做。就普通人看来，这么辛苦的做各种实验，以及投入大量的人力就是为了实现一些不及孩童能力的视觉能力，未免有些不值。但是这只是第一步。虽然计算机需要很大的运算量才能完成一个普通人简单能完成的识图工作，但计算机最大的优势在于并行化与批量推广能力。使用计算机以后，我们可以很轻易地将以前需要人眼去判断的工作交给计算机做，而且几乎没有任何的推广成本。这就具有很大的价值。正如火车刚诞生的时候，有人嘲笑它又笨又重，速度还没有马快。但是很快规模化推广的火车就替代了马车的使用。人工智能也是如此。这也是为什么目前世界上各著名公司以及政府都对此热衷的原因。</p>
+</li>
+<li><p>目前看来，神经网络要想实现人工智能还有很多的路要走，但方向至少是正确的，下面就要看后来者的不断努力了。</p>
+</li>
+</ul>
+<h2 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h2><h3 id="视觉感知"><a href="#视觉感知" class="headerlink" title="视觉感知"></a>视觉感知</h3><p><strong>一、画面识别是什么任务？</strong></p>
+<p>学习知识的第一步就是明确任务，清楚该知识的输入输出。卷积神经网络最初是服务于画面识别的，所以我们先来看看画面识别的实质是什么。</p>
+<p>==先观看几组动物与人类视觉的差异对比图。==</p>
+<ol>
+<li>苍蝇的视觉和人的视觉的差异</li>
+</ol>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8ns85glj30k007hmy1.jpg" alt></p>
+<ol start="2">
+<li>蛇的视觉和人的视觉的差异</li>
+</ol>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8nz6lwmj30k007ht94.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">通过上面的两组对比图可以知道，即便是相同的图片经过不同的视觉系统，也会得到不同的感知。</span><br><span class="line"></span><br><span class="line">这里引出一条知识：生物所看到的景象并非世界的原貌，而是长期进化出来的适合自己生存环境的一种感知方式。 蛇的猎物一般是夜间行动，所以它就进化出了一种可以在夜间也能很好观察的感知系统，感热。</span><br></pre></td></tr></table></figure>
+<p>任何视觉系统都是将图像反光与脑中所看到的概念进行关联。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8o8fkp0j306702p0sk.jpg" alt></p>
+<p>所以画面识别实际上并非识别这个东西客观上是什么，而是寻找人类的视觉关联方式，并再次应用。 如果我们不是人类，而是蛇类，那么画面识别所寻找的𝒇就和现在的不一样。</p>
+<p><code>画面识别实际上是寻找（学习）人类的视觉关联方式𝒇，并再次应用。</code></p>
+<h3 id="图像表达"><a href="#图像表达" class="headerlink" title="图像表达"></a>图像表达</h3><p>我们知道了“画面识别是从大量的数据中寻找人类的视觉关联方式𝒇，并再次应用。 其-是输入，表示所看到的东西-输出，表示该东西是什么。</p>
+<p>在自然界中，是物体的反光，那么在计算机中，图像又是如何被表达和存储的呢？</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8ofdicog3083082mxw.gif" alt></p>
+<p>图像在计算机中是一堆按顺序排列的数字，数值为0到255。0表示最暗，255表示最亮。 你可以把这堆数字用一个长长的向量来表示，也就是==tensorflow==的mnist教程中784维向量的表示方式。 然而这样会失去平面结构的信息，为保留该结构信息，通常选择矩阵的表示方式：28x28的矩阵。</p>
+<p>上图是只有黑白颜色的灰度图，而更普遍的图片表达方式是RGB颜色模型，即红（Red）、绿（Green）、蓝（Blue）三原色的色光以不同的比例相加，以产生多种多样的色光。<br>这样，RGB颜色模型中，单个矩阵就扩展成了有序排列的三个矩阵，也可以用三维张量去理解，其中的每一个矩阵又叫这个图片的一个channel。</p>
+<p>在电脑中，一张图片是数字构成的“长方体”。可用 宽width, 高height, 深depth 来描述，如图。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8p1pqfuj308h070jr9.jpg" alt></p>
+<p><code>画面识别的输入是shape为(width, height, depth)的三维张量。</code></p>
+<p>接下来要考虑的就是该如何处理这样的“数字长方体”。</p>
+<h4 id="画面不变性"><a href="#画面不变性" class="headerlink" title="画面不变性"></a>画面不变性</h4><p>在决定如何处理“数字长方体”之前，需要清楚所建立的网络拥有什么样的特点。 我们知道一个物体不管在画面左侧还是右侧，都会被识别为同一物体，这一特点就是不变性（invariance），如下图所示。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8p9azpkj30fr0ldmy8.jpg" alt></p>
+<p>我们希望所建立的网络可以尽可能的满足这些不变性特点。<br>为了理解卷积神经网络对这些不变性特点的贡献，我们将用不具备这些不变性特点的前馈神经网络来进行比较。</p>
+<h4 id="图片识别–前馈神经网络"><a href="#图片识别–前馈神经网络" class="headerlink" title="图片识别–前馈神经网络"></a>图片识别–前馈神经网络</h4><p>方便起见，我们用depth只有1的灰度图来举例。 想要完成的任务是：在宽长为4x4的图片中识别是否有下图所示的“横折”。 图中，黄色圆点表示值为0的像素，深色圆点表示值为1的像素。 我们知道不管这个横折在图片中的什么位置，都会被认为是相同的横折。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8phpoakj30bf0aeq3f.jpg" alt></p>
+<p>若训练前馈神经网络来完成该任务，那么表达图像的三维张量将会被摊平成一个向量，作为网络的输入，即(width, height, depth)为(4, 4, 1)的图片会被展成维度为16的向量作为网络的输入层。再经过几层不同节点个数的隐藏层，最终输出两个节点，分别表示“有横折的概率”和“没有横折的概率”，如下图所示。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8pp9m6gj30dv0e174o.jpg" alt></p>
+<p>下面我们用数字（16进制）对图片中的每一个像素点（pixel）进行编号。 当使用右侧那种物体位于中间的训练数据来训练网络时，网络就只会对编号为5,6,9,a的节点的权重进行调节。 若让该网络识别位于右下角的“横折”时，则无法识别。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8pvt89zj30k00cejs1.jpg" alt></p>
+<p>解决办法是用大量物体位于不同位置的数据训练，同时增加网络的隐藏层个数从而扩大网络学习这些变体的能力。<br>然而这样做十分不效率，因为我们知道在左侧的“横折”也好，还是在右侧的“横折”也罢，大家都是“横折”。 为什么相同的东西在位置变了之后要重新学习？有没有什么方法可以将中间所学到的规律也运用在其他的位置？ 换句话说，也就是让==不同位置用相同的权重==。</p>
+<p>==卷积神经网络就是让权重在不同位置共享的神经网络。==</p>
+<h4 id="局部连接"><a href="#局部连接" class="headerlink" title="局部连接"></a>局部连接</h4><ul>
+<li><p>在卷积神经网络中，我们先选择一个局部区域，用这个局部区域去扫描整张图片。 局部区域所圈起来的所有节点会被连接到下一层的一个节点上。</p>
+</li>
+<li><p>为了更好的和前馈神经网络做比较，我将这些以矩阵排列的节点展成了向量。 下图展示了被红色方框所圈中编号为0,1,4,5的节点是如何通过连接到下一层的节点0上的。</p>
+</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8q2zrfqj30e90eagm6.jpg" alt></p>
+<p>这个带有连接强弱的红色方框就叫做 filter 或 kernel 或 feature detector。 而filter的范围叫做filter size，这里所展示的是2x2的filter size。<br> <img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqr8q9syjaj302f01i0sl.jpg" alt></p>
+<p>第二层的节点0的数值就是局部区域的线性组合，即被圈中节点的数值乘以对应的权重后相加。 用表示输入值，表示输出值，用图中标注数字表示角标，则下面列出了两种计算编号为0的输出值的表达式。</p>
+<p>注：在局部区域的线性组合后，也会和前馈神经网络一样，加上一个偏移量（偏移量充当阈值）。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8qh1u9zj309v0360ss.jpg" alt></p>
+<h4 id="空间共享"><a href="#空间共享" class="headerlink" title="空间共享"></a>空间共享</h4><p>当filter扫到其他位置计算输出节点时，包括是共用的。</p>
+<p>下面这张动态图展示了当filter扫过不同区域时，节点的链接方式。 动态图的最后一帧则显示了所有连接。 可以注意到，每个输出节点并非像前馈神经网络中那样与全部的输入节点连接，而是部分连接。 这也就是为什么大家也叫前馈神经网络（feedforward neural network）为fully-connected neural network。 </p>
+<p>图中显示的是一步一步的移动filter来扫描全图，一次移动多少叫做stride。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqr8qonn5pg30e90eaq3x.gif" alt></p>
+<p><code>空间共享也就是卷积神经网络所引入的先验知识。</code></p>
+<h4 id="输出表达"><a href="#输出表达" class="headerlink" title="输出表达"></a>输出表达</h4><p>如先前在图像表达中提到的，图片不用向量去表示是为了保留图片平面结构的信息。 同样的，卷积后的输出若用上图的排列方式则丢失了平面结构信息。 所以我们依然用矩阵的方式排列它们，就得到了下图所展示的连接。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8qxgpl4j30e90ea0tb.jpg" alt></p>
+<p>这也就是你们在网上所看到的下面这张图。在看这张图的时候请结合上图的连接一起理解，即输入（绿色）的每九个节点连接到输出（粉红色）的一个节点上的</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8r5s4qkg30em0aogn2.gif" alt></p>
+<p>==经过一个feature detector计算后得到的粉红色区域也叫做一个“Convolved Feature” 或 “Activation Map” 或 “Feature Map”。==</p>
+<h4 id="Depth维的处理"><a href="#Depth维的处理" class="headerlink" title="Depth维的处理"></a>Depth维的处理</h4><p>现在我们已经知道了depth维度只有1的灰度图是如何处理的。 但前文提过，图片的普遍表达方式是下图这样有3个channels的RGB颜色模型。 当depth为复数的时候，每个feature detector是如何卷积的？</p>
+<p><strong>现象</strong>：2x2所表达的filter size中，一个2表示width维上的局部连接数，另一个2表示height维上的局部连接数，并却没有depth维上的局部连接数，是因为depth维上并非局部，而是全部连接的。</p>
+<p>==在2D卷积中，filter在张量的width维, height维上是局部连接，在depth维上是贯串全部channels的。==</p>
+<p><strong>类比</strong>：想象在切蛋糕的时候，不管这个蛋糕有多少层，通常大家都会一刀切到底，但是在长和宽这两个维上是局部切割。</p>
+<p>下面这张图展示了，在depth为复数时，filter是如何连接输入节点到输出节点的。 图中红、绿、蓝颜色的节点表示3个channels。 黄色节点表示一个feature detector卷积后得到的Feature Map。 其中被透明黑框圈中的12个节点会被连接到黄黑色的节点上。</p>
+<pre><code>•    在输入depth为1时：被filter size为2x2所圈中的4个输入节点连接到1个输出节点上。
+•    在输入depth为3时：被filter size为2x2，但是贯串3个channels后，所圈中的12个输入节点连接到1个输出节点上。
+•    在输入depth为时：2x2x个输入节点连接到1个输出节点上。
+</code></pre><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8rfgjwaj308e0am74h.jpg" alt></p>
+<p><strong>注意</strong>：三个channels的权重并不共享。 即当深度变为3后，权重也跟着扩增到了三组，如式子(3)所示，不同channels用的是自己的权重。 式子中增加的角标r,g,b分别表示red channel, green channel, blue channel的权重。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8rooz1nj308301jq2w.jpg" alt></p>
+<p>计算例子：用表示red channel的编号为0的输入节点，表示green channel编号为5个输入节点。表示blue channel。如式子(4)所表达，这时的一个输出节点实际上是12个输入节点的线性组合。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fqr8rzdcy2j30jf02aaa9.jpg" alt></p>
+<p>当filter扫到其他位置计算输出节点时，那12个权重在不同位置是共用的，如下面的动态图所展示。 透明黑框圈中的12个节点会连接到被白色边框选中的黄色节点上。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fqr8s6ulz0g30920cn4b9.gif" alt></p>
+<h4 id="Zero-padding"><a href="#Zero-padding" class="headerlink" title="Zero padding"></a>Zero padding</h4><p>细心的读者应该早就注意到了，4x4的图片被2x2的filter卷积后变成了3x3的图片，每次卷积后都会小一圈的话，经过若干层后岂不是变的越来越小？ Zero padding就可以在这时帮助控制Feature Map的输出尺寸，同时避免了边缘信息被一步步舍弃的问题。<br>例如：下面4x4的图片在边缘Zero padding一圈后，再用3x3的filter卷积后，得到的Feature Map尺寸依然是4x4不变</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fqr8slkkt7j304t04tjrc.jpg" alt></p>
+<p>通常大家都想要在卷积时保持图片的原始尺寸。 选择3x3的filter和1的zero padding，或5x5的filter和2的zero padding可以保持图片的原始尺寸。 这也是为什么大家多选择3x3和5x5的filter的原因。 另一个原因是3x3的filter考虑到了像素与其距离为1以内的所有其他像素的关系，而5x5则是考虑像素与其距离为2以内的所有其他像素的关系。</p>
+<p>==尺寸：Feature Map的尺寸等于(input_size + 2 * padding_size − filter_size)/stride+1。==</p>
+<p>注意：上面的式子是计算width或height一维的。padding_size也表示的是单边补零的个数。</p>
+<p>==例如(4+2-3)/1+1 = 4，保持原尺寸。==</p>
+<p>不用去背这个式子。其中(input_size + 2 * padding_size)是经过Zero padding扩充后真正要卷积的尺寸。 减去 filter_size后表示可以滑动的范围。 再除以可以一次滑动（stride）多少后得到滑动了多少次，也就意味着得到了多少个输出节点。 再加上第一个不需要滑动也存在的输出节点后就是最后的尺寸。</p>
+<h4 id="形状、概念抓取"><a href="#形状、概念抓取" class="headerlink" title="形状、概念抓取"></a>形状、概念抓取</h4><p>知道了每个filter在做什么之后，我们再来思考这样的一个filter会抓取到什么样的信息。<br>我们知道不同的形状都可由细小的“零件”组合而成的。比如下图中，用2x2的范围所形成的16种形状可以组合成格式各样的“更大”形状。</p>
+<p>卷积的每个filter可以探测特定的形状。又由于Feature Map保持了抓取后的空间结构。若将探测到细小图形的Feature Map作为新的输入再次卷积后，则可以由此探测到“更大”的形状概念。 比如下图的第一个“大”形状可由2,3,4,5基础形状拼成。第二个可由2,4,5,6组成。第三个可由6,1组成。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8su8ctvj30dg083t96.jpg" alt></p>
+<p>除了基础形状之外，颜色、对比度等概念对画面的识别结果也有影响。卷积层也会根据需要去探测特定的概念。</p>
+<p>可以从下面这张图中感受到不同数值的filters所卷积过后的Feature Map可以探测边缘，棱角，模糊，突出等概念。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8t03gguj309i0fmwey.jpg" alt></p>
+<p>如我们先前所提，图片被识别成什么不仅仅取决于图片本身，还取决于图片是如何被观察的。<br>而filter内的权重矩阵W是网络根据数据学习得到的，也就是说，我们让神经网络自己学习以什么样的方式去观察图片。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8t9s3c8j305i0730sr.jpg" alt></p>
+<p>拿老妇与少女的那幅图片举例，当标签是少女时，卷积网络就会学习抓取可以成少女的形状、概念。 当标签是老妇时，卷积网络就会学习抓取可以成老妇的形状、概念。<br>下图展现了在人脸识别中经过层层的卷积后，所能够探测的形状、概念也变得越来越抽象和复杂。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fqr8th20n0j30a60f6q3f.jpg" alt></p>
+<p><code>卷积神经网络会尽可能寻找最能解释训练数据的抓取方式。</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2019/02/15/x264编码使用介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/15/x264编码使用介绍/" itemprop="url">x264编码使用介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-15T14:45:42+08:00">
+                2019-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/15/x264编码使用介绍/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/02/15/x264编码使用介绍/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x264 is a free software library and application for encoding video streams into the H.264/MPEG-4 AVC compression format, and is released under the terms of the GNU GPL.</span><br></pre></td></tr></table></figure>
+<p>x264是一个采用GPL授权的视频编码自由软件。x264的主要功能在于进行H.264/MPEG-4 AVC的视频编码，而不是作为解码器（decoder）之用。</p>
+<h2 id="特点介绍"><a href="#特点介绍" class="headerlink" title="特点介绍"></a>特点介绍</h2><ul>
+<li><p>提供一流的性能，压缩和功能。</p>
+</li>
+<li><p>实现卓越的性能，在单个消费级计算机上实时编码4个或更多1080p流。</p>
+</li>
+<li><p>提供最好的质量，拥有最先进的心理视觉优化。</p>
+</li>
+<li><p>支持许多不同应用所必需的功能，例如电视广播，蓝光低延迟视频应用和网络视频。</p>
+</li>
+<li><p>x264构成了许多网络视频服务的核心，例如Youtube，Facebook，Vimeo和Hulu。它被电视广播公司和互联网服务提供商广泛使用。</p>
+</li>
+</ul>
+<h2 id="x264-下载安装"><a href="#x264-下载安装" class="headerlink" title="x264 下载安装"></a>x264 下载安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//Download Address</span><br><span class="line">http://www.videolan.org/developers/x264.html</span><br><span class="line"></span><br><span class="line">//Git clone</span><br><span class="line">git clone https://git.videolan.org/git/x264.git</span><br></pre></td></tr></table></figure>
+<h2 id="软编码和硬编码比较"><a href="#软编码和硬编码比较" class="headerlink" title="软编码和硬编码比较"></a>软编码和硬编码比较</h2><p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fyl3efc9nfj30lo0hmq6i.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 软编码</span><br><span class="line">实现直接、简单，参数调整方便，升级易，但CPU负载重，性能较硬编码低，低码率下质量通常比硬编码要好一点。</span><br><span class="line"></span><br><span class="line">// 硬编码</span><br><span class="line">性能高，低码率下通常质量低于硬编码器，但部分产品在GPU硬件平台移植了优秀的软编码算法（如X264）的，质量基本等同于软编码。</span><br></pre></td></tr></table></figure>
+<h2 id="xcode-功耗截图"><a href="#xcode-功耗截图" class="headerlink" title="xcode 功耗截图"></a>xcode 功耗截图</h2><h3 id="硬编码"><a href="#硬编码" class="headerlink" title="硬编码"></a>硬编码</h3><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fyl3qifnl8j30r80cg0us.jpg" alt></p>
+<h3 id="软编码"><a href="#软编码" class="headerlink" title="软编码"></a>软编码</h3><p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fyl3ppotwtj30sq0bkab2.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">软编占用CPU较高，开启NEON后会使用多核CPU</span><br><span class="line"></span><br><span class="line">相比硬编GPU占用整体耗电非常高的情形，软编会分担部分压力</span><br><span class="line"></span><br><span class="line">功耗有明显降低</span><br><span class="line"></span><br><span class="line">高端机型如iPhonex编码长时间发热现象不明显</span><br></pre></td></tr></table></figure>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1g073yxoij6j30qo0mpdld.jpg" alt></p>
+<h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g073zvnavqj30n90o079g.jpg" alt></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1g07402s2sqj30kp03wdgk.jpg" alt></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2018/05/21/ImageMagick/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/21/ImageMagick/" itemprop="url">ImageMagick 7.0.7-16使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-21T09:38:48+08:00">
+                2018-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/21/ImageMagick/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/21/ImageMagick/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ImageMagick-7-0-7-16使用"><a href="#ImageMagick-7-0-7-16使用" class="headerlink" title="ImageMagick 7.0.7-16使用"></a>ImageMagick 7.0.7-16使用</h1><p><strong>相关链接</strong></p>
+<ul>
+<li>HomePage: <a href="https://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">https://www.imagemagick.org/script/index.php</a></li>
+<li>Download: <a href="https://github.com/ImageMagick/ImageMagick">https://github.com/ImageMagick/ImageMagick</a></li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre><code>•brew install ImageMagick
+</code></pre><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>Edge Detection</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert input.png -colorspace gray -canny 0x1+10%+30% output.png</span><br></pre></td></tr></table></figure></p>
+<p><strong>Compositon Image</strong></p>
+<p>把一张图片按80的质量去压缩(jpg的压缩参数),同时按图片比例非强制缩放成不超过280x140的图片.居中裁剪280x140,去掉图片裁减后的空白和图片exif信息,通常这种指令是为了保证图片大小正好为280x140<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert +profile &apos;*&apos; /Users/qiyun/Desktop/屏幕快照\ 2018-01-03\ 下午2.04.04.png -quality 80 -resize &apos;280x140^&gt;&apos; -gravity Center -crop 280x140+0+0 +repage /Users/qiyun/Desktop/新图片.jpg</span><br></pre></td></tr></table></figure></p>
+<p><code>-quality   图片质量,jpg默认99,png默认75
+-resize
+100x100      高度和宽度比例保留最高值，高比不变
+100x100^     高度和宽度比例保留最低值，宽高比不变
+100x100!     宽度和高度强制转换，忽视宽高比
+100x100&gt;     更改长宽，当图片长或宽超过规定的尺寸
+100x100&lt;     更改长宽 只有当图片长宽都超过规定的尺寸
+100x100^&gt;    更改长宽，当图片长或宽超过规定的尺寸。高度和宽度比例保留最低值
+100x100^&lt;    更改长宽，只有当图片长宽都超过规定的尺寸。高度和宽度比例保留最低值
+100          按指定的宽度缩放，保持宽高比例
+x100         按指定高度缩放，保持宽高比
+-gravity NorthWest, North, NorthEast, West, Center, East,  SouthWest, South, SouthEast截取用的定位指令,定位截取区域在图片中的方位
+-crop 200x200+0+0 截取用的截取指令 ,在用定位指令后,按后两位的偏移值偏移截取范围左上角的像素后,再按前两位的数值,从左上角开始截取相应大小的图片
++repage         去掉图片裁减后的空白
+-dissolve 30    设定组合图片透明度dissolve示例
++/-profile *    去掉/添加图片exif信息</code></p>
+<p><strong>把原始图片分割成多张小图</strong></p>
+<pre><code>•convert src.jpg -crop 100x100 dest.jpg
+</code></pre><p>假设src.jpg的大小是300x200,执行命令后将得到名为dest-0.jpg、dest-1.jpg…dest-5.jpg的6张大小为100x100的小图片。注意如果尺寸不是目标图片的整数倍，那么右边缘和下边缘的一部分图片就用实际尺寸</p>
+<p><strong>在原始图片上剪裁一张指定尺寸的小图</strong></p>
+<pre><code>•convert src.jpg -crop 100x80+50+30 dest.jpg
+</code></pre><p>在原始图片的上距离上部30像素左部50为起点的位置,分别向右向下截取一块大小为100x80的图片。如果x相对于坐标，宽度不够100，那就取实际值。</p>
+<pre><code>•convert src.jpg -gravity center -crop 100x80+0+0 dest.jpg
+</code></pre><p>在原始图上截取中心部分一块100x80的图片</p>
+<pre><code>•convert src.jpg -gravity southeast -crop 100x80+10+5 dest.jpg
+</code></pre><p>在原始图上截取右下角距离下边缘10个像素，右边缘5个像素一块100x80的图片</p>
+<p><strong>图片进行反色处理</strong></p>
+<pre><code>•convert -negate src.jpg negate.jpg
+</code></pre><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><strong>转换rgb为灰度图</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">计算公式 &gt;&gt; Grey = (R*38 + G*75 + B*15)&gt;&gt; 7</span><br><span class="line">convert /Users/qiyun/Desktop/屏幕快照\ 2018-02-23\ 下午2.51.29.png -set colorspace Gray -separate -average 1111.jpeg</span><br></pre></td></tr></table></figure>
+<p><strong>-crop参数是从一个图片截取一个指定区域的子图片</strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式如下:convert -crop widthxheight&#123;+-&#125;x&#123;+-&#125;y&#123;%&#125;</span><br></pre></td></tr></table></figure></p>
+<p> <em>width 子图片宽度</em> <em>height 子图片高度</em><br> x 为正数时为从区域左上角的x坐标,为负数时,左上角坐标为0,然后从截出的子图片右边减去x象素宽度. y 为正数时为从区域左上角的y坐标,为负数时,左上角坐标为0,然后从截出的子图片上边减去y象素高度.  如convert -crop 300x400+10+10 src.jpg dest.jpg 从src.jpg坐标为x:10 y:10截取300x400的图片存为dest.jpg convert -crop 300x400-10+10 src.jpg dest.jpg 从src.jpg坐标为x:0 y:10截取290x400的图片存为dest.jpg</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2018/04/02/Caffe使用简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/02/Caffe使用简介/" itemprop="url">Caffe使用简介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-02T19:38:48+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/02/Caffe使用简介/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/02/Caffe使用简介/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#Caffe使用简介</p>
+<p>##目录<br>[TOC]</p>
+<p>##下载源码<br><a href="http://caffe.berkeleyvision.org/installation.html" target="_blank" rel="noopener">http://caffe.berkeleyvision.org/installation.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/BVLC/caffe.git</span><br><span class="line">cd caffe-master</span><br></pre></td></tr></table></figure></p>
+<p>##CMake 编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">make all</span><br><span class="line">make install</span><br><span class="line">make</span><br></pre></td></tr></table></figure></p>
+<p>##使用caffe库训练LeNet在MNIST</p>
+<p>###准确数据集<br>根据shell文件（wget或gunzip）安装mnist_train_lmdb和mnist_test_lmbd数据文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./data/mnist/get_mnist.sh</span><br><span class="line">./example/mnist/create_mnist.sh</span><br></pre></td></tr></table></figure></p>
+<p>LeNet包含CNN，由一个卷积层，一个汇集层，另一个卷积层，然后是一个汇集层，然后是两个完全连接的层<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/examples/mnist/lenet_train_test.prototxt</span><br></pre></td></tr></table></figure></p>
+<p>###定义MNIST网络</p>
+<p>mnist 是一个手写数字库，由 DL 大牛YanLeCun进行维护。mnist最初用于支票上的手写数字识别,现在成了DL的入门练习库。针对mnist识别的专门模型是Lenet，算是最早的 CNN模型了。</p>
+<p><a href="http://caffe.berkeleyvision.org/gathered/examples/mnist.html" target="_blank" rel="noopener">http://caffe.berkeleyvision.org/gathered/examples/mnist.html</a><br><strong>设定网络名称</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name: &quot;LeNet&quot;</span><br></pre></td></tr></table></figure>
+<p>从LMDB文件<strong>读取MNIST的数据</strong>，下面是定义的一个数据层；<br>name: 表示该层的名称，可随意取<br>type: 层类型，如果是Data，表示数据来源于LevelDB或LMDB。根据数据的来源不同，数据层的类型也不同。一般在练习的时候，我们都是采用LevelDB或LMDB数据，因此层类型设置为Data。 </p>
+<p>Transformations: 数据的预处理，可以将数据变换到定义的范围内。如设置scale为0.00390625，实际上就是1/255, 即将输入数据由0-255归一化到0~1之间<br>source：读取lmdb的路径<br>两个blobs：data blob和label blob</p>
+<p>数据层是每个模型的最底层，是模型的入口，仅提供数据的输入，也提供数据从Blobs转换成别的格式进行保存输出。通常数据的预处理(如减去均值,缩放,裁剪和镜像等)，也在这层设置参数实现。 </p>
+<p>数据来源可以来自高效的数据库(如LevelDB和LMDB)，也可以直接来 于内存。如果 是很注重效率的话，数 据也可来 磁盘的hdf5 件和图 格式 件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">layer &#123;</span><br><span class="line">  name: &quot;mnist&quot;	</span><br><span class="line">  type: &quot;Data&quot;</span><br><span class="line">  transform_param &#123;</span><br><span class="line">    scale: 0.00390625</span><br><span class="line">  &#125;</span><br><span class="line">  data_param &#123;</span><br><span class="line">    source: &quot;mnist_train_lmdb&quot;</span><br><span class="line">    backend: LMDB</span><br><span class="line">    batch_size: 64</span><br><span class="line">  &#125;</span><br><span class="line">  top: &quot;data&quot;</span><br><span class="line">  top: &quot;label&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>内存数据(MemoryData)</strong></p>
+<p>batch_size: 每一次处理的数据个数，比如2<br>channels: 通道数<br>height: 高度<br>width: 宽度 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">layer &#123;</span><br><span class="line">  top: &quot;data&quot;</span><br><span class="line">  top: &quot;label&quot;</span><br><span class="line">  name: &quot;memory_data&quot;</span><br><span class="line">  type: &quot;MemoryData&quot;</span><br><span class="line">  memory_data_param&#123;</span><br><span class="line">    batch_size: 2</span><br><span class="line">    height: 100</span><br><span class="line">    width: 100</span><br><span class="line">    channels: 1</span><br><span class="line">  &#125;</span><br><span class="line">  transform_param &#123;</span><br><span class="line">    scale: 0.0078125</span><br><span class="line">    mean_file: &quot;mean.proto&quot;</span><br><span class="line">    mirror: false</span><br><span class="line">&#125; &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>HDF5数据（HDF5Data）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">layer &#123;</span><br><span class="line">  name: &quot;data&quot;</span><br><span class="line">  type: &quot;HDF5Data&quot;</span><br><span class="line">  top: &quot;data&quot;</span><br><span class="line">  top: &quot;label&quot;</span><br><span class="line">  hdf5_data_param &#123;</span><br><span class="line">    source: &quot;examples/hdf5_classification/data/train.txt&quot;</span><br><span class="line">    batch_size: 10</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>定义第一个卷积层</strong><br>设定20个通道的输出，卷积核大小是5，步长是1<br>The fillers allow us to randomly initialize the value of the weights and bias. For the weight filler, we will use the xavier algorithm that automatically determines the scale of initialization based on the number of input and output neurons. For the bias filler, we will simply initialize it as constant, with the default filling value 0.</p>
+<p>lr_mults are the learning rate adjustments for the layer’s learnable parameters. In this case, we will set the weight learning rate to be the same as the learning rate given by the solver during runtime, and the bias learning rate to be twice as large as that - this usually leads to better convergence rates</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">layer &#123;</span><br><span class="line">  name: &quot;conv1&quot;</span><br><span class="line">  type: &quot;Convolution&quot;</span><br><span class="line">  param &#123; lr_mult: 1 &#125;</span><br><span class="line">  param &#123; lr_mult: 2 &#125;</span><br><span class="line">  convolution_param &#123;</span><br><span class="line">    num_output: 20</span><br><span class="line">    kernel_size: 5</span><br><span class="line">    stride: 1</span><br><span class="line">    weight_filler &#123;</span><br><span class="line">      type: &quot;xavier&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    bias_filler &#123;</span><br><span class="line">      type: &quot;constant&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  bottom: &quot;data&quot;</span><br><span class="line">  top: &quot;conv1&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>###定义MNIST Solver</p>
+<p>test_iter: 测试样本，训练的图片个数/Batch_size<br>test_interval: 迭代次数<br>base_lr：lr是learning rate，学习速率，数据量较少的时候需要设置小一点，防止过早收敛<br>max_iter： 最大迭代</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># The train/test net protocol buffer definition</span><br><span class="line">net: &quot;examples/mnist/lenet_train_test.prototxt&quot;</span><br><span class="line"># test_iter specifies how many forward passes the test should carry out.</span><br><span class="line"># In the case of MNIST, we have test batch size 100 and 100 test iterations,</span><br><span class="line"># covering the full 10,000 testing images.</span><br><span class="line">test_iter: 100</span><br><span class="line"># Carry out testing every 500 training iterations.</span><br><span class="line">test_interval: 500</span><br><span class="line"># The base learning rate, momentum and the weight decay of the network.</span><br><span class="line">base_lr: 0.01</span><br><span class="line">momentum: 0.9</span><br><span class="line">weight_decay: 0.0005</span><br><span class="line"># The learning rate policy</span><br><span class="line">lr_policy: &quot;inv&quot;</span><br><span class="line">gamma: 0.0001</span><br><span class="line">power: 0.75</span><br><span class="line"># Display every 100 iterations</span><br><span class="line">display: 100</span><br><span class="line"># The maximum number of iterations</span><br><span class="line">max_iter: 10000</span><br><span class="line"># snapshot intermediate results</span><br><span class="line">snapshot: 5000</span><br><span class="line">snapshot_prefix: &quot;examples/mnist/lenet&quot;</span><br><span class="line"># solver mode: CPU or GPU</span><br><span class="line">solver_mode: GPU</span><br></pre></td></tr></table></figure>
+<p>###训练自己的模型</p>
+<p><strong>归类</strong>好需要的数据集，放置在统一的文件夹目录<br>生成对应的trail.txt和test.txt文件，用于转图片为lmdb文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line"></span><br><span class="line">root = &quot;/Users/qiyun/Downloads/caffe-1.0/data/test_mnist/&quot;</span><br><span class="line">data = &apos;train&apos;</span><br><span class="line">print(root)</span><br><span class="line">path = os.listdir(root + data)</span><br><span class="line">path.sort()</span><br><span class="line">file = open(root + &apos;train.txt&apos;, &apos;w&apos;)</span><br><span class="line"></span><br><span class="line">i = 0</span><br><span class="line">j = 0</span><br><span class="line"></span><br><span class="line">for line in path:</span><br><span class="line">    str = root + data + &apos;/&apos; + line</span><br><span class="line">    print(str)</span><br><span class="line"></span><br><span class="line">    if &apos;DS_Store&apos; in str:</span><br><span class="line">        print(&quot;error file path ....&quot;)</span><br><span class="line">    else:</span><br><span class="line">        for child in os.listdir(str):</span><br><span class="line">            str1 = data + &apos;/&apos; + line + &apos;/&apos; + child</span><br><span class="line">            filePath = root + str1</span><br><span class="line">            fix = os.path.splitext(str1)</span><br><span class="line"></span><br><span class="line">            print(&quot;####### in  &quot; + filePath)</span><br><span class="line">            print(fix)</span><br><span class="line">            d = &apos;%s&apos; %(i)</span><br><span class="line">            e = &apos;%s&apos; %(j)</span><br><span class="line">            t = fix[0] + fix[1] + &apos; &apos; + e</span><br><span class="line">            #t = data + &apos;/&apos; + line + &apos;/&apos; + &quot;img&quot; + d + fix[1] + &apos; &apos; + e</span><br><span class="line">            print(t)</span><br><span class="line">            file.write(t +&apos;\n&apos;)</span><br><span class="line">            outpath = root + t;</span><br><span class="line">            print(&quot;####### out  &quot; + outpath)</span><br><span class="line">            #os.rename(filePath, newfile)</span><br><span class="line">            i = i + 1</span><br><span class="line">        j = j + 1</span><br><span class="line"></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure></p>
+<p><strong>批量处理图片</strong><br>LeNet训练集的图片需要28x28的尺寸，各个训练网络都有特定尺寸要求<br>如果图片尺寸不合适，可以使用下面shell脚步进行处理（需要安装ImageMagick）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env bash</span><br><span class="line"></span><br><span class="line">src_dir=/Users/qiyun/Downloads/caffe-1.0/data/my_mnist/train/</span><br><span class="line">number=1</span><br><span class="line">dir=`ls -1 $src_dir`</span><br><span class="line">for dir_name in `ls -1 $src_dir`;</span><br><span class="line">do</span><br><span class="line">    if [ -d $src_dir$dir_name ]</span><br><span class="line">    then</span><br><span class="line">        echo $src_dir$dir_name</span><br><span class="line">        number=1</span><br><span class="line">        for file_name in `ls -l $src_dir$dir_name | grep ^- | awk &apos;&#123;print $9&#125;&apos;`;</span><br><span class="line">        do</span><br><span class="line">            echo $src_dir$dir_name&quot;/&quot;$file_name</span><br><span class="line">            convert +profile &apos;*&apos; $src_dir$dir_name&quot;/&quot;$file_name -quality 100 -resize &apos;28x28!&apos; -gravity Center -crop 28x28+0+0 +repage $src_dir$dir_name&quot;/&quot;$number&quot;_img&quot;&quot;.jpg&quot;</span><br><span class="line">            #mv $src_dir$dir_name&quot;/&quot;$file_name $src_dir$dir_name&quot;/&quot;$file_name</span><br><span class="line">            rm -rf $src_dir$dir_name&quot;/&quot;$file_name</span><br><span class="line">            echo $number</span><br><span class="line">            let number=number+1</span><br><span class="line">        done</span><br><span class="line">    fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>###生成LMDB文件</p>
+<p><strong>需要修改对应的路径</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env sh</span><br><span class="line"># Create the imagenet lmdb inputs</span><br><span class="line"># N.B. set the path to the imagenet train + val data dirs</span><br><span class="line">set -e</span><br><span class="line"></span><br><span class="line">EXAMPLE=data/my_mnist</span><br><span class="line">DATA=/Users/qiyun/Downloads/caffe-1.0/data/my_mnist/</span><br><span class="line">TOOLS=build/tools</span><br><span class="line"></span><br><span class="line">TRAIN_DATA_ROOT=/Users/qiyun/Downloads/caffe-1.0/data/my_mnist/</span><br><span class="line">VAL_DATA_ROOT=/Users/qiyun/Downloads/caffe-1.0/data/my_mnist/</span><br><span class="line"></span><br><span class="line"># Set RESIZE=true to resize the images to 256x256. Leave as false if images have</span><br><span class="line"># already been resized using another tool.</span><br><span class="line">RESIZE=false</span><br><span class="line">if $RESIZE; then</span><br><span class="line">  RESIZE_HEIGHT=28</span><br><span class="line">  RESIZE_WIDTH=28</span><br><span class="line">else</span><br><span class="line">  RESIZE_HEIGHT=0</span><br><span class="line">  RESIZE_WIDTH=0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ ! -d &quot;$TRAIN_DATA_ROOT&quot; ]; then</span><br><span class="line">  echo &quot;Error: TRAIN_DATA_ROOT is not a path to a directory: $TRAIN_DATA_ROOT&quot;</span><br><span class="line">  echo &quot;Set the TRAIN_DATA_ROOT variable in create_imagenet.sh to the path&quot; \</span><br><span class="line">       &quot;where the ImageNet training data is stored.&quot;</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ ! -d &quot;$VAL_DATA_ROOT&quot; ]; then</span><br><span class="line">  echo &quot;Error: VAL_DATA_ROOT is not a path to a directory: $VAL_DATA_ROOT&quot;</span><br><span class="line">  echo &quot;Set the VAL_DATA_ROOT variable in create_imagenet.sh to the path&quot; \</span><br><span class="line">       &quot;where the ImageNet validation data is stored.&quot;</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;Creating train lmdb...&quot;</span><br><span class="line"></span><br><span class="line">GLOG_logtostderr=1 $TOOLS/convert_imageset \</span><br><span class="line">    --resize_height=$RESIZE_HEIGHT \</span><br><span class="line">    --resize_width=$RESIZE_WIDTH \</span><br><span class="line">    --shuffle \</span><br><span class="line">    $TRAIN_DATA_ROOT \</span><br><span class="line">    $DATA/train.txt \</span><br><span class="line">    $EXAMPLE/train_lmdb</span><br><span class="line"></span><br><span class="line">echo &quot;Creating val lmdb...&quot;</span><br><span class="line"></span><br><span class="line">GLOG_logtostderr=1 $TOOLS/convert_imageset \</span><br><span class="line">    --resize_height=$RESIZE_HEIGHT \</span><br><span class="line">    --resize_width=$RESIZE_WIDTH \</span><br><span class="line">    --shuffle \</span><br><span class="line">    $VAL_DATA_ROOT \</span><br><span class="line">    $DATA/test.txt \</span><br><span class="line">    $EXAMPLE/val_lmdb</span><br><span class="line"></span><br><span class="line">echo &quot;Done.&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>生成均值文件，用于最后的预测数据</strong></p>
+<p>Caffe 中使用的均值数据格式是 binaryproto, 作者为我们提供了一个计算均值的文件 compute_image_mean.cpp，放在 Caffe 根目录下的 tools 文件夹里面。编译后的可执行体放在 build/tools/ 下面，我们直接调用就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build/tools/compute_image_mean examples/mnist/mnist_train_lmdb examples/mnist/mean.binaryproto</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env sh</span><br><span class="line"># Compute the mean image from the imagenet training lmdb</span><br><span class="line"># N.B. this is available in data/ilsvrc12</span><br><span class="line"></span><br><span class="line">EXAMPLE=data/my_mnist</span><br><span class="line">DATA=/Users/qiyun/Downloads/caffe-1.0/data/my_mnist</span><br><span class="line">TOOLS=build/tools</span><br><span class="line"></span><br><span class="line">$TOOLS/compute_image_mean $EXAMPLE/train_lmdb \</span><br><span class="line">  $DATA/imagenet_mean.binaryproto</span><br><span class="line"></span><br><span class="line">echo &quot;Done.&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>开始训练</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env sh</span><br><span class="line">set -e</span><br><span class="line"></span><br><span class="line">./build/tools/caffe train \</span><br><span class="line">    --solver=data/my_mnist/lenet_solver.prototxt</span><br></pre></td></tr></table></figure>
+<p>##使用</p>
+<p><strong>测试</strong></p>
+<p>训练完成后，可以直接使用build下的代码进行测试，命令如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env sh</span><br><span class="line">set -e</span><br><span class="line"></span><br><span class="line">./build/examples/cpp_classification/classification.bin data/my_mnist/lenet.prototxt ./data/my_mnist/pubg_classify.caffemodel data/my_mnist/pubg_imagenet_mean.binaryproto data/my_mnist/pubg_labels.txt /Users/qiyun/Desktop/outputImage.jpg</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yuns-iMac:caffe-1.0 qiyun$ ./data/my_mnist/TestImage.sh </span><br><span class="line">---------- Prediction for /Users/qiyun/Desktop/outputImage.jpg ----------</span><br><span class="line">1.0000 - &quot;1_(生存)&quot;</span><br><span class="line">0.0000 - &quot;2_(生存 english)&quot;</span><br><span class="line">0.0000 - &quot;0_(存活)&quot;</span><br><span class="line">0.0000 - &quot;4_(不在游戏中)&quot;</span><br><span class="line">0.0000 - &quot;3_(加入)&quot;</span><br></pre></td></tr></table></figure>
+<p>##附录<br>Google Protocol Buffer的使用和原理<br><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/index.html</a><br>makefile编译调用Caffe框架的C++程序<br><a href="http://yongyuan.name/blog/compiling-cpp-code-using-caffe.html" target="_blank" rel="noopener">http://yongyuan.name/blog/compiling-cpp-code-using-caffe.html</a><br><a href="https://github.com/Tencent/ncnn">https://github.com/Tencent/ncnn</a><br>ncnn 组件使用指北 alexnet<br><a href="https://github.com/Tencent/ncnn/wiki/ncnn-组件使用指北-alexnet">https://github.com/Tencent/ncnn/wiki/ncnn-组件使用指北-alexnet</a><br>python使用caffe<br><a href="http://adilmoujahid.com/posts/2016/06/introduction-deep-learning-python-caffe/" target="_blank" rel="noopener">http://adilmoujahid.com/posts/2016/06/introduction-deep-learning-python-caffe/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2018/02/15/使用Tesseract OCR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/15/使用Tesseract OCR/" itemprop="url">Tesseract OCR使用介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-15T15:08:48+08:00">
+                2018-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/15/使用Tesseract OCR/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/15/使用Tesseract OCR/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#Tesseract OCR使用介绍</p>
+<p>##目录<br>[TOC]</p>
+<p>##下载地址及介绍</p>
+<ul>
+<li>官网介绍：<a href="http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3" target="_blank" rel="noopener">http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3</a></li>
+<li>Github源码连接： <a href="https://github.com/tesseract-ocr">https://github.com/tesseract-ocr</a></li>
+<li>开源贡献者主页 <a href="https://kevintechnology.com/" target="_blank" rel="noopener">https://kevintechnology.com/</a></li>
+</ul>
+<p>##安装 Tesseract</p>
+<ul>
+<li>语言包查看 <a href="https://www.macports.org/ports.php?by=name&amp;substr=tesseract-" target="_blank" rel="noopener">https://www.macports.org/ports.php?by=name&amp;substr=tesseract-</a></li>
+<li>支持Windows、linux、macOS</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、安装 tesseract和语言包</span><br><span class="line">sudo port install tesseract	</span><br><span class="line">sudo port install tesseract-&lt;langcode&gt;</span><br><span class="line"></span><br><span class="line">2、homebrew 安装</span><br><span class="line">brew install tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br><span class="line"></span><br><span class="line">3、重新安装</span><br><span class="line">brew uninstall tesseract</span><br><span class="line">brew install --with-training-tools tesseract</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Homebrew 是一个包管理器，如果没装的话，在终端执行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
+<p>##使用 Tesseract</p>
+<ul>
+<li>使用命令行进行图像识别</li>
+<li>imagename 就是要识别的图片文件的名称，outputbase 就是识别结果输出文件的名称。</li>
+<li>lang 就是要识别的语言代码，例如英语为 eng、简体中文为 chi_sim 等等。可以同时识别多种语言，使用 “+” 相连，例如 eng+chi_sim。缺省时识别英语。</li>
+</ul>
+<p>1、格式信息如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract imagename outputbase [-l lang] [-psm pagesegmode] [configfile...]</span><br></pre></td></tr></table></figure></p>
+<p>2、示例: 识别image图片并将结果保存在out.txt文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tesseract image.png out -l chi_sim</span><br><span class="line">tesseract image.png out -l chi_sim -psm 10</span><br></pre></td></tr></table></figure></p>
+<p>3、pagesegmode 为识别的具体模式，具体包含以下模式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">•	0 = Orientation and script detection (OSD) only.</span><br><span class="line">•	1 = Automatic page segmentation with OSD.</span><br><span class="line">•	2 = Automatic page segmentation, but no OSD, or OCR</span><br><span class="line">•	3 = Fully automatic page segmentation, but no OSD. (Default)</span><br><span class="line">•	4 = Assume a single column of text of variable sizes.</span><br><span class="line">•	5 = Assume a single uniform block of vertically aligned text.</span><br><span class="line">•	6 = Assume a single uniform block of text.</span><br><span class="line">•	7 = Treat the image as a single text line.</span><br><span class="line">•	8 = Treat the image as a single word.</span><br><span class="line">•	9 = Treat the image as a single word in a circle.</span><br><span class="line">•	10 = Treat the image as a single character.</span><br><span class="line">•	11 = Sparse text. Find as much text as possible in no particular order.</span><br><span class="line">•	12 = Sparse text with OSD.</span><br><span class="line">•	13 = Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.</span><br></pre></td></tr></table></figure></p>
+<p>##训练样本</p>
+<ul>
+<li>训练工具 <a href="https://github.com/tesseract-ocr/tesseract/wiki/AddOns">https://github.com/tesseract-ocr/tesseract/wiki/AddOns</a></li>
+<li>使用教程 <a href="https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract">https://github.com/tesseract-ocr/tesseract/wiki/Training-Tesseract</a></li>
+<li>提高识别率 <a href="https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality">https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality</a></li>
+<li>清理文本背景 <a href="http://www.fmwconcepts.com/imagemagick/textcleaner/index.php" target="_blank" rel="noopener">http://www.fmwconcepts.com/imagemagick/textcleaner/index.php</a></li>
+<li>提取文本区域 <a href="http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html" target="_blank" rel="noopener">http://www.danvk.org/2015/01/07/finding-blocks-of-text-in-an-image-using-python-opencv-and-numpy.html</a></li>
+<li>以jTessBoxEditor为例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; 1、收集文本信息的图片</span><br><span class="line">&gt; 2、制作的图片转为tiff格式</span><br><span class="line">&gt; 3、jTessBoxEditor进行tiff格式图片合成 &lt;Tool-&gt;Merge TIFF&gt;</span><br><span class="line"></span><br><span class="line">合成后的图片取名规范 [lang].[fontname].exp[num].tif</span><br><span class="line">[lang]是语言，[fontname]是字体，[num]是标号</span><br></pre></td></tr></table></figure>
+<p>###1、Make Box Files</p>
+<ul>
+<li>使用 Tesseract 识别，生成 box 文件：</li>
+<li>确保 tif 和 box 文件同名且位于同一目录下，用 jTessBoxEditor 打开 tif 文件），或者直接用文本编辑器编辑。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -l chi_sim -psm 10 batch.nochop makebox</span><br></pre></td></tr></table></figure>
+<p>###2、Run Tesseract for Training</p>
+<ul>
+<li>使用修改正确后的 box 文件，对 Tesseract 进行训练，生成 .tr 文件：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tesseract hz.font.exp0.tif hz.font.exp0 -psm 10 nobatch box.train</span><br></pre></td></tr></table></figure>
+<p>###3、Compute the Character Set</p>
+<ul>
+<li>生成字符集的文本</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">unicharset_extractor hz.font.exp0.box hz.font.exp1.box</span><br><span class="line"></span><br><span class="line">After 3.03</span><br><span class="line">training/set_unicharset_properties -U input_unicharset -O output_unicharset --script_dir=training/langdata</span><br></pre></td></tr></table></figure>
+<p>正确的格式应该如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">110</span><br><span class="line">NULL 0 NULL 0</span><br><span class="line">N 5 59,68,216,255,87,236,0,27,104,227 Latin 11 0 1 N</span><br><span class="line">Y 5 59,68,216,255,91,205,0,47,91,223 Latin 33 0 2 Y</span><br><span class="line">1 8 59,69,203,255,45,128,0,66,74,173 Common 3 2 3 1</span><br><span class="line">9 8 18,66,203,255,89,156,0,39,104,173 Common 4 2 4 9</span><br><span class="line">a 3 58,65,186,198,85,164,0,26,97,185 Latin 56 0 5 a</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>###4、font_properties (new in 3.01)</p>
+<ul>
+<li>定义字体特征文件，Tesseract-OCR 3.01 以上的版本在训练之前需要创建一个名称为 font_properties 的字体特征文件。font_properties 不含有 BOM 头，文件内容格式如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;fontname&gt; &lt;italic&gt; &lt;bold&gt; &lt;fixed&gt; &lt;serif&gt; &lt;fraktur&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其中 fontname 为字体名称，必须与 [lang].[fontname].exp[num].box 中的名称保持一致。<italic> 、<bold> 、<fixed> 、<serif>、<fraktur> 的取值为 1 或 0，表示字体是否具有这些属性。</fraktur></serif></fixed></bold></italic></li>
+<li>这里就是普通字体，不倾斜不加粗，所以新建一个名为 font_properties 的文件，内容为： font 0 0 0 0 0</li>
+</ul>
+<p>###5、Clustering</p>
+<ul>
+<li>修改 Clustering 过程生成的 4 个文件（inttemp、pffmtable、normproto、shapetable）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">shapeclustering -F font_properties -U unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">mftraining -F font_properties -U unicharset -O hz.unicharset hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line"></span><br><span class="line">cntraining hz.font.exp0.tr hz.font.exp1.tr ...</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">* 生成后的文件需要添加前缀， 如这里改为 hz.inttemp、hz.pffmtable、hz.normproto、hz.shapetable。</span><br><span class="line"></span><br><span class="line">###6、Putting it all together</span><br><span class="line"></span><br><span class="line">* 生成最后的训练文件</span><br></pre></td></tr></table></figure>
+<p>combine_tessdata hz.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###7、use example</span><br><span class="line"></span><br><span class="line">* 使用训练的文件进行识别</span><br></pre></td></tr></table></figure></p>
+<p>tesseract test.png out -l hz<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">##脚本运行</span><br></pre></td></tr></table></figure></p>
+<p>#!/bin/sh<br>read -p “输入你语言:” lang<br>echo ${lang}<br>read -p “输入你的字体:” font<br>echo ${font}<br>echo “完整文件名为：”<br>echo ${lang}.${font}.exp0.tif<br>echo “开始。。。”<br>echo ${font} 0 0 0 0 0 &gt;font_properties</p>
+<p>#tesseract  ${lang}.${font}.exp0.tif $(lang).$(font).exp0 -l chi_sim -psm 10 batch.nochop makebox</p>
+<p>#read -p “继续生产tr文件？”<br>tesseract  ${lang}.${font}.exp0.tif ${lang}.${font}.exp0 -psm 10 nobatch box.train<br>unicharset_extractor ${lang}.${font}.exp0.box<br>shapeclustering -F font_properties -U unicharset ${lang}.${font}.exp0.tr<br>mftraining -F font_properties -U unicharset -O unicharset ${lang}.${font}.exp0.tr<br>cntraining ${lang}.${font}.exp0.tr<br>echo “开始重命名文件”<br>mv inttemp ${font}.inttemp<br>mv normproto ${font}.normproto<br>mv pffmtable ${font}.pffmtable<br>mv shapetable ${font}.shapetable<br>mv unicharset ${font}.unicharset<br>echo “生成最终文件”<br>combine_tessdata ${font}.<br>echo “完成”<br><code>`</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2018/02/08/FFMPEG部署教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/08/FFMPEG部署教程/" itemprop="url">Centos部署FFMPEG教程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T09:38:48+08:00">
+                2018-02-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/08/FFMPEG部署教程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/08/FFMPEG部署教程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Centos部署FFMPEG教程"><a href="#Centos部署FFMPEG教程" class="headerlink" title="Centos部署FFMPEG教程"></a>Centos部署FFMPEG教程</h1><p>====================</p>
+<h2 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h2><p>OS系统环境：CentOS Linux release 7.4.1708</p>
+<h2 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h2><pre><code>1. 安装基本工具；
+2. 下载ffmpeg 3.4版本
+3. 编译ffmpeg；
+4. 安装ffmpeg；
+</code></pre><h2 id="部署脚本"><a href="#部署脚本" class="headerlink" title="部署脚本"></a>部署脚本</h2><p><pre><code><br>sudo yum install automake autoconf make gcc gcc-c++ libtool zlib zlib-devel curl curl-devel alsa-lib alsa-lib-devel gettext gettext-devel expat expat-devel</code></pre></p>
+<p>wget <a href="http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz" target="_blank" rel="noopener">http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz</a><br>tar xvf yasm-1.3.0.tar.gz<br>cd yasm-1.3.0<br>./configure<br>make<br>sudo make install</p>
+<p>cd -</p>
+<p>wget <a href="http://ffmpeg.org/releases/ffmpeg-3.4.tar.bz2" target="_blank" rel="noopener">http://ffmpeg.org/releases/ffmpeg-3.4.tar.bz2</a><br>tar xvf ffmpeg-3.4.tar.bz2<br>cd ffmpeg-3.4<br>./configure<br>make<br>sudo make install<br></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>目前截图库编译使用的是ffmpeg 3.4版本，其他版本可能存在兼容性问题；</p>
+<p><a href="category:安装教程" title="wikilink" target="_blank" rel="noopener">category:安装教程</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2018/01/05/Tensorflow-使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -423,6 +1643,346 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Qiyun2014/2017/12/11/ARKit短视频拍摄预研/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Qiyun">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祁云的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/11/ARKit短视频拍摄预研/" itemprop="url">ARKit短视频拍摄预研</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-11T15:08:48+08:00">
+                2017-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/11/ARKit短视频拍摄预研/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/11/ARKit短视频拍摄预研/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#ARKit短视频拍摄预研</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="##应用场景"></a>##应用场景</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.  短视频录制中，开启相机，使用ARKit的SLAM（机器人同时定位与建图）系统检测平面（地面或物体表面），在平面上布置展现的元素（2D帧动画或3D模型）并混合相机图像数据进行同步录制到MP4文件。2D帧动画添加多样化元素或3D动画制作不一样的动画效果，设定触发条件用于动画变化。在播放对应的动画时添加声音。</span><br><span class="line">2.  使用Sprite可以实现背景墙拍摄短片和mv，在相机上进行贴图和贴视频等。</span><br><span class="line">3.  应用3d效果可以对当前天气进行变换，模拟雨天、打雷、阴天等场景，如Snapchat应用。</span><br></pre></td></tr></table></figure>
+<h2 id="ARKit介绍"><a href="#ARKit介绍" class="headerlink" title="##ARKit介绍"></a>##ARKit介绍</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-   在ARKit中，需要理解ARSCNView、ARSKView、ARSession以及ARCamera；</span><br><span class="line"></span><br><span class="line">1.  ARSCNView：包含我们从手机摄像头捕捉到的真实世界的画面以及我们添加上的物体（3d模型、3d文字、图像等）的可视化视图。</span><br><span class="line">2.  ARSKView：包含我们从手机摄像头捕捉到的真实世界的画面以及我们添加上的物体（2d图像、文字、视频或者其他）的可视化视图。</span><br><span class="line">3.  ARSession：SLAM系统的相关配置管理（如设备是否支持，识别状态、人脸跟踪、获取当前相机等相关信息）。</span><br><span class="line">4.  ARCamera：控制物体的相对角度及其世界坐标管理。可以在3d世界捕捉到物体的坐标点，进行物体跟踪和相关信息读取。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>针对2d的场景，需要使用对应的2d引擎框架SpriteKit，而SpriteKit与ARKit的桥梁就是ARSKView。<br><img src="../images/ARKit图片/ARSKView.png" alt="-w130" title="fig:calc.png"></li>
+<li>在3d的场景中，可以使用3d引擎Screenkit，而Screenkit与ARKit的桥梁就是ARSCNView。<br><img src="../images/ARKit图片/ARSCNView.png" alt="-w130" title="fig:calc.png"></li>
+</ul>
+<h4 id="开启AR功能"><a href="#开启AR功能" class="headerlink" title="开启AR功能"></a>开启AR功能</h4><pre><code>//  create sceneView，start plane detection of example
+- (ARSCNView *)sceneView{
+
+    if (!_sceneView) {
+        _sceneView = [[ARSCNView alloc] initWithFrame:self.bounds];
+
+        // Set the view&apos;s delegate
+        _sceneView.delegate = self;
+
+        // Show statistics such as fps and timing information
+        _sceneView.showsStatistics = YES;
+        _sceneView.automaticallyUpdatesLighting = YES;
+        _sceneView.autoenablesDefaultLighting = YES;
+        //_sceneView.debugOptions =   ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
+
+        // Create a session configuration
+        ARWorldTrackingConfiguration *configuration = [[ARWorldTrackingConfiguration alloc] init];
+        configuration.planeDetection = ARPlaneDetectionHorizontal;
+
+        // Run the view&apos;s session
+        [_sceneView.session runWithConfiguration:configuration options:ARSessionRunOptionResetTracking | ARSessionRunOptionRemoveExistingAnchors];
+
+        // Add session delegate
+        //_sceneView.session.delegate = self;
+
+        // Add contact delegate
+        _sceneView.scene.physicsWorld.contactDelegate = self;
+    }
+    return _sceneView;
+}
+</code></pre><ul>
+<li>Screenkit结构图如下，我们显示的3d模型或文字信息等都在Node进行显示<br><img src="../images/ARKit图片/ARSCNView结构图.png" alt="-w130" title="fig:calc.png"></li>
+</ul>
+<h4 id="添加3d模型"><a href="#添加3d模型" class="headerlink" title="添加3d模型"></a>添加3d模型</h4><ul>
+<li>如果要添加一个足球到识别到的平面（根据3d足球模型的存储路径进行加载进行创建一个SCNNode对象），设置足球显示的相关信息（在3d世界中的坐标，大小，颜色及物理碰撞掩码等）</li>
+</ul>
+<!-- -->
+<pre><code>@implementation DYARBallNode
+static NSString *ar_ball_scnpath = @&quot;sportModel.scnassets/Ball DAE&quot;;
+
+- (id)initWithNode{
+
+    if (self == [super init]) {
+
+        [self asc_addChildNodeNamed:ar_ball_name fromSceneNamed:ar_ball_scnpath withScale:0.1];
+
+        // set node position
+        self.position = SCNVector3Make(0, 0.4, 0);
+        self.rotation = SCNVector4Make(M_PI_2, 0, 0, 0);
+        self.name = ar_ball_name;
+
+        // set meterial attribute
+        self.physicsBody = [SCNPhysicsBody dynamicBody];
+        self.geometry.firstMaterial.multiply.contents = [UIColor darkGrayColor];
+        self.light.castsShadow = YES;
+        //self.light.color = [UIColor redColor];
+
+        // add contact detect
+        self.physicsBody.categoryBitMask = DYARNodeDetectionMaskBall;
+        self.physicsBody.collisionBitMask = DYARNodeDetectionMaskBall | DYARNodeDetectionMaskCharacter;
+        self.physicsBody.contactTestBitMask = DYARNodeDetectionMaskBall | DYARNodeDetectionMaskCharacter;
+    }
+    return self;
+}
+
+@end
+</code></pre><ul>
+<li>从文件路径中解析加载scene并获取指定的node（即3d模型）</li>
+</ul>
+<!-- -->
+<pre><code>- (SCNNode *)asc_addChildNodeNamed:(nullable NSString *)name fromSceneNamed:(NSString *)path withScale:(CGFloat)scale {
+    // Load the scene from the specified file
+    SCNScene *scene = [SCNScene sceneNamed:path inDirectory:nil options:nil];
+
+    // Retrieve the root node
+    SCNNode *node = scene.rootNode;
+
+    // Search for the node named &quot;name&quot;
+    if (name) {
+        node = [node childNodeWithName:name recursively:YES];
+    }
+    else {
+        // Take the first child if no name is passed
+        node = node.childNodes[0];
+    }
+
+    if (scale != 0) {
+        // Rescale based on the current bounding box and the desired scale
+        // Align the node to 0 on the Y axis
+        SCNVector3 min, max;
+        [node getBoundingBoxMin:&amp;min max:&amp;max];
+
+        GLKVector3 mid = GLKVector3Add(SCNVector3ToGLKVector3(min), SCNVector3ToGLKVector3(max));
+        mid = GLKVector3MultiplyScalar(mid, 0.5);
+        mid.y = min.y; // Align on bottom
+
+        GLKVector3 size = GLKVector3Subtract(SCNVector3ToGLKVector3(max), SCNVector3ToGLKVector3(min));
+        CGFloat maxSize = MAX(MAX(size.x, size.y), size.z);
+
+        scale = scale / maxSize;
+        mid = GLKVector3MultiplyScalar(mid, scale);
+        mid = GLKVector3Negate(mid);
+
+        node.scale = SCNVector3Make(scale, scale, scale);
+        node.position = SCNVector3FromGLKVector3(mid);
+    }
+
+    // Add to the container passed in argument
+    [self addChildNode:node];
+
+    return node;
+}
+</code></pre><h4 id="解析3d模型动画"><a href="#解析3d模型动画" class="headerlink" title="解析3d模型动画"></a>解析3d模型动画</h4><ul>
+<li>读取到动画后进行存储，可以在特定情况下对当前模型进行动作更换。类似游戏中人物跑步、踢腿、爬等等行为。</li>
+</ul>
+<!-- -->
+<pre><code>SCNSceneSource *sceneSource = [SCNSceneSource sceneSourceWithURL:[NSURL fileURLWithPath:scenePath] options:nil];
+// get animation ids
+NSArray *animationIDs =  [sceneSource identifiersOfEntriesWithClass:[CAAnimation class]];
+NSString *identifier = animationIDs.firstObject;
+CAAnimation *animation = [sceneSource entryWithIdentifier:identifier withClass:[CAAnimation class]];
+</code></pre><h4 id="添加3d文字和3d图形"><a href="#添加3d文字和3d图形" class="headerlink" title="添加3d文字和3d图形"></a>添加3d文字和3d图形</h4><ul>
+<li>SCNText可以用于添加文件</li>
+<li>SCNShaper可以用于添加图像（正方形、球形、梯形等各种图形）</li>
+</ul>
+<!-- -->
+<pre><code>SCNText *text = [SCNText textWithString:@&quot;斗鱼TV&quot; extrusionDepth:0.01];
+SCNNode *textNode = [SCNNode nodeWithGeometry:text];
+text.font = [UIFont systemFontOfSize:0.15];
+textNode.geometry.firstMaterial.diffuse.contents = [UIColor redColor];
+SCNNode *rootNode = self.sceneView.scene.rootNode;
+textNode.worldPosition = SCNVector3Make(hitResult.worldTransform.columns[3].x, hitResult.worldTransform.columns[3].y, hitResult.worldTransform.columns[3].z);
+[rootNode addChildNode:textNode];
+</code></pre><ul>
+<li>添加一个球，颜色随机配置，并添加物理碰撞效果</li>
+</ul>
+<!-- -->
+<pre><code>SCNBox *cube = [SCNBox boxWithWidth:dimension height:dimension length:dimension chamferRadius:0];
+cube.chamferRadius = 0.5f;
+
+SCNNode *node = [SCNNode nodeWithGeometry:cube];
+int R = (arc4random() % 256) ;
+int G = (arc4random() % 256) ;
+int B = (arc4random() % 256) ;
+///float A = (arc4random() % 10)/10.0;
+node.geometry.firstMaterial.diffuse.contents = [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1.0];
+
+// The physicsBody tells SceneKit this geometry should be manipulated by the physics engine
+node.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeDynamic shape:nil];
+node.physicsBody.mass = 1.0;
+node.physicsBody.categoryBitMask = DYARNodeDetectionMaskCategoryCube;
+
+// We insert the geometry slightly above the point the user tapped, so that it drops onto the plane
+// using the physics engine
+float insertionYOffset = 1.5;
+node.position = SCNVector3Make(
+                                   hitResult.worldTransform.columns[3].x,
+                                   hitResult.worldTransform.columns[3].y + insertionYOffset,
+                                   hitResult.worldTransform.columns[3].z
+                                   );
+
+SCNNode *fNode = [self.sceneView.scene.rootNode childNodes].firstObject;
+fNode.scale = SCNVector3Make(2, 2, 2);
+
+[self.sceneView.scene.rootNode addChildNode:node];
+</code></pre><h4 id="粒子系统"><a href="#粒子系统" class="headerlink" title="粒子系统"></a>粒子系统</h4><ul>
+<li>粒子效果的文件可以用xcode创建，并配合例子生命周期，存活时长、例子数量、动画曲线等等效果。</li>
+<li>SCNParticleSystem类有对相关属性的配置。</li>
+<li>下面是一个下雨的粒子效果，添加到平面上，模拟下雨场景。</li>
+</ul>
+<!-- -->
+<pre><code>SCNParticleSystem *ps = [SCNParticleSystem particleSystemNamed:@&quot;rain&quot; inDirectory:nil];
+SCNParticleSystem *pss = [SCNParticleSystem particleSystemNamed:@&quot;plok&quot; inDirectory:nil];
+pss.idleDuration = 0;
+pss.loops = NO;
+[ps setSystemSpawnedOnCollision:pss];
+[plane addParticleSystem:ps];
+</code></pre><p><img src="../images/ARKit图片/ARKit_Scene.gif" alt title="fig:calc.gif"></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>加载3d模型在ios中仅仅支持指定的几种格式.dae/.abd,这两个是能直接转换为.scn用于3d引起Screenkit场景加载</li>
+<li>dae模型动画从3d软件工作导出时，动画是分多个甚至几十个，需要统一放入一个AnimationGroup进行读取，否则无法对模型进行更换动画效果</li>
+<li>获取3d世界中某一个物体的坐标需要正确的使用ARHitTestResultType类型去获取，根据场景设定不同类型</li>
+<li>控制某个物体需要调用node的parentNode属性进行设置，否则无效</li>
+<li>ARKit是左手坐标系，右边👉是x的正方向，上面👆是z的正方向，正对着自己是y的正方向</li>
+<li>推荐使用camera.transform来计算物体的距离</li>
+</ul>
+<h2 id="竞品"><a href="#竞品" class="headerlink" title="竞品"></a>竞品</h2><ol>
+<li>从APPStore商店上架的AR产品中，有视+短视频和AR Dragon宠物模拟、Paint<br>Space AR绘画等软件使用AR功能。</li>
+<li>Snapchat天气变换和Facebook直播等。</li>
+</ol>
+<h2 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h2><p><img src="../images/ARKit图片/ARKit_demo示例.png" alt title="fig:calc.gif"></p>
+<ul>
+<li>上图是识别屏幕放置一个3d模型的杯子示例图片，根据使用有以下几处：</li>
+</ul>
+<ol>
+<li>仅适用A9及以上芯片手机和iOS 11及以上版本（最低iPhone6s）</li>
+<li>iphone6plus上相机画面光线有轻度闪动，iPhone7正常</li>
+<li>依赖于机型的传感器校准3d坐标，部分机型有可能产生抖动</li>
+</ol>
+<h2 id="性能消耗"><a href="#性能消耗" class="headerlink" title="性能消耗"></a>性能消耗</h2><ol>
+<li>cpu占用较高，iPhone6s占用45%</li>
+<li>一套模型，内存约占20m（取决模型素材大小）</li>
+</ol>
+<p><a href="Category:技术预研" title="wikilink" target="_blank" rel="noopener">Category:技术预研</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -473,7 +2033,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
